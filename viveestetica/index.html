@@ -138,10 +138,10 @@ nav a:hover { color:var(--rose-deep); }
 }
 .hero h1 {
   font-family:'Cormorant Garamond',serif;
-  font-size:clamp(2.4rem, 5vw, 4rem);
-  font-weight:600; line-height:1.05;
-  letter-spacing:-0.02em;
-  margin-bottom:24px;
+  font-size:clamp(3rem, 6.5vw, 5.5rem);
+  font-weight:500; line-height:0.98;
+  letter-spacing:-0.025em;
+  margin-bottom:28px;
   color:var(--black);
 }
 .hero h1 em {
@@ -711,8 +711,194 @@ footer .footer-copy {
 }
 
 /* Reveal animation */
-.reveal { opacity:0; transform:translateY(28px); transition:opacity 0.7s, transform 0.7s; }
+.reveal { opacity:0; transform:translateY(28px); transition:opacity 0.9s cubic-bezier(0.22,0.61,0.36,1), transform 0.9s cubic-bezier(0.22,0.61,0.36,1); }
 .reveal.up { opacity:1; transform:none; }
+.reveal.up.d1 { transition-delay:0.08s; }
+.reveal.up.d2 { transition-delay:0.16s; }
+.reveal.up.d3 { transition-delay:0.24s; }
+
+/* === POLISH PASS · upgrades === */
+
+/* Grain noise overlay sutil */
+body::before {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:1;
+  opacity:0.025; mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* Hero blobs animados sutil */
+.hero::before { animation:floatA 18s ease-in-out infinite; }
+.hero::after  { animation:floatB 22s ease-in-out infinite; }
+@keyframes floatA {
+  0%, 100% { transform:translate(0,0); }
+  50% { transform:translate(-30px, 40px); }
+}
+@keyframes floatB {
+  0%, 100% { transform:translate(0,0); }
+  50% { transform:translate(40px, -30px); }
+}
+
+/* Hero visual: zoom Ken Burns sutil */
+.hero-visual img { animation:kenBurns 24s ease-in-out infinite alternate; }
+@keyframes kenBurns {
+  from { transform:scale(1) translate(0,0); }
+  to { transform:scale(1.08) translate(-1%, -1%); }
+}
+
+/* Hero h1: text shadow elegante para profundidad */
+.hero h1 {
+  text-shadow:0 1px 2px rgba(0,0,0,0.04);
+}
+
+/* Botones primary: shadow multi-capa premium */
+.btn-primary {
+  box-shadow:
+    0 1px 2px rgba(26,22,20,0.10),
+    0 4px 8px rgba(26,22,20,0.06),
+    0 8px 16px rgba(26,22,20,0.04);
+  transition:transform 0.3s cubic-bezier(0.22,0.61,0.36,1), box-shadow 0.3s, background 0.3s;
+}
+.btn-primary:hover {
+  box-shadow:
+    0 2px 4px rgba(201,155,130,0.20),
+    0 8px 24px rgba(201,155,130,0.30),
+    0 20px 50px rgba(201,155,130,0.40);
+}
+
+/* Packs: lift + glow refinado */
+.pack {
+  transition:transform 0.4s cubic-bezier(0.22,0.61,0.36,1), box-shadow 0.4s, border-color 0.3s;
+  box-shadow:0 1px 2px rgba(0,0,0,0.04);
+}
+.pack:hover {
+  transform:translateY(-10px);
+  box-shadow:
+    0 4px 8px rgba(201,155,130,0.10),
+    0 16px 32px rgba(201,155,130,0.16),
+    0 32px 64px rgba(201,155,130,0.22);
+}
+.pack.featured {
+  box-shadow:
+    0 2px 4px rgba(201,155,130,0.10),
+    0 12px 28px rgba(201,155,130,0.16),
+    0 24px 48px rgba(201,155,130,0.10);
+}
+.pack.featured:hover {
+  transform:scale(1.04) translateY(-10px);
+}
+
+/* Gallery cards: overlay + caption animation refinada */
+.gal-card { box-shadow:0 1px 2px rgba(0,0,0,0.06); transition:transform 0.4s cubic-bezier(0.22,0.61,0.36,1), box-shadow 0.4s; }
+.gal-card:hover {
+  transform:translateY(-6px) scale(1.01);
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.10),
+    0 24px 48px rgba(0,0,0,0.18);
+}
+.gal-card-body {
+  transform:translateY(0);
+  transition:transform 0.4s cubic-bezier(0.22,0.61,0.36,1);
+}
+
+/* Antes/después cards refinadas */
+.bd-card {
+  transition:transform 0.4s cubic-bezier(0.22,0.61,0.36,1), box-shadow 0.4s;
+}
+.bd-card:hover {
+  transform:translateY(-8px);
+  box-shadow:0 24px 60px rgba(0,0,0,0.14);
+}
+.bd-img { overflow:hidden; }
+.bd-img img { transition:transform 0.8s cubic-bezier(0.22,0.61,0.36,1); }
+.bd-card:hover .bd-img img { transform:scale(1.06); }
+
+/* Stats bar: subtle separators verticales */
+.stats-bar { position:relative; }
+.stats-bar::before, .stats-bar::after {
+  content:''; position:absolute; left:0; right:0; height:1px;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+}
+.stats-bar::before { top:0; }
+.stats-bar::after { bottom:0; }
+.stat-num {
+  background:linear-gradient(135deg, var(--gold) 0%, var(--gold-soft) 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+/* FAQ refinado */
+details.faq { transition:border-color 0.3s, background 0.3s, box-shadow 0.3s; }
+details.faq[open] {
+  box-shadow:0 8px 24px rgba(201,155,130,0.10);
+  background:linear-gradient(180deg, var(--white), var(--rose-bg));
+}
+details.faq summary { transition:color 0.2s; }
+details.faq:hover summary { color:var(--rose-deep); }
+
+/* Section eyebrow con línea decorativa */
+.section-eyebrow {
+  display:inline-flex; align-items:center; gap:12px;
+}
+.section-eyebrow::before {
+  content:''; width:24px; height:1px;
+  background:var(--rose-deep);
+}
+
+/* WhatsApp sticky: anillo de pulso refinado */
+.wa-sticky::before {
+  content:''; position:absolute; inset:-4px;
+  border-radius:50%;
+  background:linear-gradient(135deg, #25D366, #128C7E);
+  opacity:0;
+  animation:pulse-ring 2.4s ease-out infinite;
+  z-index:-1;
+}
+@keyframes pulse-ring {
+  0% { transform:scale(1); opacity:0.6; }
+  100% { transform:scale(1.6); opacity:0; }
+}
+
+/* Hero visual badge: glassmorphism refinado */
+.hero-visual-badge {
+  background:rgba(255,255,255,0.85);
+  backdrop-filter:blur(20px) saturate(1.4);
+  -webkit-backdrop-filter:blur(20px) saturate(1.4);
+  border:1px solid rgba(255,255,255,0.6);
+}
+
+/* Hero-visual: outer glow ambient */
+.hero-visual::before {
+  font-size:0.92rem;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+}
+.hero-visual {
+  box-shadow:
+    0 1px 2px rgba(201,155,130,0.15),
+    0 12px 28px rgba(201,155,130,0.20),
+    0 28px 64px rgba(201,155,130,0.28),
+    0 56px 120px rgba(201,155,130,0.35);
+}
+
+/* Contact info CTA con glow */
+.contact-info .contact-cta {
+  box-shadow:0 8px 20px rgba(0,0,0,0.12);
+}
+.contact-info .contact-cta:hover {
+  box-shadow:0 14px 40px rgba(201,155,130,0.40);
+}
+
+/* Header con sombra al scroll */
+header {
+  transition:padding 0.3s, box-shadow 0.3s, background 0.3s;
+}
+header.scrolled {
+  padding-top:12px; padding-bottom:12px;
+  box-shadow:0 1px 0 rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.05);
+}
+
+/* Smooth scroll snap suave (no obligatorio) */
+html { scroll-padding-top:80px; }
 </style>
 </head>
 <body>
@@ -1043,9 +1229,28 @@ footer .footer-copy {
 
 <script>
 const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('up'); io.unobserve(e.target); } });
+  entries.forEach((e, idx) => {
+    if(e.isIntersecting){
+      e.target.classList.add('up');
+      io.unobserve(e.target);
+    }
+  });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// Stagger delays automáticos por grupos de hermanos
+document.querySelectorAll('.packs-grid, .galeria-grid, .bd-grid, .proceso-grid').forEach(group => {
+  Array.from(group.children).forEach((child, i) => {
+    if(child.classList.contains('reveal') && i < 4) child.classList.add('d' + Math.min(i, 3));
+  });
+});
+
+// Header sombra al scroll
+const hdr = document.querySelector('header');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 20) hdr.classList.add('scrolled');
+  else hdr.classList.remove('scrolled');
+}, { passive:true });
 </script>
 </body>
 </html>

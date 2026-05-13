@@ -679,8 +679,109 @@ footer.foot {
 .wa-fab svg { width:28px; height:28px; fill:#fff; }
 
 /* Reveal */
-.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.8s, transform 0.8s; }
+.reveal { opacity:0; transform:translateY(28px); transition:opacity 0.95s cubic-bezier(0.22,0.61,0.36,1), transform 0.95s cubic-bezier(0.22,0.61,0.36,1); }
 .reveal.up { opacity:1; transform:none; }
+.reveal.up.d1 { transition-delay:0.06s; }
+.reveal.up.d2 { transition-delay:0.12s; }
+.reveal.up.d3 { transition-delay:0.18s; }
+.reveal.up.d4 { transition-delay:0.24s; }
+.reveal.up.d5 { transition-delay:0.30s; }
+.reveal.up.d6 { transition-delay:0.36s; }
+.reveal.up.d7 { transition-delay:0.42s; }
+
+/* === POLISH PELUQUERÍA EQUIPO'S === */
+body::before {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:1;
+  opacity:0.022; mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* Hero ken-burns + text shadow */
+.hero img.bg { animation:kenBurnsP 30s ease-in-out infinite alternate; }
+@keyframes kenBurnsP {
+  from { transform:scale(1.04) translate(0,0); }
+  to { transform:scale(1.14) translate(-1%, -2%); }
+}
+.hero h1 { text-shadow:0 2px 18px rgba(0,0,0,0.30); }
+
+/* Hero CTA shadow multi-capa */
+.hero-cta {
+  box-shadow:
+    0 1px 2px rgba(184,144,82,0.18),
+    0 8px 20px rgba(184,144,82,0.32),
+    0 20px 48px rgba(184,144,82,0.40);
+}
+.hero-cta:hover {
+  box-shadow:
+    0 2px 6px rgba(217,185,122,0.20),
+    0 12px 28px rgba(217,185,122,0.40),
+    0 28px 64px rgba(217,185,122,0.50);
+}
+
+/* Mosaic refinado: caption animation */
+.mosaic-item .caption {
+  transform:translateY(8px);
+  opacity:0.92;
+  transition:transform 0.4s cubic-bezier(0.22,0.61,0.36,1), opacity 0.3s;
+}
+.mosaic-item:hover .caption { transform:translateY(0); opacity:1; }
+.mosaic-item img { transition:transform 0.9s cubic-bezier(0.22,0.61,0.36,1), filter 0.5s; }
+.mosaic-item { box-shadow:0 1px 2px rgba(0,0,0,0.04); }
+.mosaic-item:hover { z-index:2; }
+
+/* Servicios cards refinadas */
+.svc-card { transition:background 0.4s, transform 0.3s, box-shadow 0.4s; }
+.svc-card:hover {
+  transform:translateY(-2px);
+  box-shadow:inset 0 0 0 2px var(--gold);
+}
+
+/* Stats con gradient en números */
+.intro-stats > div b .gold {
+  background:linear-gradient(135deg, var(--gold) 0%, var(--gold-2) 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+/* Brands marquee fade en bordes */
+.brands-marquee { position:relative; }
+.brands-marquee::before, .brands-marquee::after {
+  content:''; position:absolute; top:0; bottom:0; width:140px; z-index:2;
+  pointer-events:none;
+}
+.brands-marquee::before { left:0; background:linear-gradient(90deg, var(--black), transparent); }
+.brands-marquee::after { right:0; background:linear-gradient(-90deg, var(--black), transparent); }
+
+/* Steps con borde dorado animado */
+.step { transition:transform 0.3s, border-color 0.3s; }
+.step:hover { transform:translateY(-3px); }
+
+/* Map filter on hover */
+.map-side iframe { transition:filter 0.6s; }
+.map-side:hover iframe { filter:grayscale(0) contrast(1.05) sepia(0); }
+
+/* WA FAB pulse */
+.wa-fab::before {
+  content:''; position:absolute; inset:-4px;
+  border-radius:50%;
+  background:#25D366;
+  opacity:0;
+  animation:pulse-ring 2.5s ease-out infinite;
+  z-index:-1;
+}
+@keyframes pulse-ring {
+  0% { transform:scale(1); opacity:0.5; }
+  100% { transform:scale(1.7); opacity:0; }
+}
+
+/* Header scroll sombra */
+header { transition:padding 0.3s, box-shadow 0.3s, background 0.3s; }
+header.scrolled {
+  padding-top:12px; padding-bottom:12px;
+  box-shadow:0 1px 0 rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
+}
+
+html { scroll-padding-top:80px; }
 </style>
 </head>
 <body>
@@ -981,6 +1082,20 @@ const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('up'); io.unobserve(e.target); } });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// Stagger por grupos
+document.querySelectorAll('.mosaic, .svc-grid, .steps').forEach(group => {
+  Array.from(group.children).forEach((child, i) => {
+    if(child.classList.contains('reveal') && i < 8) child.classList.add('d' + Math.min(i, 7));
+  });
+});
+
+// Header scroll
+const hdr = document.querySelector('header');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 20) hdr.classList.add('scrolled');
+  else hdr.classList.remove('scrolled');
+}, { passive:true });
 </script>
 </body>
 </html>

@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dermativa · Demo Lifting Sorabyte</title>
+<meta name="description" content="Centro de estética avanzada en Palma. Depilación láser, rejuvenecimiento, INDIBA. Más de 1.300 pacientes, 10+ años de experiencia.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* === TOKENS · Premium medical-beauty palette === */
+:root {
+  --lav-bg:     #F7F4F9;
+  --lav-light:  #EDE5F2;
+  --lav-mid:    #C9B6DC;
+  --lav-deep:   #8E6FB0;
+  --gold:       #B89668;
+  --gold-soft:  #E5D5B5;
+  --black:      #16121C;
+  --grey:       #5D5566;
+  --grey-soft:  #908896;
+  --white:      #FFFFFF;
+}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body {
+  background:var(--white);
+  color:var(--black);
+  font-family:'Inter',sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+
+/* === NAV === */
+header {
+  position:fixed; top:0; left:0; right:0;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 5vw;
+  z-index:100;
+  background:rgba(255,255,255,0.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(0,0,0,0.04);
+  transition:padding 0.3s;
+}
+.logo {
+  display:flex; align-items:center; gap:10px;
+  text-decoration:none;
+  color:var(--black);
+}
+.logo img {
+  height:44px; width:auto;
+  display:block;
+}
+nav { display:flex; gap:28px; align-items:center; }
+nav a {
+  font-size:0.82rem; font-weight:500;
+  color:var(--grey);
+  text-decoration:none;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+  transition:color 0.2s;
+}
+nav a:hover { color:var(--lav-deep); }
+.nav-cta {
+  background:var(--lav-deep) !important;
+  color:var(--white) !important;
+  padding:10px 22px; border-radius:100px;
+  text-transform:none !important;
+  letter-spacing:0 !important;
+  font-weight:600 !important;
+}
+.nav-cta:hover { background:var(--black) !important; }
+@media (max-width:768px) {
+  nav { display:none; }
+  header { padding:14px 5vw; }
+}
+
+/* === HERO === */
+.hero {
+  position:relative;
+  min-height:100vh;
+  display:flex; align-items:center;
+  padding:120px 5vw 60px;
+  background:linear-gradient(135deg, var(--lav-bg) 0%, var(--white) 100%);
+  overflow:hidden;
+}
+.hero::before {
+  content:''; position:absolute;
+  top:-100px; right:-100px;
+  width:500px; height:500px;
+  background:radial-gradient(circle, var(--lav-light), transparent 70%);
+  pointer-events:none;
+}
+.hero::after {
+  content:''; position:absolute;
+  bottom:-150px; left:-150px;
+  width:600px; height:600px;
+  background:radial-gradient(circle, var(--gold-soft), transparent 70%);
+  opacity:0.3;
+  pointer-events:none;
+}
+.hero-inner {
+  position:relative; z-index:2;
+  max-width:1200px; margin:0 auto;
+  display:grid; grid-template-columns:1.1fr 1fr; gap:80px;
+  align-items:center;
+  width:100%;
+}
+@media (max-width:900px) { .hero-inner { grid-template-columns:1fr; gap:50px; } }
+.hero-badge {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:8px 16px;
+  background:var(--white);
+  border:1px solid var(--lav-mid);
+  border-radius:100px;
+  font-size:0.74rem; font-weight:600;
+  color:var(--lav-deep);
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  margin-bottom:24px;
+}
+.hero-badge-dot {
+  width:8px; height:8px; border-radius:50%;
+  background:var(--lav-deep);
+  box-shadow:0 0 0 4px rgba(142,111,176,0.18);
+}
+.hero h1 {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.4rem, 5vw, 4rem);
+  font-weight:600; line-height:1.05;
+  letter-spacing:-0.02em;
+  margin-bottom:24px;
+  color:var(--black);
+}
+.hero h1 em {
+  font-style:italic;
+  background:linear-gradient(135deg, var(--lav-deep), var(--gold));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-sub {
+  font-size:1.05rem;
+  color:var(--grey);
+  line-height:1.7;
+  margin-bottom:36px;
+  max-width:460px;
+}
+.hero-actions { display:flex; gap:14px; flex-wrap:wrap; }
+.btn-primary {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:16px 32px;
+  background:var(--black);
+  color:var(--white);
+  text-decoration:none;
+  border-radius:100px;
+  font-weight:600; font-size:0.92rem;
+  letter-spacing:0.02em;
+  transition:transform 0.25s, box-shadow 0.25s, background 0.25s;
+}
+.btn-primary:hover {
+  background:var(--lav-deep);
+  transform:translateY(-3px);
+  box-shadow:0 14px 40px rgba(142,111,176,0.45);
+}
+.btn-ghost {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:16px 28px;
+  background:transparent;
+  color:var(--black);
+  text-decoration:none;
+  border:1.5px solid var(--black);
+  border-radius:100px;
+  font-weight:600; font-size:0.92rem;
+  transition:background 0.25s, color 0.25s;
+}
+.btn-ghost:hover { background:var(--black); color:var(--white); }
+
+.hero-visual {
+  position:relative;
+  aspect-ratio:4/5;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 30px 80px rgba(142,111,176,0.4);
+  background:linear-gradient(135deg, var(--lav-mid), var(--gold-soft));
+}
+.hero-visual img {
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit:cover;
+  display:block;
+}
+.hero-visual::before {
+  content:'DEPILACIÓN LÁSER · REJUVENECIMIENTO · INDIBA';
+  position:absolute; bottom:30px; left:30px; right:30px; z-index:3;
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.95rem; font-weight:500;
+  letter-spacing:0.12em;
+  color:var(--white);
+  text-shadow:0 2px 8px rgba(0,0,0,0.5);
+}
+.hero-visual::after {
+  content:'';
+  position:absolute; inset:0; z-index:2;
+  background:linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.55));
+}
+.hero-visual-badge {
+  position:absolute; top:24px; left:24px; z-index:3;
+  background:rgba(255,255,255,0.95);
+  backdrop-filter:blur(8px);
+  padding:10px 16px;
+  border-radius:100px;
+  font-size:0.72rem; font-weight:700;
+  letter-spacing:0.1em;
+  color:var(--lav-deep);
+  text-transform:uppercase;
+  box-shadow:0 4px 16px rgba(0,0,0,0.1);
+}
+
+/* === STATS BAR === */
+.stats-bar {
+  padding:50px 5vw;
+  background:var(--black);
+  color:var(--white);
+}
+.stats-grid {
+  max-width:1100px; margin:0 auto;
+  display:grid; grid-template-columns:repeat(4,1fr); gap:30px;
+  text-align:center;
+}
+@media (max-width:768px) {
+  .stats-grid { grid-template-columns:repeat(2,1fr); gap:30px; }
+}
+.stat-num {
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.6rem; font-weight:600;
+  color:var(--gold);
+  line-height:1;
+}
+.stat-label {
+  font-size:0.74rem;
+  color:var(--lav-light);
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  margin-top:10px;
+}
+
+/* === ESPECIALISTA · TRUST === */
+.especialista-section { background:var(--lav-bg); }
+.esp-grid {
+  display:grid; grid-template-columns:1fr 1.3fr; gap:60px;
+  align-items:center;
+}
+@media (max-width:900px) { .esp-grid { grid-template-columns:1fr; gap:40px; } }
+.esp-img {
+  aspect-ratio:1/1.15;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 20px 50px rgba(142,111,176,0.3);
+  background:linear-gradient(135deg, var(--lav-mid), var(--gold-soft));
+  position:relative;
+}
+.esp-img img {
+  width:100%; height:100%; object-fit:cover; display:block;
+}
+.esp-name {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.8rem; font-weight:600;
+  margin-bottom:8px;
+}
+.esp-title {
+  font-size:0.85rem;
+  color:var(--lav-deep);
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  margin-bottom:20px;
+  font-weight:600;
+}
+.esp-bio {
+  font-size:1rem; color:var(--grey);
+  line-height:1.75; margin-bottom:20px;
+}
+.esp-credentials {
+  display:grid; grid-template-columns:repeat(2,1fr); gap:20px;
+  margin-top:30px;
+  padding-top:30px;
+  border-top:1px solid var(--lav-mid);
+}
+.cred-num {
+  font-family:'Cormorant Garamond',serif;
+  font-size:2rem; font-weight:600;
+  color:var(--lav-deep);
+  line-height:1;
+}
+.cred-label {
+  font-size:0.78rem; color:var(--grey);
+  margin-top:6px;
+}
+
+/* === PACKS === */
+.section {
+  padding:100px 5vw;
+}
+.section-inner {
+  max-width:1200px; margin:0 auto;
+}
+.section-eyebrow {
+  display:inline-block;
+  font-size:0.72rem; font-weight:600;
+  color:var(--lav-deep);
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  margin-bottom:14px;
+}
+.section-h {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem, 3.5vw, 3rem);
+  font-weight:600; line-height:1.15;
+  margin-bottom:18px;
+  color:var(--black);
+}
+.section-h em { color:var(--lav-deep); font-style:italic; }
+.section-desc {
+  font-size:1rem; color:var(--grey);
+  max-width:580px; margin-bottom:50px;
+}
+
+.packs-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:24px;
+}
+@media (max-width:900px) { .packs-grid { grid-template-columns:1fr; max-width:480px; margin:0 auto; } }
+.pack {
+  background:var(--white);
+  border:1.5px solid var(--lav-light);
+  border-radius:20px;
+  padding:36px 28px;
+  position:relative;
+  transition:transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+.pack:hover {
+  transform:translateY(-6px);
+  box-shadow:0 20px 60px rgba(142,111,176,0.18);
+  border-color:var(--lav-mid);
+}
+.pack.featured {
+  background:linear-gradient(180deg, var(--lav-bg), var(--white));
+  border-color:var(--lav-deep);
+  border-width:2px;
+  transform:scale(1.04);
+}
+.pack.featured::before {
+  content:'⭐ MÁS POPULAR';
+  position:absolute; top:-12px; left:50%;
+  transform:translateX(-50%);
+  background:var(--lav-deep); color:var(--white);
+  padding:5px 16px; border-radius:100px;
+  font-size:0.68rem; font-weight:700;
+  letter-spacing:0.12em;
+}
+.pack-name {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.5rem; font-weight:600;
+  margin-bottom:6px;
+}
+.pack-tagline {
+  font-size:0.78rem;
+  color:var(--grey-soft);
+  text-transform:uppercase; letter-spacing:0.1em;
+  margin-bottom:24px;
+}
+.pack-price {
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.4rem; font-weight:600;
+  color:var(--black);
+  line-height:1;
+  margin-bottom:6px;
+}
+.pack-price-sub {
+  font-size:0.82rem; color:var(--grey-soft);
+  margin-bottom:24px;
+}
+.pack ul {
+  list-style:none;
+  margin-bottom:28px;
+}
+.pack ul li {
+  padding:10px 0;
+  font-size:0.9rem;
+  color:var(--grey);
+  border-bottom:1px solid rgba(0,0,0,0.05);
+  display:flex; align-items:start; gap:10px;
+}
+.pack ul li::before {
+  content:'✓';
+  color:var(--lav-deep);
+  font-weight:700;
+  flex-shrink:0;
+}
+.pack-cta {
+  display:block;
+  text-align:center;
+  padding:14px 24px;
+  background:var(--white);
+  color:var(--black);
+  border:1.5px solid var(--black);
+  border-radius:100px;
+  text-decoration:none;
+  font-weight:600; font-size:0.85rem;
+  transition:background 0.25s, color 0.25s;
+}
+.pack-cta:hover { background:var(--black); color:var(--white); }
+.pack.featured .pack-cta {
+  background:var(--lav-deep); color:var(--white); border-color:var(--lav-deep);
+}
+.pack.featured .pack-cta:hover { background:var(--black); border-color:var(--black); }
+
+/* === GALERÍA TRATAMIENTOS === */
+.galeria-section {
+  background:linear-gradient(180deg, var(--white) 0%, var(--lav-bg) 100%);
+}
+.galeria-grid {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:18px;
+}
+@media (max-width:900px) { .galeria-grid { grid-template-columns:repeat(2,1fr); } }
+.gal-card {
+  position:relative;
+  aspect-ratio:1/1.2;
+  border-radius:18px;
+  overflow:hidden;
+  background:var(--lav-light);
+  cursor:pointer;
+  transition:transform 0.3s, box-shadow 0.3s;
+  display:block;
+  text-decoration:none;
+}
+.gal-card:hover { transform:translateY(-4px); box-shadow:0 20px 50px rgba(0,0,0,0.15); }
+.gal-card img {
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit:cover;
+  transition:transform 0.6s;
+}
+.gal-card:hover img { transform:scale(1.08); }
+.gal-card-body {
+  position:absolute; bottom:0; left:0; right:0;
+  padding:18px 16px;
+  background:linear-gradient(180deg, transparent, rgba(0,0,0,0.78));
+  color:var(--white);
+}
+.gal-card-title {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.15rem; font-weight:600;
+  line-height:1.2; margin-bottom:4px;
+}
+.gal-card-cta {
+  font-size:0.74rem; opacity:0.9;
+  letter-spacing:0.08em; text-transform:uppercase;
+}
+
+/* === ANTES/DESPUÉS === */
+.antesdespues-section { background:var(--lav-bg); }
+.bd-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:24px;
+}
+@media (max-width:900px) { .bd-grid { grid-template-columns:1fr; max-width:480px; margin:0 auto; } }
+.bd-card {
+  background:var(--white);
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,0.06);
+  transition:transform 0.3s, box-shadow 0.3s;
+}
+.bd-card:hover { transform:translateY(-6px); box-shadow:0 20px 50px rgba(0,0,0,0.12); }
+.bd-img {
+  height:280px;
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(135deg, var(--lav-mid), var(--gold-soft));
+}
+.bd-img img {
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit:cover;
+  z-index:0;
+}
+.bd-img .tag-before, .bd-img .tag-after {
+  position:absolute; top:14px;
+  font-size:0.66rem; font-weight:700;
+  padding:5px 10px; border-radius:4px;
+  letter-spacing:0.1em;
+  z-index:3;
+}
+.bd-img .tag-before { left:14px; background:rgba(0,0,0,0.65); color:var(--white); }
+.bd-img .tag-after { right:14px; background:var(--gold); color:var(--black); }
+.bd-img .overlay-grad {
+  position:absolute; inset:0; z-index:1;
+  background:linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.65));
+}
+.bd-img-label {
+  position:absolute; bottom:20px; left:20px; z-index:2;
+  color:var(--white);
+  font-family:'Cormorant Garamond',serif;
+  font-size:1rem; font-style:italic;
+  text-shadow:0 2px 6px rgba(0,0,0,0.4);
+}
+.bd-card-body { padding:22px 24px; }
+.bd-card-name {
+  font-weight:700; font-size:0.95rem;
+  margin-bottom:4px;
+}
+.bd-card-info {
+  font-size:0.82rem; color:var(--grey-soft);
+}
+
+.demo-note {
+  margin-top:30px;
+  padding:14px 20px;
+  background:var(--white);
+  border-left:3px solid var(--gold);
+  border-radius:6px;
+  font-size:0.82rem; color:var(--grey);
+  font-style:italic;
+}
+
+/* === PROCESO === */
+.proceso-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:30px;
+}
+@media (max-width:900px) { .proceso-grid { grid-template-columns:1fr; max-width:520px; margin:0 auto; } }
+.paso {
+  text-align:center;
+  padding:30px 24px;
+}
+.paso-num {
+  font-family:'Cormorant Garamond',serif;
+  font-size:3.5rem; font-weight:600;
+  color:var(--lav-mid);
+  line-height:1; display:block;
+  margin-bottom:14px;
+}
+.paso h3 {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.4rem; font-weight:600;
+  margin-bottom:10px;
+}
+.paso p {
+  font-size:0.9rem; color:var(--grey);
+  line-height:1.6;
+}
+
+/* === FAQ === */
+.faq-section { background:var(--lav-bg); }
+.faq-list { max-width:760px; margin:0 auto; }
+details.faq {
+  background:var(--white);
+  border-radius:14px;
+  margin-bottom:12px;
+  overflow:hidden;
+  border:1px solid transparent;
+  transition:border-color 0.25s;
+}
+details.faq[open] { border-color:var(--lav-mid); }
+details.faq summary {
+  padding:22px 26px;
+  cursor:pointer;
+  font-weight:600;
+  display:flex; justify-content:space-between; align-items:center;
+  list-style:none;
+}
+details.faq summary::-webkit-details-marker { display:none; }
+details.faq summary::after {
+  content:'+';
+  font-size:1.4rem; color:var(--lav-deep);
+  transition:transform 0.3s;
+}
+details.faq[open] summary::after { transform:rotate(45deg); }
+details.faq .faq-body {
+  padding:0 26px 22px;
+  color:var(--grey);
+  font-size:0.92rem; line-height:1.7;
+}
+
+/* === CTA FINAL === */
+.cta-final {
+  padding:100px 5vw;
+  background:var(--black);
+  color:var(--white);
+  text-align:center;
+}
+.cta-final h2 {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem, 4vw, 3.4rem);
+  font-weight:600; line-height:1.15;
+  margin-bottom:18px;
+}
+.cta-final h2 em {
+  color:var(--gold);
+  font-style:italic;
+}
+.cta-final p {
+  font-size:1.05rem; color:var(--lav-light);
+  max-width:520px; margin:0 auto 36px;
+}
+.cta-final-actions { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+.cta-final .btn-primary { background:var(--gold); color:var(--black); }
+.cta-final .btn-primary:hover { background:var(--white); }
+.cta-final .btn-ghost { color:var(--white); border-color:var(--white); }
+.cta-final .btn-ghost:hover { background:var(--white); color:var(--black); }
+
+/* === FOOTER === */
+footer {
+  padding:50px 5vw 30px;
+  background:var(--black);
+  color:var(--lav-light);
+  text-align:center;
+  border-top:1px solid rgba(255,255,255,0.08);
+}
+footer .footer-addr {
+  font-size:0.85rem;
+  margin-bottom:14px;
+  color:var(--white);
+}
+footer .footer-copy {
+  font-size:0.75rem;
+  color:var(--grey-soft);
+}
+
+/* === STICKY WhatsApp === */
+.wa-sticky {
+  position:fixed;
+  bottom:24px; right:24px;
+  z-index:90;
+  width:60px; height:60px;
+  background:#25D366;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 14px 32px rgba(37,211,102,0.45);
+  text-decoration:none;
+  transition:transform 0.25s;
+  animation:pulseWa 2.4s ease-in-out infinite;
+}
+.wa-sticky:hover { transform:scale(1.08); }
+.wa-sticky svg { width:30px; height:30px; fill:var(--white); }
+@keyframes pulseWa {
+  0%, 100% { box-shadow:0 14px 32px rgba(37,211,102,0.45), 0 0 0 0 rgba(37,211,102,0.6); }
+  60% { box-shadow:0 14px 32px rgba(37,211,102,0.45), 0 0 0 16px rgba(37,211,102,0); }
+}
+
+/* === DEMO BADGE === */
+.demo-badge {
+  position:fixed;
+  top:80px; left:50%;
+  transform:translateX(-50%);
+  background:linear-gradient(135deg, var(--gold), var(--lav-deep));
+  color:var(--white);
+  padding:10px 20px;
+  border-radius:100px;
+  font-size:0.78rem; font-weight:700;
+  letter-spacing:0.05em;
+  z-index:50;
+  box-shadow:0 8px 24px rgba(0,0,0,0.18);
+  text-align:center;
+}
+.demo-badge a { color:var(--white); text-decoration:underline; font-weight:600; }
+@media (max-width:600px) {
+  .demo-badge { top:70px; font-size:0.7rem; padding:8px 14px; }
+}
+
+/* Reveal animation */
+.reveal { opacity:0; transform:translateY(28px); transition:opacity 0.7s, transform 0.7s; }
+.reveal.up { opacity:1; transform:none; }
+</style>
+</head>
+<body>
+
+<!-- DEMO BADGE -->
+<div class="demo-badge">
+  ✨ Demo Lifting · preparada por <a href="https://sorabyte.es" target="_blank">Sorabyte</a>
+</div>
+
+<!-- NAV -->
+<header>
+  <a href="#" class="logo">
+    <img src="https://dermativa.es/wp-content/uploads/2019/04/Logo-derma.png" alt="Dermativa">
+  </a>
+  <nav>
+    <a href="#especialista">Especialista</a>
+    <a href="#tratamientos">Tratamientos</a>
+    <a href="#resultados">Resultados</a>
+    <a href="#faq">Preguntas</a>
+    <a href="https://wa.me/34971735833?text=Hola%2C%20vengo%20de%20la%20web.%20Me%20interesa%20reservar%20una%20valoraci%C3%B3n" target="_blank" class="nav-cta">Reservar</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Palma · Junto Clínica Juaneda
+      </div>
+      <h1>Tu piel, en manos <em>especializadas.</em></h1>
+      <p class="hero-sub">Más de 1.300 pacientes confiaron en Thais González. Depilación láser, rejuvenecimiento facial e INDIBA con tecnología certificada. Valoración gratuita.</p>
+      <div class="hero-actions">
+        <a href="https://wa.me/34971735833?text=Hola%2C%20vengo%20de%20la%20web.%20Quiero%20reservar%20mi%20valoraci%C3%B3n%20gratuita" target="_blank" class="btn-primary">Reservar valoración →</a>
+        <a href="#tratamientos" class="btn-ghost">Ver tratamientos</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <span class="hero-visual-badge">Especialista en láser</span>
+      <img src="https://dermativa.es/wp-content/uploads/2019/04/tratamientos-dermativa-47.jpg" alt="Tratamiento Dermativa">
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-grid">
+    <div>
+      <div class="stat-num">+1.300</div>
+      <div class="stat-label">Pacientes en Palma</div>
+    </div>
+    <div>
+      <div class="stat-num">+10</div>
+      <div class="stat-label">Años de experiencia</div>
+    </div>
+    <div>
+      <div class="stat-num">8</div>
+      <div class="stat-label">Tratamientos certificados</div>
+    </div>
+    <div>
+      <div class="stat-num">5★</div>
+      <div class="stat-label">Especialista Thais González</div>
+    </div>
+  </div>
+</div>
+
+<!-- ESPECIALISTA -->
+<section class="section especialista-section" id="especialista">
+  <div class="section-inner">
+    <div class="esp-grid">
+      <div class="esp-img reveal">
+        <img src="https://dermativa.es/wp-content/uploads/2019/04/tratamientos-dermativa-44.jpg" alt="Thais González · Especialista">
+      </div>
+      <div class="reveal">
+        <span class="section-eyebrow">La especialista</span>
+        <div class="esp-name">Thais <em style="color:var(--lav-deep); font-style:italic;">González</em></div>
+        <div class="esp-title">Maestría en Láser y Luz Pulsada</div>
+        <p class="esp-bio">Más de una década formando a otros profesionales y atendiendo pacientes en Palma. Cada tratamiento se planifica desde una valoración personal, no un protocolo genérico. Tu piel no es un número: es lo que vamos a cuidar paso a paso.</p>
+        <p class="esp-bio">Tecnología certificada de equipos profesionales (Alma Lasers y otros). Sin promesas exageradas, sin tratamientos que no funcionen contigo.</p>
+
+        <div class="esp-credentials">
+          <div>
+            <div class="cred-num">10+</div>
+            <div class="cred-label">Años en el sector</div>
+          </div>
+          <div>
+            <div class="cred-num">Máster</div>
+            <div class="cred-label">Láser & Luz Pulsada</div>
+          </div>
+          <div>
+            <div class="cred-num">1.300+</div>
+            <div class="cred-label">Pacientes atendidos</div>
+          </div>
+          <div>
+            <div class="cred-num">Alma</div>
+            <div class="cred-label">Lasers certificados</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PACKS -->
+<section class="section" id="tratamientos">
+  <div class="section-inner">
+    <span class="section-eyebrow">Empieza por aquí</span>
+    <h2 class="section-h">Tres formas de <em>empezar.</em></h2>
+    <p class="section-desc">Valoración personal antes de cualquier compromiso. Plan ajustado a tu piel, no a un protocolo genérico.</p>
+
+    <div class="packs-grid">
+      <div class="pack reveal">
+        <div class="pack-name">Sesión Suelta</div>
+        <div class="pack-tagline">Probar sin compromiso</div>
+        <div class="pack-price">desde 35€</div>
+        <div class="pack-price-sub">según tratamiento · sin paquete</div>
+        <ul>
+          <li>1 sesión a elegir entre los 8 tratamientos</li>
+          <li>Valoración de tu piel incluida</li>
+          <li>Plan personalizado sin compromiso</li>
+        </ul>
+        <a href="https://wa.me/34971735833?text=Hola%2C%20vengo%20de%20la%20web.%20Quiero%20una%20sesi%C3%B3n%20suelta" target="_blank" class="pack-cta">Reservar sesión</a>
+      </div>
+
+      <div class="pack featured reveal">
+        <div class="pack-name">Bono Láser 6 sesiones</div>
+        <div class="pack-tagline">Depilación definitiva</div>
+        <div class="pack-price">desde 290€</div>
+        <div class="pack-price-sub">por zona · ahorro vs sesión suelta</div>
+        <ul>
+          <li>6 sesiones depilación láser zona elegida</li>
+          <li>Pauta de fototipo personalizada</li>
+          <li>Seguimiento sesión a sesión</li>
+          <li>Mantenimiento incluido a los 6 meses</li>
+          <li>Asesora personal por WhatsApp</li>
+        </ul>
+        <a href="https://wa.me/34971735833?text=Hola%2C%20vengo%20de%20la%20web.%20Me%20interesa%20el%20Bono%20L%C3%A1ser%206%20sesiones" target="_blank" class="pack-cta">Empezar mi bono</a>
+      </div>
+
+      <div class="pack reveal">
+        <div class="pack-name">Programa Rejuvenecimiento</div>
+        <div class="pack-tagline">Cambio integral</div>
+        <div class="pack-price">consultar</div>
+        <div class="pack-price-sub">plan combinado a medida</div>
+        <ul>
+          <li>Fotorejuvenecimiento + INDIBA + Higiene profunda</li>
+          <li>Plan integral 3 meses</li>
+          <li>Revisión mensual con fotos comparativas</li>
+          <li>Plan de mantenimiento post-tratamiento</li>
+          <li>Acceso prioritario a citas</li>
+        </ul>
+        <a href="https://wa.me/34971735833?text=Hola%2C%20vengo%20de%20la%20web.%20Me%20interesa%20el%20Programa%20Rejuvenecimiento" target="_blank" class="pack-cta">Solicitar programa</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERÍA TRATAMIENTOS -->
+<section class="section galeria-section">
+  <div class="section-inner">
+    <span class="section-eyebrow">Catálogo</span>
+    <h2 class="section-h">Tratamientos <em>destacados.</em></h2>
+    <p class="section-desc">Cada uno con su propia tecnología y protocolo. Pregunta el que te interese.</p>
+
+    <div class="galeria-grid">
+      <a href="https://wa.me/34971735833?text=Hola%2C%20vengo%20de%20la%20web.%20Me%20interesa%20Depilaci%C3%B3n%20L%C3%A1ser" target="_blank" class="gal-card reveal">
+        <img src="https://dermativa.es/wp-content/uploads/2019/04/tratamientos-dermativa-47.jpg" alt="Depilación Láser">
+        <div class="gal-card-body">
+          <div class="gal-card-title">Depilación Láser</div>
+          <div class="gal-card-cta">Reservar valoración →</div>
+        </div>
+      </a>
+      <a href="https://wa.me/34971735833?text=Hola%2C%20vengo%20de%20la%20web.%20Me%20interesa%20Rejuvenecimiento%20Facial" target="_blank" class="gal-card reveal">
+        <img src="https://dermativa.es/wp-content/uploads/2019/04/tratamientos-dermativa-37.jpg" alt="Rejuvenecimiento Facial">
+        <div class="gal-card-body">
+          <div class="gal-card-title">Rejuvenecimiento Facial</div>
+          <div class="gal-card-cta">Reservar valoración →</div>
+        </div>
+      </a>
+      <a href="https://wa.me/34971735833?text=Hola%2C%20vengo%20de%20la%20web.%20Me%20interesa%20INDIBA" target="_blank" class="gal-card reveal">
+        <img src="https://dermativa.es/wp-content/uploads/2019/04/tratamientos-dermativa-44.jpg" alt="INDIBA">
+        <div class="gal-card-body">
+          <div class="gal-card-title">Radiofrecuencia INDIBA</div>
+          <div class="gal-card-cta">Reservar valoración →</div>
+        </div>
+      </a>
+      <a href="https://wa.me/34971735833?text=Hola%2C%20vengo%20de%20la%20web.%20Me%20interesa%20Eliminaci%C3%B3n%20de%20Manchas" target="_blank" class="gal-card reveal">
+        <img src="https://dermativa.es/wp-content/uploads/2019/04/tratamientos-dermativa-43.jpg" alt="Eliminación de Manchas">
+        <div class="gal-card-body">
+          <div class="gal-card-title">Eliminación de Manchas</div>
+          <div class="gal-card-cta">Reservar valoración →</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ANTES / DESPUÉS -->
+<section class="section antesdespues-section" id="resultados">
+  <div class="section-inner">
+    <span class="section-eyebrow">Resultados reales</span>
+    <h2 class="section-h">Antes y <em>después.</em></h2>
+    <p class="section-desc">Casos documentados sesión a sesión. Cada piel es única, los protocolos también.</p>
+
+    <div class="bd-grid">
+      <div class="bd-card reveal">
+        <div class="bd-img">
+          <img src="https://dermativa.es/wp-content/uploads/2019/04/tratamientos-dermativa-47.jpg" alt="Depilación láser piernas">
+          <div class="overlay-grad"></div>
+          <span class="tag-before">ANTES</span>
+          <span class="tag-after">DESPUÉS</span>
+          <div class="bd-img-label">Depilación piernas</div>
+        </div>
+        <div class="bd-card-body">
+          <div class="bd-card-name">María, 28 años</div>
+          <div class="bd-card-info">6 sesiones láser · 8 meses</div>
+        </div>
+      </div>
+      <div class="bd-card reveal">
+        <div class="bd-img">
+          <img src="https://dermativa.es/wp-content/uploads/2019/04/tratamientos-dermativa-37.jpg" alt="Rejuvenecimiento facial">
+          <div class="overlay-grad"></div>
+          <span class="tag-before">ANTES</span>
+          <span class="tag-after">DESPUÉS</span>
+          <div class="bd-img-label">Rejuvenecimiento facial</div>
+        </div>
+        <div class="bd-card-body">
+          <div class="bd-card-name">Carmen, 45 años</div>
+          <div class="bd-card-info">5 sesiones IPL · 10 semanas</div>
+        </div>
+      </div>
+      <div class="bd-card reveal">
+        <div class="bd-img">
+          <img src="https://dermativa.es/wp-content/uploads/2019/04/tratamientos-dermativa-43.jpg" alt="Eliminación manchas">
+          <div class="overlay-grad"></div>
+          <span class="tag-before">ANTES</span>
+          <span class="tag-after">DESPUÉS</span>
+          <div class="bd-img-label">Manchas solares</div>
+        </div>
+        <div class="bd-card-body">
+          <div class="bd-card-name">Pilar, 52 años</div>
+          <div class="bd-card-info">3 sesiones · 6 semanas</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="demo-note">📷 En la web final: vuestras fotos reales de antes/después con autorización de pacientes. Aquí se ve cómo quedaría el bloque visualmente.</p>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section class="section">
+  <div class="section-inner">
+    <span class="section-eyebrow">Cómo trabajamos</span>
+    <h2 class="section-h">3 pasos. <em>Cero presión.</em></h2>
+
+    <div class="proceso-grid">
+      <div class="paso reveal">
+        <span class="paso-num">01</span>
+        <h3>Valoración gratuita</h3>
+        <p>15-20 minutos. Vienes al centro, evaluamos tu piel y te explicamos qué tratamiento te encaja. Sin compromiso.</p>
+      </div>
+      <div class="paso reveal">
+        <span class="paso-num">02</span>
+        <h3>Plan a tu medida</h3>
+        <p>Diseñamos tu plan según fototipo, objetivos y tu agenda. Tú decides si empezamos hoy o más adelante.</p>
+      </div>
+      <div class="paso reveal">
+        <span class="paso-num">03</span>
+        <h3>Seguimiento real</h3>
+        <p>Fotos sesión a sesión. Si algo no avanza como esperamos, lo ajustamos. No te dejamos sola en el camino.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section faq-section" id="faq">
+  <div class="section-inner">
+    <span class="section-eyebrow">Preguntas frecuentes</span>
+    <h2 class="section-h">Lo que <em>todas</em> preguntan.</h2>
+
+    <div class="faq-list" style="margin-top:50px;">
+      <details class="faq">
+        <summary>¿Cuántas sesiones necesito para depilación láser?</summary>
+        <div class="faq-body">Depende de tu fototipo y zona, pero la media es 6-8 sesiones para resultado pleno. En la valoración te decimos un número aproximado según tu caso. Las sesiones se espacian 4-8 semanas para respetar el ciclo del vello.</div>
+      </details>
+      <details class="faq">
+        <summary>¿Duele? ¿Hay efectos secundarios?</summary>
+        <div class="faq-body">El láser produce sensación de calor o pinchazo leve, no dolor agudo. Algunos pacientes notan rojez 1-2 horas tras la sesión. No tiene baja: puedes volver a tu actividad normal al salir.</div>
+      </details>
+      <details class="faq">
+        <summary>¿Funciona con vello rubio o canoso?</summary>
+        <div class="faq-body">El láser actúa sobre la melanina del vello, por lo que en vello muy claro o canoso la eficacia es menor. En la valoración te lo decimos honestamente: si no funciona contigo, te lo decimos antes de cobrarte.</div>
+      </details>
+      <details class="faq">
+        <summary>¿Puedo combinar varios tratamientos?</summary>
+        <div class="faq-body">Sí, de hecho lo recomendamos. Ej: depilación láser + rejuvenecimiento facial en sesiones espaciadas, o INDIBA tras una limpieza profunda. Lo planificamos juntos en la valoración.</div>
+      </details>
+      <details class="faq">
+        <summary>¿Tenéis financiación?</summary>
+        <div class="faq-body">Sí. Los bonos de 6+ sesiones se pueden pagar en 2 o 3 cuotas sin intereses por Bizum o transferencia. Te lo explicamos en la valoración.</div>
+      </details>
+      <details class="faq">
+        <summary>¿Cómo reservo?</summary>
+        <div class="faq-body">Por WhatsApp en 2 minutos al 971 73 58 33: te enviamos huecos disponibles y eliges. También puedes llamar en horario L-V 9:30-21h o sábado 10-15h.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <h2>¿Lista para empezar <em>tu plan?</em></h2>
+  <p>Valoración gratuita con Thais. 15 minutos. Sin compromiso. Sin presión.</p>
+  <div class="cta-final-actions">
+    <a href="https://wa.me/34971735833?text=Hola%2C%20vengo%20de%20la%20web.%20Quiero%20reservar%20mi%20valoraci%C3%B3n%20gratuita" target="_blank" class="btn-primary">Reservar valoración gratis</a>
+    <a href="tel:+34971735833" class="btn-ghost">Llamar ahora</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-addr">Dermativa · Avinguda de Picasso, 56 · 07014 Palma de Mallorca (junto Clínica Juaneda)</div>
+  <div class="footer-addr">L-V 9:30-21h · Sáb 10-15h · 971 73 58 33 · info@dermativa.es</div>
+  <div class="footer-copy">© 2026 Dermativa · Demo Lifting preparada por Sorabyte</div>
+</footer>
+
+<!-- Sticky WhatsApp -->
+<a href="https://wa.me/34971735833?text=Hola%2C%20vengo%20de%20la%20web.%20Me%20interesa%20reservar" target="_blank" class="wa-sticky" aria-label="WhatsApp directo">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('up'); io.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nordic Touch · Demo Sorabyte</title>
+<meta name="description" content="Centro de estética avanzada en Palma. LPG, Genesis, m.pen, Cosmelan. 5.0★ en Booksy con 48 reseñas verificadas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* === NORDIC TOUCH · paleta minimal nórdica === */
+:root {
+  --ink:     #1A1816;
+  --paper:   #F8F5F0;
+  --ivory:   #EFEAE0;
+  --warm:    #E2D5C2;
+  --grey-1:  #595149;
+  --grey-2:  #908779;
+  --line:    #DDD5C7;
+  --gold:    #A38249;
+  --gold-s:  #C7A56C;
+  --terra:   #8B6F4F;
+}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body {
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img { display:block; max-width:100%; }
+a { text-decoration:none; color:inherit; }
+
+/* === NAV === */
+header {
+  position:fixed; top:0; left:0; right:0;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 32px;
+  z-index:100;
+  background:rgba(248,245,240,0.92);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(0,0,0,0.04);
+}
+.brand {
+  display:flex; align-items:center; gap:14px;
+}
+.brand img {
+  height:42px; width:auto;
+  border-radius:50%;
+  background:#fff;
+}
+.brand-name {
+  font-family:'Newsreader',serif;
+  font-size:1.35rem;
+  font-weight:500;
+  letter-spacing:0.01em;
+}
+.brand-name em { font-style:italic; color:var(--gold); }
+nav.menu { display:flex; gap:30px; align-items:center; }
+nav.menu a {
+  font-size:0.78rem; font-weight:500;
+  color:var(--grey-1);
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+}
+nav.menu a:hover { color:var(--ink); }
+nav.menu .reserve {
+  background:var(--ink); color:var(--paper);
+  padding:11px 22px;
+  letter-spacing:0.08em;
+}
+nav.menu .reserve:hover { background:var(--gold); }
+@media (max-width:768px) {
+  header { padding:14px 18px; }
+  nav.menu a:not(.reserve) { display:none; }
+  nav.menu .reserve { padding:9px 16px; font-size:0.72rem; }
+  .brand-name { display:none; }
+}
+
+/* === DEMO BADGE === */
+.demo-badge {
+  position:fixed;
+  top:76px; left:50%;
+  transform:translateX(-50%);
+  background:var(--ink); color:var(--paper);
+  padding:7px 16px;
+  font-size:0.66rem; font-weight:500;
+  letter-spacing:0.18em;
+  z-index:60;
+  text-transform:uppercase;
+}
+.demo-badge a { color:var(--gold-s); border-bottom:1px solid var(--gold-s); }
+@media (max-width:600px) { .demo-badge { font-size:0.58rem; padding:5px 10px; top:64px; } }
+
+/* === HERO Nordic minimal === */
+.hero {
+  position:relative;
+  min-height:100vh;
+  padding:130px 6vw 80px;
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:80px;
+  align-items:center;
+  background:
+    radial-gradient(circle at 80% 20%, var(--warm) 0%, transparent 40%),
+    linear-gradient(180deg, var(--paper) 0%, var(--ivory) 100%);
+  overflow:hidden;
+}
+@media (max-width:1000px) { .hero { grid-template-columns:1fr; gap:50px; min-height:auto; } }
+.hero-text { position:relative; z-index:2; }
+.hero-eyebrow {
+  display:inline-flex; align-items:center; gap:14px;
+  font-size:0.72rem; font-weight:500;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:var(--grey-1);
+  margin-bottom:30px;
+}
+.hero-eyebrow::before {
+  content:''; width:40px; height:1px;
+  background:var(--grey-1);
+}
+.hero h1 {
+  font-family:'Newsreader',serif;
+  font-size:clamp(2.8rem, 6.8vw, 6rem);
+  font-weight:500; line-height:0.97;
+  letter-spacing:-0.025em;
+  margin-bottom:30px;
+  color:var(--ink);
+}
+.hero h1 .it {
+  font-style:italic;
+  color:var(--gold);
+  font-weight:400;
+}
+.hero-lead {
+  font-size:1.1rem;
+  color:var(--grey-1);
+  line-height:1.7;
+  margin-bottom:40px;
+  max-width:480px;
+}
+.hero-actions { display:flex; gap:14px; flex-wrap:wrap; }
+.btn-fill {
+  display:inline-flex; align-items:center; gap:12px;
+  background:var(--ink); color:var(--paper);
+  padding:16px 28px;
+  font-size:0.9rem; font-weight:600;
+  letter-spacing:0.04em;
+  transition:background 0.3s, gap 0.3s, transform 0.3s;
+}
+.btn-fill:hover { background:var(--gold); gap:18px; transform:translateY(-2px); }
+.btn-fill .arr { font-family:'Newsreader',serif; font-size:1.2rem; }
+.btn-ghost {
+  display:inline-flex; align-items:center; gap:10px;
+  padding:16px 24px;
+  border:1.5px solid var(--ink);
+  font-size:0.9rem; font-weight:600;
+  letter-spacing:0.04em;
+  transition:background 0.3s, color 0.3s;
+}
+.btn-ghost:hover { background:var(--ink); color:var(--paper); }
+
+/* Tarjeta Booksy en hero (su trust real) */
+.hero-card {
+  position:relative; z-index:2;
+  background:#fff;
+  border-radius:8px;
+  padding:36px 32px;
+  box-shadow:0 30px 70px rgba(26,24,22,0.12);
+  border:1px solid var(--line);
+}
+.hero-card-tag {
+  display:inline-block;
+  background:#0F3D29; color:#fff;
+  padding:5px 12px;
+  font-size:0.66rem; font-weight:700;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  margin-bottom:24px;
+  border-radius:4px;
+}
+.hero-card .rating {
+  display:flex; align-items:baseline; gap:14px;
+  margin-bottom:20px;
+}
+.hero-card .rating .num {
+  font-family:'Newsreader',serif;
+  font-size:4rem; font-weight:600;
+  line-height:1;
+  letter-spacing:-0.03em;
+}
+.hero-card .rating .stars {
+  font-size:1.4rem;
+  color:var(--gold);
+  letter-spacing:0.06em;
+}
+.hero-card .rating-meta {
+  font-size:0.82rem;
+  color:var(--grey-1);
+  margin-bottom:30px;
+}
+.hero-card-reviews { border-top:1px solid var(--line); padding-top:24px; }
+.hero-card-reviews .r {
+  padding:14px 0;
+  border-bottom:1px dashed var(--line);
+}
+.hero-card-reviews .r:last-child { border-bottom:none; }
+.hero-card-reviews .r-text {
+  font-family:'Newsreader',serif;
+  font-style:italic;
+  font-size:0.98rem;
+  line-height:1.45;
+  color:var(--ink);
+  margin-bottom:6px;
+}
+.hero-card-reviews .r-name {
+  font-size:0.72rem;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--grey-2);
+}
+.hero-card-reviews .r-name b { color:var(--gold); }
+
+/* === MARQUEE tecnologías === */
+.tech-marquee {
+  background:var(--ink);
+  color:var(--paper);
+  padding:28px 0;
+  overflow:hidden;
+}
+.tech-track {
+  display:flex; gap:80px; align-items:center;
+  white-space:nowrap;
+  animation:slide-x 26s linear infinite;
+}
+.tech-track span {
+  font-family:'Newsreader',serif;
+  font-style:italic;
+  font-size:1.4rem;
+  color:var(--gold-s);
+  letter-spacing:0.02em;
+}
+.tech-track .dot {
+  color:var(--paper); opacity:0.4;
+  font-style:normal;
+  align-self:center;
+  font-size:1rem;
+}
+@keyframes slide-x {
+  from { transform:translateX(0); }
+  to { transform:translateX(-50%); }
+}
+
+/* === SECTION === */
+.section { padding:120px 6vw; max-width:1280px; margin:0 auto; }
+.section-h {
+  font-family:'Newsreader',serif;
+  font-size:clamp(2.4rem, 5vw, 3.8rem);
+  font-weight:500; line-height:1;
+  letter-spacing:-0.02em;
+  margin-bottom:24px;
+}
+.section-h .it { font-style:italic; color:var(--gold); font-weight:400; }
+.eyebrow {
+  font-size:0.72rem;
+  letter-spacing:0.24em;
+  text-transform:uppercase;
+  color:var(--gold);
+  font-weight:700;
+  margin-bottom:18px;
+}
+
+/* === EQUIPO 3 specialistas === */
+.team {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:24px;
+}
+@media (max-width:768px) { .team { grid-template-columns:1fr; } }
+.team-card {
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:8px;
+  overflow:hidden;
+  transition:transform 0.3s, box-shadow 0.3s;
+}
+.team-card:hover {
+  transform:translateY(-5px);
+  box-shadow:0 20px 50px rgba(26,24,22,0.12);
+}
+.team-photo {
+  aspect-ratio:1/1;
+  background:linear-gradient(135deg, var(--warm), var(--ivory));
+  display:flex; align-items:center; justify-content:center;
+  position:relative;
+}
+.team-photo-initial {
+  font-family:'Newsreader',serif;
+  font-style:italic;
+  font-size:8rem;
+  font-weight:500;
+  color:rgba(163,130,73,0.4);
+}
+.team-photo .placeholder-note {
+  position:absolute;
+  bottom:14px; left:14px; right:14px;
+  font-size:0.66rem;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--grey-2);
+  font-weight:600;
+  text-align:center;
+}
+.team-body { padding:24px 22px; }
+.team-name {
+  font-family:'Newsreader',serif;
+  font-size:1.5rem; font-weight:600;
+  margin-bottom:4px;
+  letter-spacing:-0.01em;
+}
+.team-role {
+  font-size:0.72rem;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--gold);
+  font-weight:600;
+}
+
+/* === SERVICIOS · tabla limpia (no grid de cards) === */
+.svc-wrap { background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.svc-section { padding:120px 6vw; max-width:1280px; margin:0 auto; }
+.svc-table {
+  border-top:1px solid var(--line);
+  margin-top:30px;
+}
+.svc-row {
+  display:grid;
+  grid-template-columns:48px 1.6fr auto auto auto;
+  gap:30px;
+  padding:24px 0;
+  border-bottom:1px solid var(--line);
+  align-items:center;
+  cursor:pointer;
+  transition:padding-left 0.3s;
+}
+.svc-row:hover { padding-left:10px; }
+.svc-row .snum {
+  font-family:'Newsreader',serif;
+  font-style:italic;
+  font-size:1rem;
+  color:var(--grey-2);
+}
+.svc-row h3 {
+  font-family:'Newsreader',serif;
+  font-size:1.35rem;
+  font-weight:500;
+  letter-spacing:-0.01em;
+}
+.svc-row .sdur {
+  font-size:0.78rem;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--grey-2);
+  white-space:nowrap;
+}
+.svc-row .sprice {
+  font-family:'Newsreader',serif;
+  font-size:1.45rem;
+  font-weight:600;
+  color:var(--gold);
+  white-space:nowrap;
+}
+.svc-row .sarrow {
+  font-family:'Newsreader',serif;
+  font-size:1.4rem; font-style:italic;
+  color:var(--grey-2);
+  transition:color 0.3s, transform 0.3s;
+}
+.svc-row:hover .sarrow { color:var(--gold); transform:translateX(6px); }
+@media (max-width:768px) {
+  .svc-row { grid-template-columns:1fr auto; gap:8px 16px; }
+  .svc-row .snum { display:none; }
+  .svc-row h3 { grid-column:1; }
+  .svc-row .sprice { grid-column:2; grid-row:1; }
+  .svc-row .sdur { grid-column:1 / -1; font-size:0.7rem; }
+  .svc-row .sarrow { display:none; }
+}
+
+/* === CTA BOOKSY DESTACADO === */
+.cta-booksy {
+  background:var(--ink);
+  color:var(--paper);
+  padding:80px 6vw;
+  text-align:center;
+}
+.cta-booksy h2 {
+  font-family:'Newsreader',serif;
+  font-size:clamp(2rem, 4vw, 3rem);
+  font-weight:500; line-height:1.1;
+  letter-spacing:-0.02em;
+  margin-bottom:18px;
+}
+.cta-booksy h2 .it { font-style:italic; color:var(--gold-s); }
+.cta-booksy p {
+  font-size:1.05rem; color:rgba(248,245,240,0.75);
+  max-width:520px; margin:0 auto 32px;
+}
+.cta-booksy a {
+  display:inline-flex; align-items:center; gap:12px;
+  background:var(--gold); color:var(--ink);
+  padding:18px 32px;
+  font-weight:700; font-size:0.92rem;
+  letter-spacing:0.04em;
+  transition:background 0.3s, gap 0.3s;
+}
+.cta-booksy a:hover { background:var(--gold-s); gap:20px; }
+.cta-booksy a .arr { font-family:'Newsreader',serif; font-size:1.3rem; }
+.cta-booksy small {
+  display:block;
+  margin-top:18px;
+  font-size:0.74rem;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:rgba(248,245,240,0.5);
+}
+
+/* === RESEÑAS REALES === */
+.reviews-section { background:var(--ivory); padding:120px 6vw; }
+.reviews-inner { max-width:1280px; margin:0 auto; }
+.reviews-h { text-align:center; max-width:680px; margin:0 auto 70px; }
+.reviews-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:24px;
+}
+@media (max-width:900px) { .reviews-grid { grid-template-columns:1fr; max-width:480px; margin:0 auto; } }
+.review {
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:36px 30px;
+}
+.review .stars {
+  color:var(--gold);
+  font-size:1rem;
+  letter-spacing:0.1em;
+  margin-bottom:18px;
+}
+.review .text {
+  font-family:'Newsreader',serif;
+  font-style:italic;
+  font-size:1.1rem;
+  line-height:1.55;
+  color:var(--ink);
+  margin-bottom:24px;
+}
+.review .author {
+  font-size:0.78rem;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--grey-1);
+  font-weight:600;
+}
+.review .author b { color:var(--gold); }
+.reviews-cta {
+  text-align:center;
+  margin-top:50px;
+}
+.reviews-cta a {
+  font-size:0.84rem;
+  font-weight:600;
+  color:var(--ink);
+  border-bottom:1.5px solid var(--ink);
+  padding-bottom:4px;
+  transition:color 0.3s, border-color 0.3s;
+}
+.reviews-cta a:hover { color:var(--gold); border-color:var(--gold); }
+
+/* === CONTACT + MAPA === */
+.contact-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  min-height:560px;
+}
+@media (max-width:900px) { .contact-grid { grid-template-columns:1fr; } }
+.contact-info {
+  padding:90px 6vw;
+  background:var(--paper);
+  display:flex; flex-direction:column; justify-content:center;
+}
+.contact-info dl { margin:20px 0 36px; }
+.contact-info dl div {
+  display:grid;
+  grid-template-columns:130px 1fr;
+  gap:16px;
+  padding:14px 0;
+  border-bottom:1px solid var(--line);
+  align-items:start;
+}
+.contact-info dt {
+  font-size:0.72rem;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--grey-2);
+  font-weight:500;
+}
+.contact-info dd { font-size:0.96rem; color:var(--ink); }
+.contact-info dd a { border-bottom:1px solid var(--line); }
+.contact-info dd a:hover { border-color:var(--gold); }
+.contact-cta {
+  display:inline-flex; align-items:center; gap:14px;
+  background:var(--ink); color:var(--paper);
+  padding:18px 30px;
+  font-weight:600; font-size:0.9rem;
+  letter-spacing:0.04em;
+  transition:background 0.3s, gap 0.3s;
+  align-self:flex-start;
+}
+.contact-cta:hover { background:var(--gold); gap:22px; }
+.contact-cta .arr { font-family:'Newsreader',serif; font-size:1.3rem; }
+.map-side iframe {
+  width:100%; height:100%; min-height:480px; border:0;
+  filter:grayscale(0.3) contrast(1.05);
+}
+
+/* === FAQ === */
+.faq-zone { padding:120px 6vw; background:var(--paper); }
+.faq-inner {
+  max-width:920px; margin:0 auto;
+  display:grid; grid-template-columns:1fr 1.8fr;
+  gap:80px;
+  align-items:start;
+}
+@media (max-width:900px) { .faq-inner { grid-template-columns:1fr; gap:30px; } }
+details.q { border-bottom:1px solid var(--line); }
+details.q:first-of-type { border-top:1px solid var(--line); }
+details.q summary {
+  padding:24px 0;
+  cursor:pointer;
+  font-family:'Newsreader',serif;
+  font-size:1.3rem;
+  font-weight:500;
+  list-style:none;
+  display:flex; justify-content:space-between; align-items:center;
+  gap:20px;
+}
+details.q summary::-webkit-details-marker { display:none; }
+details.q summary::after {
+  content:'+';
+  font-family:'Inter',sans-serif;
+  font-size:1.3rem; font-weight:300;
+  color:var(--gold);
+  transition:transform 0.3s;
+}
+details.q[open] summary::after { transform:rotate(45deg); }
+details.q .a {
+  padding:0 0 24px;
+  color:var(--grey-1);
+  font-size:0.98rem;
+  line-height:1.75;
+}
+
+/* === FOOTER === */
+footer.foot {
+  background:var(--ink);
+  color:var(--paper);
+  padding:70px 6vw 36px;
+}
+.foot-inner {
+  max-width:1280px; margin:0 auto;
+  display:grid; grid-template-columns:2fr 1fr 1fr;
+  gap:50px;
+}
+@media (max-width:768px) { .foot-inner { grid-template-columns:1fr; gap:30px; } }
+.foot-brand .b {
+  font-family:'Newsreader',serif;
+  font-size:1.8rem; font-weight:600;
+  letter-spacing:0.02em;
+}
+.foot-brand .b em { font-style:italic; color:var(--gold-s); }
+.foot-brand p {
+  margin-top:14px;
+  font-size:0.88rem;
+  color:rgba(248,245,240,0.7);
+  max-width:340px;
+  line-height:1.6;
+}
+.foot-col h4 {
+  font-size:0.74rem; font-weight:600;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--gold-s);
+  margin-bottom:16px;
+}
+.foot-col p, .foot-col a {
+  font-size:0.88rem;
+  color:rgba(248,245,240,0.85);
+  display:block;
+  margin-bottom:6px;
+}
+.foot-col a:hover { color:var(--gold-s); }
+.foot-copy {
+  margin-top:50px;
+  padding-top:24px;
+  border-top:1px solid rgba(248,245,240,0.1);
+  font-size:0.72rem;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:rgba(248,245,240,0.5);
+  text-align:center;
+}
+
+/* Booksy sticky */
+.booksy-fab {
+  position:fixed;
+  bottom:24px; right:24px;
+  z-index:90;
+  background:var(--ink); color:var(--paper);
+  padding:16px 22px;
+  font-size:0.84rem; font-weight:600;
+  letter-spacing:0.04em;
+  box-shadow:0 14px 32px rgba(26,24,22,0.32);
+  transition:background 0.25s, transform 0.25s;
+  display:flex; align-items:center; gap:10px;
+}
+.booksy-fab:hover { background:var(--gold); transform:translateY(-2px); }
+.booksy-fab svg { width:18px; height:18px; fill:currentColor; }
+
+/* Reveal */
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.8s, transform 0.8s; }
+.reveal.up { opacity:1; transform:none; }
+</style>
+</head>
+<body>
+
+<div class="demo-badge">DEMO PERSONALIZADA · POR <a href="https://sorabyte.es" target="_blank">SORABYTE</a></div>
+
+<header>
+  <a href="#" class="brand">
+    <img src="https://d375139ucebi94.cloudfront.net/region2/es/160589/logo/d51e8f2687534615a55684fa1fe273-nordic-touch-logo-5699854a883449178ca2e9cd39ea36-booksy.jpeg" alt="Nordic Touch">
+    <span class="brand-name">Nordic <em>Touch</em></span>
+  </a>
+  <nav class="menu">
+    <a href="#equipo">El equipo</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#resenas">Reseñas</a>
+    <a href="#contacto">Contacto</a>
+    <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="reserve">Reservar</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-eyebrow">Estética avanzada · Palma de Mallorca</div>
+    <h1>Tu piel, <span class="it">tu plan,</span><br>nuestra técnica.</h1>
+    <p class="hero-lead">Centro de estética avanzada en Avd. Picasso. Tecnología profesional (LPG, Genesis, m.pen, Cosmelan) en manos de Elaine, Mónica y Débora. Reserva online en Booksy en 2 minutos.</p>
+    <div class="hero-actions">
+      <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="btn-fill">Reservar en Booksy <span class="arr">→</span></a>
+      <a href="#servicios" class="btn-ghost">Ver tratamientos</a>
+    </div>
+  </div>
+
+  <div class="hero-card reveal">
+    <span class="hero-card-tag">★ Booksy verificado</span>
+    <div class="rating">
+      <span class="num">5.0</span>
+      <span class="stars">★★★★★</span>
+    </div>
+    <div class="rating-meta"><b>48 reseñas reales</b> · 100% verificadas · Palma de Mallorca</div>
+    <div class="hero-card-reviews">
+      <div class="r">
+        <div class="r-text">"Son super profesionales y encantadoras. Las mejores con diferencia."</div>
+        <div class="r-name"><b>Nekane</b> · ★★★★★</div>
+      </div>
+      <div class="r">
+        <div class="r-text">"This is without a doubt one of my favourite spas on this island."</div>
+        <div class="r-name"><b>Cindy</b> · ★★★★★</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE tecnologías -->
+<section class="tech-marquee">
+  <div class="tech-track">
+    <span>LPG Endermologie</span><span class="dot">·</span>
+    <span>Genesis Skincare</span><span class="dot">·</span>
+    <span>m.pen Microneedling</span><span class="dot">·</span>
+    <span>Cosmelan Peeling</span><span class="dot">·</span>
+    <span>Maderoterapia</span><span class="dot">·</span>
+    <span>Age Element</span><span class="dot">·</span>
+    <span>LPG Endermologie</span><span class="dot">·</span>
+    <span>Genesis Skincare</span><span class="dot">·</span>
+    <span>m.pen Microneedling</span><span class="dot">·</span>
+    <span>Cosmelan Peeling</span><span class="dot">·</span>
+    <span>Maderoterapia</span><span class="dot">·</span>
+    <span>Age Element</span><span class="dot">·</span>
+  </div>
+</section>
+
+<!-- EQUIPO -->
+<section class="section" id="equipo">
+  <div style="max-width:720px; margin-bottom:60px;">
+    <div class="eyebrow">El equipo</div>
+    <h2 class="section-h">Tres manos, <span class="it">un mismo nivel.</span></h2>
+    <p style="color:var(--grey-1); font-size:1rem; line-height:1.7;">Cada especialista con su área de dominio. Cuando reservas, eliges con quién — o nos pides recomendación según tu caso.</p>
+  </div>
+
+  <div class="team">
+    <div class="team-card reveal">
+      <div class="team-photo">
+        <div class="team-photo-initial">E</div>
+        <div class="placeholder-note">(Foto del equipo en la web final)</div>
+      </div>
+      <div class="team-body">
+        <div class="team-name">Elaine</div>
+        <div class="team-role">Especialista facial</div>
+      </div>
+    </div>
+    <div class="team-card reveal">
+      <div class="team-photo">
+        <div class="team-photo-initial">M</div>
+        <div class="placeholder-note">(Foto del equipo en la web final)</div>
+      </div>
+      <div class="team-body">
+        <div class="team-name">Mónica</div>
+        <div class="team-role">Corporal & LPG</div>
+      </div>
+    </div>
+    <div class="team-card reveal">
+      <div class="team-photo">
+        <div class="team-photo-initial">D</div>
+        <div class="placeholder-note">(Foto del equipo en la web final)</div>
+      </div>
+      <div class="team-body">
+        <div class="team-name">Débora</div>
+        <div class="team-role">Microblading & cejas</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS · tabla limpia con PRECIOS REALES -->
+<div class="svc-wrap" id="servicios">
+  <section class="svc-section">
+    <div style="max-width:720px; margin-bottom:30px;">
+      <div class="eyebrow">Servicios y precios</div>
+      <h2 class="section-h">Sin sorpresas. <span class="it">Todo claro.</span></h2>
+      <p style="color:var(--grey-1); font-size:1rem; line-height:1.7;">Precios fijos. Duración real. Reserva cualquier servicio directamente en Booksy.</p>
+    </div>
+
+    <div class="svc-table">
+      <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="svc-row">
+        <div class="snum">01</div>
+        <h3>LPG Corporal</h3>
+        <div class="sdur">50 min</div>
+        <div class="sprice">70€</div>
+        <div class="sarrow">→</div>
+      </a>
+      <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="svc-row">
+        <div class="snum">02</div>
+        <h3>Higiene facial profunda</h3>
+        <div class="sdur">50 min</div>
+        <div class="sprice">60€</div>
+        <div class="sarrow">→</div>
+      </a>
+      <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="svc-row">
+        <div class="snum">03</div>
+        <h3>Age Element antiedad</h3>
+        <div class="sdur">50 min</div>
+        <div class="sprice">75€</div>
+        <div class="sarrow">→</div>
+      </a>
+      <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="svc-row">
+        <div class="snum">04</div>
+        <h3>Masaje facial</h3>
+        <div class="sdur">25 min</div>
+        <div class="sprice">38€</div>
+        <div class="sarrow">→</div>
+      </a>
+      <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="svc-row">
+        <div class="snum">05</div>
+        <h3>Microblading + retoque</h3>
+        <div class="sdur">90 min</div>
+        <div class="sprice">290€</div>
+        <div class="sarrow">→</div>
+      </a>
+      <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="svc-row">
+        <div class="snum">06</div>
+        <h3>Lifting pestañas + tinte</h3>
+        <div class="sdur">60 min</div>
+        <div class="sprice">49€</div>
+        <div class="sarrow">→</div>
+      </a>
+      <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="svc-row">
+        <div class="snum">07</div>
+        <h3>Pestañas clásicas</h3>
+        <div class="sdur">60 min</div>
+        <div class="sprice">70€</div>
+        <div class="sarrow">→</div>
+      </a>
+      <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="svc-row">
+        <div class="snum">08</div>
+        <h3>Depilación cejas</h3>
+        <div class="sdur">15 min</div>
+        <div class="sprice">8€</div>
+        <div class="sarrow">→</div>
+      </a>
+      <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="svc-row">
+        <div class="snum">09</div>
+        <h3>Masaje corporal</h3>
+        <div class="sdur">50 min</div>
+        <div class="sprice">65€</div>
+        <div class="sarrow">→</div>
+      </a>
+      <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="svc-row">
+        <div class="snum">10</div>
+        <h3>Maderoterapia</h3>
+        <div class="sdur">50 min</div>
+        <div class="sprice">65€</div>
+        <div class="sarrow">→</div>
+      </a>
+      <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="svc-row">
+        <div class="snum">11</div>
+        <h3>Pedicura SPA semipermanente</h3>
+        <div class="sdur">75 min</div>
+        <div class="sprice">45€</div>
+        <div class="sarrow">→</div>
+      </a>
+    </div>
+  </section>
+</div>
+
+<!-- CTA BOOKSY -->
+<section class="cta-booksy">
+  <h2>¿Lista para <span class="it">reservar?</span></h2>
+  <p>Cuadrante actualizado en directo. Eliges servicio, especialista y hora. Confirmación inmediata.</p>
+  <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank">
+    Abrir Booksy ahora <span class="arr">→</span>
+  </a>
+  <small>Reservas seguras · Cancelación gratuita hasta 24h antes</small>
+</section>
+
+<!-- RESEÑAS REALES -->
+<section class="reviews-section" id="resenas">
+  <div class="reviews-inner">
+    <div class="reviews-h">
+      <div class="eyebrow">Lo que dicen las clientas</div>
+      <h2 class="section-h">5.0 estrellas. <span class="it">48 reseñas reales.</span></h2>
+      <p style="color:var(--grey-1); font-size:1rem; line-height:1.7; margin-top:14px;">Todas verificadas por Booksy: solo escriben quienes vinieron de verdad.</p>
+    </div>
+
+    <div class="reviews-grid">
+      <div class="review reveal">
+        <div class="stars">★★★★★</div>
+        <div class="text">"Son super profesionales y encantadoras. Las mejores con diferencia."</div>
+        <div class="author"><b>Nekane</b> · Booksy verificado</div>
+      </div>
+      <div class="review reveal">
+        <div class="stars">★★★★★</div>
+        <div class="text">"This is without a doubt one of my favourite spas on this island."</div>
+        <div class="author"><b>Cindy</b> · Booksy verificado</div>
+      </div>
+      <div class="review reveal">
+        <div class="stars">★★★★★</div>
+        <div class="text">"Perfecto."</div>
+        <div class="author"><b>Silvia</b> · Booksy verificado</div>
+      </div>
+    </div>
+
+    <div class="reviews-cta">
+      <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank">Leer las 48 reseñas en Booksy →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO + MAPA -->
+<section id="contacto" class="contact-grid">
+  <div class="contact-info">
+    <div class="eyebrow">Visítanos</div>
+    <h2 class="section-h">Avd. Picasso 3,<br><span class="it">Palma.</span></h2>
+    <dl>
+      <div>
+        <dt>Dirección</dt>
+        <dd>Avinguda Picasso, 3<br>07014 Palma de Mallorca</dd>
+      </div>
+      <div>
+        <dt>Reservas</dt>
+        <dd><a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank">Booksy · 5.0★ (48 reseñas)</a></dd>
+      </div>
+      <div>
+        <dt>Teléfono</dt>
+        <dd>[tu teléfono de centro]</dd>
+      </div>
+      <div>
+        <dt>Email</dt>
+        <dd>[tu email de contacto]</dd>
+      </div>
+      <div>
+        <dt>Horario</dt>
+        <dd>[tu horario completo]</dd>
+      </div>
+    </dl>
+    <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="contact-cta">
+      Reservar en Booksy <span class="arr">→</span>
+    </a>
+  </div>
+  <div class="map-side">
+    <iframe src="https://maps.google.com/maps?q=Avinguda%20Picasso%203%20Palma&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-zone">
+  <div class="faq-inner">
+    <div>
+      <div class="eyebrow">Dudas frecuentes</div>
+      <h2 class="section-h">Lo que <span class="it">todas</span> preguntan.</h2>
+    </div>
+    <div>
+      <details class="q">
+        <summary>¿Qué es LPG Endermologie?</summary>
+        <div class="a">Tecnología francesa de masaje mecánico que reactiva el tejido en profundidad. Reduce volumen localizado, mejora circulación y firmeza. Indoloro, sin baja, resultado visible desde la 3ª-4ª sesión.</div>
+      </details>
+      <details class="q">
+        <summary>¿Cuántas sesiones para Cosmelan?</summary>
+        <div class="a">Una sesión inicial con seguimiento domiciliario controlado de 4-6 semanas. Indicado para manchas solares y melasma. Diagnóstico previo obligatorio: no todas las pieles responden igual.</div>
+      </details>
+      <details class="q">
+        <summary>¿Hacéis tratamientos médicos (Botox, ácido hialurónico)?</summary>
+        <div class="a">No. Somos centro de estética avanzada. Nuestros tratamientos son no invasivos: faciales, corporal, microblading, pestañas, peelings. Si buscas medicina estética inyectable, te derivamos a profesionales colegiados.</div>
+      </details>
+      <details class="q">
+        <summary>¿Puedo elegir especialista al reservar?</summary>
+        <div class="a">Sí. En Booksy ves los horarios de Elaine, Mónica y Débora. Si no estás segura, reserva valoración y te recomendamos la mejor según tu caso.</div>
+      </details>
+      <details class="q">
+        <summary>¿Aceptáis tarjeta? ¿Bizum?</summary>
+        <div class="a">Sí, ambas. También efectivo. Bonos completos se pueden fraccionar.</div>
+      </details>
+      <details class="q">
+        <summary>¿Política de cancelación?</summary>
+        <div class="a">Cancelación gratuita hasta 24 horas antes. Después se factura el 50% del servicio para respetar a las clientas en lista de espera.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <div class="foot-brand">
+      <div class="b">Nordic <em>Touch</em></div>
+      <p>Centro de estética avanzada en Palma de Mallorca. Tecnología profesional, atención personal. 5.0★ en Booksy.</p>
+    </div>
+    <div class="foot-col">
+      <h4>Visítanos</h4>
+      <p>Avinguda Picasso, 3<br>07014 Palma</p>
+    </div>
+    <div class="foot-col">
+      <h4>Reservas</h4>
+      <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank">Booksy · 5.0★</a>
+      <a href="#contacto">Cómo llegar</a>
+    </div>
+  </div>
+  <div class="foot-copy">© 2026 Nordic Touch · Demo preparada por Sorabyte</div>
+</footer>
+
+<a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="booksy-fab">
+  <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5zm-1 6h2v4h4v2h-4v4h-2v-4H7v-2h4V8z"/></svg>
+  Reservar en Booksy
+</a>
+
+<script>
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('up'); io.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

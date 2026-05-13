@@ -313,11 +313,64 @@ nav.menu .reserve:hover { background:var(--peach); }
   position:relative;
   max-width:1280px; margin:0 auto;
   padding:0 6vw 30px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:6px;
 }
-.ig-mosaic img {
-  width:100%; height:auto;
-  display:block;
+@media (max-width:600px) { .ig-mosaic { grid-template-columns:repeat(2,1fr); } }
+.ig-cell {
+  position:relative;
+  aspect-ratio:1/1;
+  background-image:url('assets/ig-grid.png');
+  background-size:300% auto;
+  background-repeat:no-repeat;
+  overflow:hidden;
+  cursor:pointer;
+  transition:transform 0.4s, filter 0.4s;
 }
+.ig-cell:hover { transform:scale(1.02); filter:brightness(1.05) saturate(1.1); }
+.ig-cell::after {
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.55));
+  opacity:0;
+  transition:opacity 0.3s;
+}
+.ig-cell:hover::after { opacity:1; }
+.ig-cell .ig-cell-tag {
+  position:absolute;
+  bottom:14px; left:14px; right:14px;
+  z-index:2;
+  color:#fff;
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-size:1rem;
+  font-weight:500;
+  opacity:0;
+  transform:translateY(8px);
+  transition:opacity 0.3s, transform 0.3s;
+}
+.ig-cell:hover .ig-cell-tag { opacity:1; transform:none; }
+
+/* Posiciones del grid de IG (3 cols × 6 rows aprox) */
+.ig-c0-r0 { background-position: 0%   19.7%; }
+.ig-c1-r0 { background-position: 50%  19.7%; }
+.ig-c2-r0 { background-position: 100% 19.7%; }
+.ig-c0-r1 { background-position: 0%   34.4%; }
+.ig-c1-r1 { background-position: 50%  34.4%; }
+.ig-c2-r1 { background-position: 100% 34.4%; }
+.ig-c0-r2 { background-position: 0%   49.0%; }
+.ig-c1-r2 { background-position: 50%  49.0%; }
+.ig-c2-r2 { background-position: 100% 49.0%; }
+.ig-c0-r3 { background-position: 0%   63.6%; }
+.ig-c1-r3 { background-position: 50%  63.6%; }
+.ig-c2-r3 { background-position: 100% 63.6%; }
+.ig-c0-r4 { background-position: 0%   78.2%; }
+.ig-c1-r4 { background-position: 50%  78.2%; }
+.ig-c2-r4 { background-position: 100% 78.2%; }
+.ig-c0-r5 { background-position: 0%   92.8%; }
+.ig-c1-r5 { background-position: 50%  92.8%; }
+.ig-c2-r5 { background-position: 100% 92.8%; }
 .gallery-note {
   text-align:center;
   padding:30px 6vw 60px;
@@ -703,9 +756,14 @@ footer.foot {
     <p>Aquí va una muestra de mi Instagram (@paquitabordoy.estetica): facials, microblading, manchas, exfoliación, masaje. Todo trabajo real, sin retoque.</p>
   </div>
   <div class="ig-mosaic">
-    <img src="assets/ig-grid.png" alt="Trabajos en Instagram · @paquitabordoy.estetica">
+    <a href="https://www.instagram.com/paquitabordoy.estetica/" target="_blank" class="ig-cell ig-c2-r0"><span class="ig-cell-tag">Tratamiento facial</span></a>
+    <a href="https://www.instagram.com/paquitabordoy.estetica/" target="_blank" class="ig-cell ig-c0-r1"><span class="ig-cell-tag">Radiofrecuencia</span></a>
+    <a href="https://www.instagram.com/paquitabordoy.estetica/" target="_blank" class="ig-cell ig-c1-r2"><span class="ig-cell-tag">Mascarilla</span></a>
+    <a href="https://www.instagram.com/paquitabordoy.estetica/" target="_blank" class="ig-cell ig-c0-r3"><span class="ig-cell-tag">Microblading</span></a>
+    <a href="https://www.instagram.com/paquitabordoy.estetica/" target="_blank" class="ig-cell ig-c1-r4"><span class="ig-cell-tag">Estilo y trabajo</span></a>
+    <a href="https://www.instagram.com/paquitabordoy.estetica/" target="_blank" class="ig-cell ig-c2-r5"><span class="ig-cell-tag">Detalle de piel</span></a>
   </div>
-  <p class="gallery-note">En la web final: galería rotativa con los últimos 12-15 trabajos sincronizados desde Instagram.</p>
+  <p class="gallery-note">Fotos extraídas de tu Instagram. En la web final: galería sincronizada con tus últimos trabajos automáticamente.</p>
 </section>
 
 <!-- SERVICIOS -->

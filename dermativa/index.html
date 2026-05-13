@@ -175,6 +175,31 @@ nav.menu .reserve:hover { background:var(--accent); color:var(--paper); }
   color:rgba(250,250,247,0.7);
 }
 
+/* === MARQUEE TECNOLOGÍAS === */
+.tech-marquee {
+  background:var(--lav);
+  padding:26px 0;
+  overflow:hidden;
+  border-bottom:1px solid var(--line);
+}
+.tech-track {
+  display:flex; gap:80px; align-items:center;
+  white-space:nowrap;
+  animation:slide-x 30s linear infinite;
+}
+.tech-track span {
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:1.4rem;
+  color:var(--accent);
+  letter-spacing:0.02em;
+}
+.tech-track .dot { color:var(--gold); opacity:0.55; font-style:normal; align-self:center; font-size:1rem; }
+@keyframes slide-x {
+  from { transform:translateX(0); }
+  to { transform:translateX(-50%); }
+}
+
 /* === SECTION COMMON === */
 .section { padding:110px 6vw; max-width:1280px; margin:0 auto; }
 .eyebrow {
@@ -547,6 +572,24 @@ footer.foot {
     <div><div class="num">+10 años</div><div class="lbl">En Palma</div></div>
     <div><div class="num">Máster</div><div class="lbl">Láser y luz pulsada</div></div>
     <div><div class="num">Alma</div><div class="lbl">Lasers certificados</div></div>
+  </div>
+</section>
+
+<!-- MARQUEE TECNOLOGÍAS -->
+<section class="tech-marquee">
+  <div class="tech-track">
+    <span>Depilación Láser</span><span class="dot">·</span>
+    <span>Fotorejuvenecimiento IPL</span><span class="dot">·</span>
+    <span>Radiofrecuencia INDIBA</span><span class="dot">·</span>
+    <span>Cosmelan Peeling</span><span class="dot">·</span>
+    <span>Láser Q-Switch tatuajes</span><span class="dot">·</span>
+    <span>Alma Lasers certificados</span><span class="dot">·</span>
+    <span>Depilación Láser</span><span class="dot">·</span>
+    <span>Fotorejuvenecimiento IPL</span><span class="dot">·</span>
+    <span>Radiofrecuencia INDIBA</span><span class="dot">·</span>
+    <span>Cosmelan Peeling</span><span class="dot">·</span>
+    <span>Láser Q-Switch tatuajes</span><span class="dot">·</span>
+    <span>Alma Lasers certificados</span><span class="dot">·</span>
   </div>
 </section>
 

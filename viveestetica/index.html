@@ -256,6 +256,84 @@ nav a:hover { color:var(--rose-deep); }
   margin-top:8px;
 }
 
+/* === MARQUEE TECNOLOGÍAS === */
+.tech-marquee {
+  background:var(--rose-bg);
+  padding:28px 0;
+  overflow:hidden;
+  border-top:1px solid var(--rose-light);
+  border-bottom:1px solid var(--rose-light);
+}
+.tech-track {
+  display:flex; gap:80px; align-items:center;
+  white-space:nowrap;
+  animation:slide-x 28s linear infinite;
+}
+.tech-track span {
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:1.5rem;
+  color:var(--rose-deep);
+  letter-spacing:0.02em;
+}
+.tech-track .dot { color:var(--gold); opacity:0.6; font-style:normal; align-self:center; font-size:1rem; }
+@keyframes slide-x {
+  from { transform:translateX(0); }
+  to { transform:translateX(-50%); }
+}
+
+/* === CONTACT GRID + MAPA === */
+.contact-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  min-height:520px;
+}
+@media (max-width:900px) { .contact-grid { grid-template-columns:1fr; } }
+.contact-info {
+  padding:80px 5vw;
+  background:var(--rose-bg);
+  display:flex; flex-direction:column; justify-content:center;
+}
+.contact-info .section-eyebrow { color:var(--rose-deep); margin-bottom:14px; }
+.contact-info h2 {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.2rem, 4.5vw, 3.4rem);
+  font-weight:600; line-height:1.05;
+  margin-bottom:24px;
+}
+.contact-info h2 em { font-style:italic; color:var(--rose-deep); }
+.contact-info dl { margin:20px 0 30px; }
+.contact-info dl div {
+  display:grid; grid-template-columns:120px 1fr;
+  gap:16px;
+  padding:14px 0;
+  border-bottom:1px solid rgba(0,0,0,0.06);
+  align-items:start;
+}
+.contact-info dt {
+  font-size:0.72rem; letter-spacing:0.16em;
+  text-transform:uppercase; color:var(--grey-soft);
+  font-weight:500;
+}
+.contact-info dd { font-size:0.95rem; color:var(--black); }
+.contact-info dd a { color:var(--black); border-bottom:1px solid rgba(0,0,0,0.1); text-decoration:none; }
+.contact-info dd a:hover { border-color:var(--rose-deep); }
+.contact-info .contact-cta {
+  display:inline-flex; align-items:center; gap:14px;
+  background:var(--black); color:var(--white);
+  padding:16px 28px; border-radius:100px;
+  font-weight:600; font-size:0.9rem;
+  text-decoration:none;
+  transition:background 0.3s, gap 0.3s;
+  align-self:flex-start;
+}
+.contact-info .contact-cta:hover { background:var(--rose-deep); gap:20px; }
+.map-side iframe {
+  width:100%; height:100%; min-height:480px; border:0;
+  filter:grayscale(0.25) contrast(1.05) sepia(0.1);
+  display:block;
+}
+
 /* === TRATAMIENTOS · PACKS === */
 .section {
   padding:100px 5vw;
@@ -698,6 +776,24 @@ footer .footer-copy {
   </div>
 </div>
 
+<!-- MARQUEE TECNOLOGÍAS -->
+<section class="tech-marquee">
+  <div class="tech-track">
+    <span>HIFU 12D</span><span class="dot">·</span>
+    <span>Scultor</span><span class="dot">·</span>
+    <span>INDIBA Radiofrecuencia</span><span class="dot">·</span>
+    <span>Lipoláser</span><span class="dot">·</span>
+    <span>Limpieza facial + LED</span><span class="dot">·</span>
+    <span>Diagnóstico personal</span><span class="dot">·</span>
+    <span>HIFU 12D</span><span class="dot">·</span>
+    <span>Scultor</span><span class="dot">·</span>
+    <span>INDIBA Radiofrecuencia</span><span class="dot">·</span>
+    <span>Lipoláser</span><span class="dot">·</span>
+    <span>Limpieza facial + LED</span><span class="dot">·</span>
+    <span>Diagnóstico personal</span><span class="dot">·</span>
+  </div>
+</section>
+
 <!-- TRATAMIENTOS · PACKS -->
 <section class="section" id="tratamientos">
   <div class="section-inner">
@@ -900,13 +996,36 @@ footer .footer-copy {
   </div>
 </section>
 
-<!-- CTA FINAL -->
-<section class="cta-final">
-  <h2>¿Lista para verte <em>como tú quieres?</em></h2>
-  <p>Diagnóstico gratis de 15 minutos. Sin compromiso. Sin presión. Solo tú, nosotras y lo que de verdad necesitas.</p>
-  <div class="cta-final-actions">
-    <a href="https://wa.me/34630550516?text=Hola%2C%20quiero%20reservar%20mi%20diagn%C3%B3stico%20gratis" target="_blank" class="btn-primary">Reservar diagnóstico gratis</a>
-    <a href="tel:+34630550516" class="btn-ghost">Llamar ahora</a>
+<!-- CONTACTO + MAPA -->
+<section class="contact-grid" id="contacto">
+  <div class="contact-info">
+    <span class="section-eyebrow">Visítanos</span>
+    <h2>Avd. Comte Sallent <em>29.</em></h2>
+    <p style="color:var(--grey); font-size:1rem; line-height:1.7; margin-bottom:10px;">Diagnóstico gratis de 15 minutos. Sin compromiso. Solo tú, nosotras y lo que de verdad necesitas.</p>
+    <dl>
+      <div>
+        <dt>Dirección</dt>
+        <dd>Avd. Comte de Sallent, 29<br>07003 Palma de Mallorca</dd>
+      </div>
+      <div>
+        <dt>Horario</dt>
+        <dd>L-V 9:00 — 19:00</dd>
+      </div>
+      <div>
+        <dt>WhatsApp</dt>
+        <dd><a href="https://wa.me/34630550516" target="_blank">630 550 516</a></dd>
+      </div>
+      <div>
+        <dt>Email</dt>
+        <dd><a href="mailto:info@viveestetica.es">info@viveestetica.es</a></dd>
+      </div>
+    </dl>
+    <a href="https://wa.me/34630550516?text=Hola%2C%20quiero%20reservar%20mi%20diagn%C3%B3stico%20gratis" target="_blank" class="contact-cta">
+      Reservar diagnóstico gratis →
+    </a>
+  </div>
+  <div class="map-side">
+    <iframe src="https://maps.google.com/maps?q=Avinguda%20Comte%20de%20Sallent%2029%20Palma&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
   </div>
 </section>
 

@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paquita Bordoy · Estética · Demo Sorabyte</title>
+<meta name="description" content="Centro de estética en Mallorca. Tratamientos faciales, microblading, manchas, masaje, mascarillas. Atención personal.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* === PAQUITA · paleta nude beauty === */
+:root {
+  --ink:     #1F1814;
+  --cream:   #FBF5EE;
+  --cream-2: #F2E6D6;
+  --nude:    #E6CDB7;
+  --peach:   #D49E81;
+  --grey-1:  #6B5E54;
+  --grey-2:  #9A8C7F;
+  --line:    #E0D2C0;
+  --gold:    #B98D5F;
+}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body {
+  background:var(--cream);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img { display:block; max-width:100%; }
+a { text-decoration:none; color:inherit; }
+
+/* === NAV === */
+header {
+  position:fixed; top:0; left:0; right:0;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 32px;
+  z-index:100;
+  background:rgba(251,245,238,0.92);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(0,0,0,0.04);
+}
+.brand {
+  font-family:'Fraunces',serif;
+  font-size:1.4rem;
+  font-weight:600;
+  letter-spacing:0.04em;
+}
+.brand em { font-style:italic; color:var(--peach); }
+nav.menu { display:flex; gap:30px; align-items:center; }
+nav.menu a {
+  font-size:0.78rem; font-weight:500;
+  color:var(--grey-1);
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+}
+nav.menu a:hover { color:var(--ink); }
+nav.menu .reserve {
+  background:var(--ink); color:var(--cream);
+  padding:11px 22px;
+  letter-spacing:0.08em;
+}
+nav.menu .reserve:hover { background:var(--peach); }
+@media (max-width:768px) {
+  header { padding:14px 18px; }
+  nav.menu a:not(.reserve) { display:none; }
+  nav.menu .reserve { padding:9px 16px; font-size:0.72rem; }
+}
+
+/* === DEMO BADGE === */
+.demo-badge {
+  position:fixed;
+  top:76px; left:50%;
+  transform:translateX(-50%);
+  background:var(--ink); color:var(--cream);
+  padding:7px 16px;
+  font-size:0.66rem; font-weight:500;
+  letter-spacing:0.18em;
+  z-index:60;
+  text-transform:uppercase;
+  text-align:center;
+}
+.demo-badge a { color:var(--nude); border-bottom:1px solid var(--nude); }
+@media (max-width:600px) { .demo-badge { font-size:0.58rem; padding:5px 10px; top:64px; } }
+
+/* === HERO con SU INSTAGRAM como collage protagonista === */
+.hero {
+  position:relative;
+  min-height:100vh;
+  padding:130px 6vw 80px;
+  display:grid;
+  grid-template-columns:1fr 0.85fr;
+  gap:80px;
+  align-items:center;
+  background:linear-gradient(160deg, var(--cream-2) 0%, var(--cream) 60%);
+  overflow:hidden;
+}
+@media (max-width:1000px) { .hero { grid-template-columns:1fr; gap:50px; min-height:auto; } }
+.hero::before {
+  content:'';
+  position:absolute;
+  top:-200px; right:-200px;
+  width:600px; height:600px;
+  border-radius:50%;
+  background:radial-gradient(circle, var(--nude), transparent 70%);
+  opacity:0.35;
+  pointer-events:none;
+}
+.hero-text {
+  position:relative; z-index:2;
+}
+.hero-pill {
+  display:inline-flex; align-items:center; gap:10px;
+  padding:8px 16px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:100px;
+  font-size:0.72rem; font-weight:600;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--peach);
+  margin-bottom:30px;
+}
+.hero-pill::before {
+  content:''; width:7px; height:7px;
+  background:var(--peach); border-radius:50%;
+  box-shadow:0 0 0 4px rgba(212,158,129,0.2);
+}
+.hero h1 {
+  font-family:'Fraunces',serif;
+  font-size:clamp(2.8rem, 6.5vw, 5.5rem);
+  font-weight:500; line-height:1;
+  letter-spacing:-0.025em;
+  margin-bottom:28px;
+  color:var(--ink);
+}
+.hero h1 .it { font-style:italic; color:var(--peach); }
+.hero-lead {
+  font-size:1.1rem;
+  color:var(--grey-1);
+  line-height:1.7;
+  margin-bottom:38px;
+  max-width:480px;
+}
+.hero-actions { display:flex; gap:14px; flex-wrap:wrap; }
+.btn-fill {
+  display:inline-flex; align-items:center; gap:12px;
+  background:var(--ink); color:var(--cream);
+  padding:16px 28px;
+  font-size:0.9rem; font-weight:600;
+  letter-spacing:0.04em;
+  transition:background 0.3s, gap 0.3s, transform 0.3s;
+}
+.btn-fill:hover { background:var(--peach); gap:18px; transform:translateY(-2px); }
+.btn-fill .arr { font-family:'Fraunces',serif; font-size:1.2rem; }
+.btn-ghost {
+  display:inline-flex; align-items:center; gap:10px;
+  padding:16px 24px;
+  border:1.5px solid var(--ink);
+  font-size:0.9rem; font-weight:600;
+  letter-spacing:0.04em;
+  transition:background 0.3s, color 0.3s;
+}
+.btn-ghost:hover { background:var(--ink); color:var(--cream); }
+
+/* IG collage en la derecha del hero */
+.hero-ig-wrap {
+  position:relative;
+  z-index:2;
+}
+.hero-ig {
+  position:relative;
+  aspect-ratio:3/4.5;
+  overflow:hidden;
+  border-radius:6px;
+  box-shadow:0 30px 70px rgba(31,24,20,0.18);
+  transform:rotate(-1.5deg);
+}
+.hero-ig img {
+  width:100%; height:auto;
+  object-fit:cover;
+  object-position:top center;
+}
+.hero-ig-tag {
+  position:absolute;
+  bottom:18px; left:-14px;
+  background:var(--ink); color:var(--cream);
+  padding:10px 16px;
+  font-size:0.72rem; font-weight:600;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  transform:rotate(-2deg);
+}
+.hero-ig-tag em { color:var(--peach); font-style:normal; }
+
+/* === STRIP servicios principales === */
+.svc-strip {
+  background:var(--ink);
+  color:var(--cream);
+  padding:30px 0;
+  overflow:hidden;
+}
+.svc-strip-track {
+  display:flex; gap:60px;
+  white-space:nowrap;
+  animation:slide-x 28s linear infinite;
+}
+.svc-strip-track span {
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-size:1.4rem;
+  color:var(--nude);
+  letter-spacing:0.04em;
+}
+.svc-strip-track .dot {
+  color:var(--peach); font-style:normal;
+  font-size:1rem;
+  align-self:center;
+}
+@keyframes slide-x {
+  from { transform:translateX(0); }
+  to { transform:translateX(-50%); }
+}
+
+/* === SECTION === */
+.section { padding:120px 6vw; max-width:1280px; margin:0 auto; }
+.section-h {
+  font-family:'Fraunces',serif;
+  font-size:clamp(2.4rem, 5vw, 3.8rem);
+  font-weight:500; line-height:1;
+  letter-spacing:-0.02em;
+  margin-bottom:24px;
+}
+.section-h .it { font-style:italic; color:var(--peach); }
+.eyebrow {
+  font-size:0.72rem;
+  letter-spacing:0.24em;
+  text-transform:uppercase;
+  color:var(--peach);
+  font-weight:700;
+  margin-bottom:18px;
+}
+
+/* === INTRO split text + stats === */
+.intro {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:80px;
+  align-items:center;
+}
+@media (max-width:900px) { .intro { grid-template-columns:1fr; gap:50px; } }
+.intro p {
+  font-size:1.05rem;
+  color:var(--grey-1);
+  line-height:1.75;
+  margin-bottom:18px;
+  max-width:520px;
+}
+.intro p b { color:var(--ink); }
+.intro-stats {
+  display:grid; grid-template-columns:repeat(2,1fr);
+  gap:30px;
+  border-left:1px solid var(--line);
+  padding-left:60px;
+}
+@media (max-width:900px) { .intro-stats { padding-left:0; border-left:none; border-top:1px solid var(--line); padding-top:40px; } }
+.intro-stats > div b {
+  display:block;
+  font-family:'Fraunces',serif;
+  font-size:3.2rem; font-weight:600;
+  color:var(--ink);
+  line-height:1;
+  letter-spacing:-0.03em;
+}
+.intro-stats > div b .it { color:var(--peach); font-style:italic; font-weight:500; }
+.intro-stats > div span {
+  display:block;
+  margin-top:8px;
+  font-size:0.74rem;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--grey-2);
+}
+
+/* === GALLERY mosaico desde IG === */
+.gallery-wrap { background:var(--ink); color:var(--cream); padding:120px 0 0; }
+.gallery-h {
+  max-width:1280px; margin:0 auto 60px;
+  padding:0 6vw;
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:60px; align-items:end;
+}
+@media (max-width:768px) { .gallery-h { grid-template-columns:1fr; gap:24px; } }
+.gallery-h .eyebrow { color:var(--nude); }
+.gallery-h h2 {
+  font-family:'Fraunces',serif;
+  font-size:clamp(2.4rem, 4.5vw, 3.6rem);
+  font-weight:500; line-height:1;
+  letter-spacing:-0.02em;
+}
+.gallery-h h2 .it { font-style:italic; color:var(--nude); }
+.gallery-h p {
+  font-size:0.96rem;
+  color:rgba(251,245,238,0.7);
+  line-height:1.7;
+  max-width:380px;
+}
+.ig-mosaic {
+  position:relative;
+  max-width:1280px; margin:0 auto;
+  padding:0 6vw 30px;
+}
+.ig-mosaic img {
+  width:100%; height:auto;
+  display:block;
+}
+.gallery-note {
+  text-align:center;
+  padding:30px 6vw 60px;
+  font-size:0.78rem; color:rgba(251,245,238,0.6);
+  font-style:italic;
+}
+
+/* === SERVICIOS · grid limpio 3×2 === */
+.svc-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:0;
+  border-top:1px solid var(--line);
+  border-left:1px solid var(--line);
+}
+@media (max-width:900px) { .svc-grid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:600px) { .svc-grid { grid-template-columns:1fr; } }
+.svc-card {
+  border-right:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  padding:36px 32px;
+  display:block;
+  cursor:pointer;
+  transition:background 0.3s;
+  position:relative;
+}
+.svc-card:hover { background:var(--cream-2); }
+.svc-card .snum {
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-size:0.92rem;
+  color:var(--peach);
+  margin-bottom:12px;
+}
+.svc-card h3 {
+  font-family:'Fraunces',serif;
+  font-size:1.55rem; font-weight:500;
+  letter-spacing:-0.01em;
+  margin-bottom:10px;
+}
+.svc-card p {
+  font-size:0.88rem;
+  color:var(--grey-1);
+  line-height:1.6;
+  margin-bottom:18px;
+}
+.svc-card .price {
+  font-size:0.78rem;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--peach);
+  font-weight:600;
+}
+.svc-card::after {
+  content:'→';
+  position:absolute;
+  right:30px; bottom:30px;
+  font-family:'Fraunces',serif;
+  font-size:1.4rem; font-style:italic;
+  color:var(--grey-2);
+  transition:color 0.3s, transform 0.3s;
+}
+.svc-card:hover::after { color:var(--peach); transform:translateX(6px); }
+
+/* === PROCESO 3 pasos === */
+.proceso {
+  background:var(--cream-2);
+  padding:120px 6vw;
+}
+.proceso-inner { max-width:1100px; margin:0 auto; }
+.proceso-h { text-align:center; max-width:680px; margin:0 auto 70px; }
+.steps {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:50px;
+}
+@media (max-width:768px) { .steps { grid-template-columns:1fr; gap:40px; } }
+.step {
+  padding-top:32px;
+  border-top:2px solid var(--peach);
+}
+.step .num {
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-size:0.85rem;
+  color:var(--peach);
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  font-weight:600;
+  margin-bottom:14px;
+}
+.step h3 {
+  font-family:'Fraunces',serif;
+  font-size:1.6rem; font-weight:500;
+  margin-bottom:12px;
+  letter-spacing:-0.01em;
+}
+.step p {
+  font-size:0.95rem;
+  color:var(--grey-1);
+  line-height:1.7;
+}
+
+/* === TESTIMONIAL === */
+.test {
+  padding:120px 6vw;
+  text-align:center;
+  background:var(--cream);
+}
+.test blockquote {
+  font-family:'Fraunces',serif;
+  font-size:clamp(1.5rem, 3vw, 2.4rem);
+  font-style:italic;
+  font-weight:400;
+  line-height:1.45;
+  max-width:840px;
+  margin:0 auto;
+  color:var(--ink);
+}
+.test blockquote::before {
+  content:'"';
+  display:block;
+  font-size:4rem;
+  color:var(--peach);
+  line-height:0.4;
+  margin-bottom:20px;
+}
+.test cite {
+  display:block;
+  margin-top:30px;
+  font-size:0.78rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--grey-1);
+  font-style:normal;
+}
+.test .note {
+  display:block;
+  margin-top:50px;
+  font-size:0.72rem;
+  color:var(--grey-2);
+  font-style:italic;
+}
+
+/* === CONTACT split === */
+.contact-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  min-height:560px;
+}
+@media (max-width:900px) { .contact-grid { grid-template-columns:1fr; } }
+.contact-info {
+  padding:90px 6vw;
+  background:var(--ink);
+  color:var(--cream);
+  display:flex; flex-direction:column; justify-content:center;
+}
+.contact-info .eyebrow { color:var(--nude); }
+.contact-info h2 {
+  font-family:'Fraunces',serif;
+  font-size:clamp(2.4rem, 5vw, 3.6rem);
+  font-weight:500; line-height:1;
+  margin-bottom:30px;
+  letter-spacing:-0.02em;
+}
+.contact-info h2 .it { font-style:italic; color:var(--nude); }
+.contact-info dl { margin:20px 0 36px; }
+.contact-info dl div {
+  display:grid;
+  grid-template-columns:130px 1fr;
+  gap:16px;
+  padding:14px 0;
+  border-bottom:1px solid rgba(251,245,238,0.12);
+  align-items:start;
+}
+.contact-info dt {
+  font-size:0.72rem;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--nude);
+  font-weight:500;
+}
+.contact-info dd { font-size:0.96rem; color:var(--cream); }
+.contact-info dd a { border-bottom:1px solid rgba(251,245,238,0.18); }
+.contact-info dd a:hover { border-color:var(--peach); }
+.contact-cta {
+  display:inline-flex; align-items:center; gap:14px;
+  background:var(--peach); color:var(--ink);
+  padding:18px 30px;
+  font-weight:700; font-size:0.9rem;
+  letter-spacing:0.04em;
+  transition:background 0.3s, gap 0.3s;
+  align-self:flex-start;
+}
+.contact-cta:hover { background:var(--nude); gap:22px; }
+.contact-cta .arr { font-family:'Fraunces',serif; font-size:1.3rem; }
+.map-side iframe {
+  width:100%; height:100%; min-height:480px; border:0;
+  filter:grayscale(0.3) contrast(1.05);
+}
+
+/* === FAQ === */
+.faq-zone { padding:120px 6vw; background:var(--cream); }
+.faq-inner {
+  max-width:920px; margin:0 auto;
+  display:grid; grid-template-columns:1fr 1.8fr;
+  gap:80px;
+  align-items:start;
+}
+@media (max-width:900px) { .faq-inner { grid-template-columns:1fr; gap:30px; } }
+details.q { border-bottom:1px solid var(--line); }
+details.q:first-of-type { border-top:1px solid var(--line); }
+details.q summary {
+  padding:24px 0;
+  cursor:pointer;
+  font-family:'Fraunces',serif;
+  font-size:1.3rem;
+  font-weight:500;
+  list-style:none;
+  display:flex; justify-content:space-between; align-items:center;
+  gap:20px;
+}
+details.q summary::-webkit-details-marker { display:none; }
+details.q summary::after {
+  content:'+';
+  font-family:'Inter',sans-serif;
+  font-size:1.3rem; font-weight:300;
+  color:var(--peach);
+  transition:transform 0.3s;
+}
+details.q[open] summary::after { transform:rotate(45deg); }
+details.q .a {
+  padding:0 0 24px;
+  color:var(--grey-1);
+  font-size:0.98rem;
+  line-height:1.75;
+}
+
+/* === FOOTER === */
+footer.foot {
+  background:var(--ink);
+  color:var(--cream);
+  padding:70px 6vw 36px;
+}
+.foot-inner {
+  max-width:1280px; margin:0 auto;
+  display:grid; grid-template-columns:2fr 1fr 1fr;
+  gap:50px;
+}
+@media (max-width:768px) { .foot-inner { grid-template-columns:1fr; gap:30px; } }
+.foot-brand .b {
+  font-family:'Fraunces',serif;
+  font-size:1.8rem; font-weight:600;
+  letter-spacing:0.02em;
+}
+.foot-brand .b em { font-style:italic; color:var(--peach); }
+.foot-brand p {
+  margin-top:14px;
+  font-size:0.88rem;
+  color:rgba(251,245,238,0.7);
+  max-width:340px;
+  line-height:1.6;
+}
+.foot-col h4 {
+  font-size:0.74rem; font-weight:600;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--nude);
+  margin-bottom:16px;
+}
+.foot-col p, .foot-col a {
+  font-size:0.88rem;
+  color:rgba(251,245,238,0.85);
+  display:block;
+  margin-bottom:6px;
+}
+.foot-col a:hover { color:var(--peach); }
+.foot-copy {
+  margin-top:50px;
+  padding-top:24px;
+  border-top:1px solid rgba(251,245,238,0.1);
+  font-size:0.72rem;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:rgba(251,245,238,0.5);
+  text-align:center;
+}
+
+/* WA sticky */
+.wa-fab {
+  position:fixed;
+  bottom:24px; right:24px;
+  z-index:90;
+  background:#25D366;
+  width:58px; height:58px;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 14px 32px rgba(37,211,102,0.4);
+  transition:transform 0.25s;
+}
+.wa-fab:hover { transform:scale(1.08); }
+.wa-fab svg { width:28px; height:28px; fill:#fff; }
+
+/* Reveal */
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.8s, transform 0.8s; }
+.reveal.up { opacity:1; transform:none; }
+</style>
+</head>
+<body>
+
+<div class="demo-badge">DEMO PERSONALIZADA · POR <a href="https://sorabyte.es" target="_blank">SORABYTE</a></div>
+
+<header>
+  <a href="#" class="brand">Paquita <em>Bordoy</em></a>
+  <nav class="menu">
+    <a href="#trabajos">Trabajos</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#proceso">Cómo trabajo</a>
+    <a href="#contacto">Visítame</a>
+    <a href="#contacto" class="reserve">Reservar</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-pill">Estética en Mallorca</div>
+    <h1>Tu piel, <span class="it">cuidada</span><br>como yo cuido<br>la mía.</h1>
+    <p class="hero-lead">Centro de estética personal en Mallorca. Tratamientos faciales, microblading, manchas, masaje, exfoliación y radiofrecuencia. Atención cercana, plan a tu medida, sin protocolos de cadena.</p>
+    <div class="hero-actions">
+      <a href="#contacto" class="btn-fill">Reservar valoración <span class="arr">→</span></a>
+      <a href="https://www.instagram.com/paquitabordoy.estetica/" target="_blank" class="btn-ghost">Ver mi Instagram</a>
+    </div>
+  </div>
+  <div class="hero-ig-wrap reveal">
+    <div class="hero-ig">
+      <img src="assets/ig-grid.png" alt="Trabajos reales · @paquitabordoy.estetica">
+    </div>
+    <div class="hero-ig-tag">@paquitabordoy<em>.estetica</em></div>
+  </div>
+</section>
+
+<!-- STRIP servicios marquee -->
+<section class="svc-strip">
+  <div class="svc-strip-track">
+    <span>Microblading de cejas</span><span class="dot">·</span>
+    <span>Tratamientos faciales</span><span class="dot">·</span>
+    <span>Eliminación de manchas</span><span class="dot">·</span>
+    <span>Masaje facial</span><span class="dot">·</span>
+    <span>Mascarillas y exfoliación</span><span class="dot">·</span>
+    <span>Radiofrecuencia</span><span class="dot">·</span>
+    <span>Microblading de cejas</span><span class="dot">·</span>
+    <span>Tratamientos faciales</span><span class="dot">·</span>
+    <span>Eliminación de manchas</span><span class="dot">·</span>
+    <span>Masaje facial</span><span class="dot">·</span>
+    <span>Mascarillas y exfoliación</span><span class="dot">·</span>
+    <span>Radiofrecuencia</span><span class="dot">·</span>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section class="section">
+  <div class="intro">
+    <div class="reveal">
+      <div class="eyebrow">Por qué a mí</div>
+      <h2 class="section-h">No soy una <span class="it">cadena.</span><br>Soy una persona.</h2>
+      <p>Llevo años atendiendo a las mismas mujeres y sus hijas en Mallorca. La diferencia entre un centro grande y mi consulta es que aquí <b>sé cómo te llamas y qué te traes en la piel</b>. Eso no se replica en franquicia.</p>
+      <p>Cada cita empieza con una valoración personal. Sin protocolos genéricos. Sin venderte 10 sesiones cuando con 3 te basta. Si tu caso no es para mí, te lo digo antes de cobrarte.</p>
+    </div>
+    <div class="intro-stats reveal">
+      <div><b><span class="it">10+</span></b><span>Años en Mallorca</span></div>
+      <div><b><span class="it">+700</span></b><span>Clientas atendidas</span></div>
+      <div><b><span class="it">100%</span></b><span>Atención personal</span></div>
+      <div><b><span class="it">@IG</span></b><span>Mi portfolio público</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERÍA / IG grid -->
+<section class="gallery-wrap" id="trabajos">
+  <div class="gallery-h">
+    <div>
+      <div class="eyebrow">Trabajos reales</div>
+      <h2>Cada caso es una <span class="it">conversación.</span></h2>
+    </div>
+    <p>Aquí va una muestra de mi Instagram (@paquitabordoy.estetica): facials, microblading, manchas, exfoliación, masaje. Todo trabajo real, sin retoque.</p>
+  </div>
+  <div class="ig-mosaic">
+    <img src="assets/ig-grid.png" alt="Trabajos en Instagram · @paquitabordoy.estetica">
+  </div>
+  <p class="gallery-note">En la web final: galería rotativa con los últimos 12-15 trabajos sincronizados desde Instagram.</p>
+</section>
+
+<!-- SERVICIOS -->
+<section class="section" id="servicios">
+  <div style="max-width:680px; margin-bottom:60px;">
+    <div class="eyebrow">Servicios</div>
+    <h2 class="section-h">Lo que <span class="it">hago.</span></h2>
+    <p style="color:var(--grey-1); font-size:1rem; line-height:1.7;">Cada servicio empieza con valoración. Precios desde, plan exacto en consulta.</p>
+  </div>
+
+  <div class="svc-grid">
+    <a href="#contacto" class="svc-card">
+      <div class="snum">01</div>
+      <h3>Microblading de cejas</h3>
+      <p>Técnica pelo a pelo. Diseño previo según tu rostro, prueba de pigmento y retoque a las 6 semanas incluido.</p>
+      <div class="price">desde 220€</div>
+    </a>
+    <a href="#contacto" class="svc-card">
+      <div class="snum">02</div>
+      <h3>Tratamiento facial completo</h3>
+      <p>Limpieza profunda + exfoliación + mascarilla a tu tipo de piel + masaje drenante. 75-90 minutos.</p>
+      <div class="price">desde 65€</div>
+    </a>
+    <a href="#contacto" class="svc-card">
+      <div class="snum">03</div>
+      <h3>Eliminación de manchas</h3>
+      <p>Diagnóstico previo obligatorio. Plan 3-5 sesiones espaciadas según evolución. Manchas solares y post-inflamatorias.</p>
+      <div class="price">desde 80€/sesión</div>
+    </a>
+    <a href="#contacto" class="svc-card">
+      <div class="snum">04</div>
+      <h3>Radiofrecuencia facial</h3>
+      <p>Tonificación, antiedad y reactivación celular. 5-8 sesiones según objetivo. Sin baja.</p>
+      <div class="price">desde 70€/sesión</div>
+    </a>
+    <a href="#contacto" class="svc-card">
+      <div class="snum">05</div>
+      <h3>Masaje facial drenante</h3>
+      <p>Técnica manual + productos a tu piel. Reduce hinchazón, mejora circulación y brillo natural.</p>
+      <div class="price">desde 45€</div>
+    </a>
+    <a href="#contacto" class="svc-card">
+      <div class="snum">06</div>
+      <h3>Plan a medida</h3>
+      <p>Si combinas varios servicios o quieres un programa de mantenimiento mensual, te diseño plan ajustado.</p>
+      <div class="price">consulta personal</div>
+    </a>
+  </div>
+</section>
+
+<!-- PROCESO 3 pasos -->
+<section class="proceso" id="proceso">
+  <div class="proceso-inner">
+    <div class="proceso-h">
+      <div class="eyebrow">Cómo trabajo</div>
+      <h2 class="section-h">3 pasos. <span class="it">Sin sorpresas.</span></h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="num">Paso 01 · 20 min</div>
+        <h3>Valoración personal</h3>
+        <p>Vienes al centro, miro tu piel, hablamos de qué te trae. Te explico opciones y precios exactos. Sin compromiso de empezar ahí mismo.</p>
+      </div>
+      <div class="step reveal">
+        <div class="num">Paso 02 · A tu ritmo</div>
+        <h3>Sesiones planificadas</h3>
+        <p>Cada cita está pensada para tu piel concreta. Productos profesionales, técnica manual cuidadosa. Te explico lo que hago mientras lo hago.</p>
+      </div>
+      <div class="step reveal">
+        <div class="num">Paso 03 · Siempre</div>
+        <h3>Seguimiento real</h3>
+        <p>Si algo no va como pensábamos, ajustamos. Si quieres saltar una sesión, sin problema. Te trato como me gustaría que me trataran a mí.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="test">
+  <blockquote>Llevo yendo 4 años. Paquita es la única esteticista que me ha dicho "esto no te hace falta". Eso vale más que diez sesiones que no necesito.</blockquote>
+  <cite>Clienta · 4 años en la consulta</cite>
+  <span class="note">En la web final: 3-4 reseñas reales con autorización.</span>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto" class="contact-grid">
+  <div class="contact-info">
+    <div class="eyebrow">Cómo encontrarme</div>
+    <h2>Reserva tu <span class="it">valoración.</span></h2>
+    <dl>
+      <div>
+        <dt>WhatsApp</dt>
+        <dd><a href="#">[tu número de WhatsApp]</a></dd>
+      </div>
+      <div>
+        <dt>Instagram</dt>
+        <dd><a href="https://www.instagram.com/paquitabordoy.estetica/" target="_blank">@paquitabordoy.estetica</a></dd>
+      </div>
+      <div>
+        <dt>Dirección</dt>
+        <dd>[tu dirección en Mallorca]</dd>
+      </div>
+      <div>
+        <dt>Horario</dt>
+        <dd>[tus horarios reales]</dd>
+      </div>
+      <div>
+        <dt>Email</dt>
+        <dd><a href="#">[tu email]</a></dd>
+      </div>
+    </dl>
+    <a href="https://www.instagram.com/paquitabordoy.estetica/" target="_blank" class="contact-cta">
+      Reservar por Instagram <span class="arr">→</span>
+    </a>
+  </div>
+  <div class="map-side">
+    <iframe src="https://maps.google.com/maps?q=Palma%20de%20Mallorca&t=&z=12&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-zone">
+  <div class="faq-inner">
+    <div>
+      <div class="eyebrow">Dudas frecuentes</div>
+      <h2 class="section-h">Lo que <span class="it">todas</span> preguntan.</h2>
+    </div>
+    <div>
+      <details class="q">
+        <summary>¿Cuántas sesiones necesito para quitar manchas?</summary>
+        <div class="a">Depende del tipo y profundidad. La media es 3-5 sesiones espaciadas. En la valoración te decimos número exacto. Si tu caso no es para esto, te lo decimos antes de cobrarte.</div>
+      </details>
+      <details class="q">
+        <summary>¿El microblading dura?</summary>
+        <div class="a">Entre 12 y 18 meses con buen cuidado. Incluye retoque a las 6 semanas. Después te recomendaré cuándo volver para refrescar.</div>
+      </details>
+      <details class="q">
+        <summary>¿Es doloroso?</summary>
+        <div class="a">En microblading aplico anestesia tópica, sensación de cosquilleo, no dolor agudo. En facials y masaje, cero molestia.</div>
+      </details>
+      <details class="q">
+        <summary>¿Cómo reservo?</summary>
+        <div class="a">Lo más rápido: por WhatsApp o DM en Instagram. Te paso huecos disponibles y eliges. Confirmamos día y hora.</div>
+      </details>
+      <details class="q">
+        <summary>¿Aceptas Bizum / transferencia?</summary>
+        <div class="a">Sí, también efectivo y tarjeta. Sesiones sueltas se pagan en el momento. Bonos completos se pueden fraccionar.</div>
+      </details>
+      <details class="q">
+        <summary>¿Y los productos Riman que veo en mi link?</summary>
+        <div class="a">Riman es una línea complementaria que te puedo recomendar SI encaja con tu piel. Pero mi negocio es la estética en consulta, no la venta de productos. La web ahora separa claramente las dos cosas.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <div class="foot-brand">
+      <div class="b">Paquita <em>Bordoy</em></div>
+      <p>Estética personal en Mallorca. Más de 10 años cuidando la piel de mujeres que entran por la puerta y se quedan.</p>
+    </div>
+    <div class="foot-col">
+      <h4>Sígueme</h4>
+      <a href="https://www.instagram.com/paquitabordoy.estetica/" target="_blank">@paquitabordoy.estetica</a>
+    </div>
+    <div class="foot-col">
+      <h4>Contacto</h4>
+      <p>[teléfono]</p>
+      <p>[email]</p>
+      <p>[dirección Mallorca]</p>
+    </div>
+  </div>
+  <div class="foot-copy">© 2026 Paquita Bordoy Estética · Demo preparada por Sorabyte</div>
+</footer>
+
+<a href="https://www.instagram.com/paquitabordoy.estetica/" target="_blank" class="wa-fab" aria-label="Instagram">
+  <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+</a>
+
+<script>
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('up'); io.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peluquería Equipo's · Demo Sorabyte</title>
+<meta name="description" content="Nº1 en extensiones de pelo en Palma de Mallorca. 33+ años, marcas premium Great Lengths · Hairdreams · Xtreme.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black:    #16110D;
+  --cream:    #F7F1E8;
+  --cream-2:  #EDE4D3;
+  --grey-1:   #6A5E51;
+  --grey-2:   #9C8F80;
+  --line:     #DCCFB9;
+  --gold:     #B89052;
+  --gold-2:   #D9B97A;
+  --rose:     #C99B82;
+}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body {
+  background:var(--cream);
+  color:var(--black);
+  font-family:'Inter',sans-serif;
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img { display:block; max-width:100%; }
+a { text-decoration:none; color:inherit; }
+
+/* === NAV === */
+header {
+  position:fixed; top:0; left:0; right:0;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 32px;
+  z-index:100;
+  background:rgba(247,241,232,0.92);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(0,0,0,0.04);
+}
+.brand img { height:42px; width:auto; }
+nav.menu { display:flex; gap:30px; align-items:center; }
+nav.menu a {
+  font-size:0.78rem; font-weight:500;
+  color:var(--grey-1);
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  transition:color 0.2s;
+}
+nav.menu a:hover { color:var(--black); }
+nav.menu .reserve {
+  background:var(--black); color:var(--cream);
+  padding:11px 22px;
+  letter-spacing:0.08em;
+}
+nav.menu .reserve:hover { background:var(--gold); }
+@media (max-width:768px) {
+  header { padding:14px 18px; }
+  nav.menu a:not(.reserve) { display:none; }
+  nav.menu .reserve { padding:9px 16px; font-size:0.72rem; }
+}
+
+/* === DEMO BADGE === */
+.demo-badge {
+  position:fixed;
+  top:76px; left:50%;
+  transform:translateX(-50%);
+  background:var(--black); color:var(--cream);
+  padding:7px 16px;
+  font-size:0.68rem; font-weight:500;
+  letter-spacing:0.18em;
+  z-index:60;
+  text-transform:uppercase;
+}
+.demo-badge a { color:var(--gold-2); border-bottom:1px solid var(--gold-2); }
+@media (max-width:600px) { .demo-badge { font-size:0.6rem; padding:5px 10px; top:64px; } }
+
+/* === HERO === */
+.hero {
+  position:relative;
+  height:100vh;
+  min-height:680px;
+  overflow:hidden;
+}
+.hero img.bg {
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit:cover;
+}
+.hero::after {
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(22,17,13,0.15) 0%, rgba(22,17,13,0.75) 100%);
+}
+.hero-content {
+  position:absolute; inset:0;
+  padding:0 6vw 8vh;
+  display:flex; flex-direction:column; justify-content:flex-end;
+  z-index:2; color:var(--cream);
+}
+.hero-tag {
+  display:inline-flex; align-items:center; gap:12px;
+  font-size:0.74rem; font-weight:600;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  margin-bottom:24px;
+  color:var(--gold-2);
+}
+.hero-tag::before { content:''; width:40px; height:1px; background:var(--gold-2); }
+.hero h1 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(3rem, 7.5vw, 6.5rem);
+  font-weight:500; line-height:0.95;
+  letter-spacing:-0.02em;
+  margin-bottom:30px;
+  max-width:920px;
+}
+.hero h1 .it { font-style:italic; color:var(--gold-2); }
+.hero-bottom {
+  display:flex; justify-content:space-between; align-items:flex-end; gap:40px;
+  flex-wrap:wrap;
+}
+.hero-tagline {
+  font-size:1.05rem;
+  max-width:420px;
+  line-height:1.6;
+  opacity:0.92;
+}
+.hero-cta {
+  display:inline-flex; align-items:center; gap:14px;
+  background:var(--gold); color:var(--black);
+  padding:18px 30px;
+  font-size:0.92rem; font-weight:700;
+  letter-spacing:0.04em;
+  transition:transform 0.3s, gap 0.3s, background 0.3s;
+  white-space:nowrap;
+}
+.hero-cta:hover { transform:translateY(-3px); gap:22px; background:var(--gold-2); }
+.hero-cta .arr { font-family:'Playfair Display',serif; font-size:1.3rem; }
+
+/* === MARQUEE marcas premium === */
+.brands-marquee {
+  background:var(--black);
+  padding:32px 0;
+  overflow:hidden;
+  position:relative;
+}
+.brands-track {
+  display:flex; gap:90px; align-items:center;
+  animation:slide-x 28s linear infinite;
+  white-space:nowrap;
+}
+.brands-track img {
+  height:38px; width:auto;
+  filter:invert(1) brightness(2);
+  opacity:0.85;
+  flex-shrink:0;
+}
+.brands-track .sep {
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  color:var(--gold-2);
+  font-size:1rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  opacity:0.6;
+  flex-shrink:0;
+}
+@keyframes slide-x {
+  from { transform:translateX(0); }
+  to { transform:translateX(-50%); }
+}
+
+/* === SECCIÓN intro · texto + 4 stats === */
+.intro {
+  padding:120px 6vw;
+  max-width:1280px; margin:0 auto;
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:80px;
+  align-items:center;
+}
+@media (max-width:900px) { .intro { grid-template-columns:1fr; gap:50px; } }
+.intro-text .eyebrow {
+  font-size:0.72rem;
+  letter-spacing:0.24em;
+  text-transform:uppercase;
+  color:var(--gold);
+  font-weight:700;
+  margin-bottom:18px;
+}
+.intro-text h2 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.4rem, 4.5vw, 3.8rem);
+  font-weight:500; line-height:1;
+  letter-spacing:-0.02em;
+  margin-bottom:26px;
+}
+.intro-text h2 .it { font-style:italic; color:var(--gold); }
+.intro-text p {
+  font-size:1.05rem;
+  color:var(--grey-1);
+  line-height:1.75;
+  margin-bottom:18px;
+  max-width:520px;
+}
+.intro-stats {
+  display:grid; grid-template-columns:repeat(2,1fr);
+  gap:30px;
+  border-left:1px solid var(--line);
+  padding-left:60px;
+}
+@media (max-width:900px) { .intro-stats { padding-left:0; border-left:none; border-top:1px solid var(--line); padding-top:40px; } }
+.intro-stats > div b {
+  display:block;
+  font-family:'Playfair Display',serif;
+  font-size:3.4rem; font-weight:600;
+  color:var(--black);
+  line-height:1;
+  letter-spacing:-0.03em;
+}
+.intro-stats > div b .gold { color:var(--gold); font-style:italic; font-weight:500; }
+.intro-stats > div span {
+  display:block;
+  margin-top:8px;
+  font-size:0.74rem;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--grey-2);
+}
+
+/* === GALERÍA antes/después MOSAICO === */
+.gallery-wrap {
+  background:var(--black);
+  padding:120px 0 0;
+  color:var(--cream);
+}
+.gallery-h {
+  max-width:1280px; margin:0 auto 60px;
+  padding:0 6vw;
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:60px;
+  align-items:end;
+}
+@media (max-width:768px) { .gallery-h { grid-template-columns:1fr; gap:24px; } }
+.gallery-h .eyebrow {
+  font-size:0.72rem;
+  letter-spacing:0.24em;
+  text-transform:uppercase;
+  color:var(--gold-2);
+  font-weight:700;
+}
+.gallery-h h2 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.4rem, 4.5vw, 3.6rem);
+  font-weight:500; line-height:1;
+  letter-spacing:-0.02em;
+}
+.gallery-h h2 .it { font-style:italic; color:var(--gold-2); }
+.gallery-h p {
+  font-size:0.96rem;
+  color:rgba(247,241,232,0.7);
+  line-height:1.7;
+  max-width:380px;
+}
+.mosaic {
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:2px;
+}
+@media (max-width:900px) { .mosaic { grid-template-columns:repeat(2,1fr); } }
+.mosaic-item {
+  position:relative;
+  aspect-ratio:1/1.1;
+  overflow:hidden;
+}
+.mosaic-item img {
+  width:100%; height:100%;
+  object-fit:cover;
+  transition:transform 0.8s, filter 0.5s;
+}
+.mosaic-item:hover img { transform:scale(1.08); }
+.mosaic-item::after {
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, transparent 55%, rgba(0,0,0,0.7));
+  pointer-events:none;
+}
+.mosaic-item .caption {
+  position:absolute; bottom:0; left:0; right:0;
+  padding:18px 16px;
+  color:#fff;
+  z-index:2;
+}
+.mosaic-item .caption b {
+  font-family:'Playfair Display',serif;
+  font-size:0.95rem;
+  font-style:italic;
+  font-weight:500;
+  display:block;
+  margin-bottom:2px;
+}
+.mosaic-item .caption span {
+  font-size:0.68rem;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  opacity:0.85;
+}
+.gallery-note {
+  text-align:center;
+  padding:30px 6vw 60px;
+  font-size:0.78rem; color:rgba(247,241,232,0.6);
+  font-style:italic;
+}
+
+/* === SERVICIOS · lista limpia 6 cards === */
+.services {
+  padding:120px 6vw;
+  max-width:1280px; margin:0 auto;
+}
+.services-h {
+  margin-bottom:60px;
+  max-width:680px;
+}
+.services-h .eyebrow {
+  font-size:0.72rem;
+  letter-spacing:0.24em;
+  text-transform:uppercase;
+  color:var(--gold);
+  font-weight:700;
+  margin-bottom:16px;
+}
+.services-h h2 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.4rem, 4.5vw, 3.6rem);
+  font-weight:500; line-height:1;
+  letter-spacing:-0.02em;
+  margin-bottom:18px;
+}
+.services-h h2 .it { font-style:italic; color:var(--gold); }
+.services-h p {
+  color:var(--grey-1);
+  font-size:1rem;
+  line-height:1.7;
+}
+.svc-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:0;
+  border-top:1px solid var(--line);
+  border-left:1px solid var(--line);
+}
+@media (max-width:900px) { .svc-grid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:600px) { .svc-grid { grid-template-columns:1fr; } }
+.svc-card {
+  border-right:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  padding:36px 32px;
+  display:block;
+  cursor:pointer;
+  transition:background 0.3s;
+  position:relative;
+}
+.svc-card:hover { background:var(--cream-2); }
+.svc-card .snum {
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:0.92rem;
+  color:var(--gold);
+  margin-bottom:12px;
+}
+.svc-card h3 {
+  font-family:'Playfair Display',serif;
+  font-size:1.55rem; font-weight:500;
+  letter-spacing:-0.01em;
+  margin-bottom:10px;
+}
+.svc-card p {
+  font-size:0.88rem;
+  color:var(--grey-1);
+  line-height:1.6;
+  margin-bottom:18px;
+}
+.svc-card .price {
+  font-size:0.78rem;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--gold);
+  font-weight:600;
+}
+.svc-card::after {
+  content:'→';
+  position:absolute;
+  right:30px; bottom:30px;
+  font-family:'Playfair Display',serif;
+  font-size:1.4rem; font-style:italic;
+  color:var(--grey-2);
+  transition:color 0.3s, transform 0.3s;
+}
+.svc-card:hover::after { color:var(--gold); transform:translateX(6px); }
+
+/* === PROCESO extensiones · 3 pasos === */
+.proceso {
+  background:var(--cream-2);
+  padding:120px 6vw;
+}
+.proceso-inner { max-width:1100px; margin:0 auto; }
+.proceso-h {
+  text-align:center;
+  max-width:680px;
+  margin:0 auto 70px;
+}
+.proceso-h .eyebrow {
+  font-size:0.72rem;
+  letter-spacing:0.24em;
+  text-transform:uppercase;
+  color:var(--gold);
+  font-weight:700;
+  margin-bottom:18px;
+}
+.proceso-h h2 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.4rem, 4.5vw, 3.6rem);
+  font-weight:500; line-height:1;
+  letter-spacing:-0.02em;
+}
+.proceso-h h2 .it { font-style:italic; color:var(--gold); }
+.steps {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:50px;
+  position:relative;
+}
+@media (max-width:768px) { .steps { grid-template-columns:1fr; gap:40px; } }
+.step {
+  text-align:left;
+  padding-top:32px;
+  border-top:2px solid var(--gold);
+}
+.step .num {
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:0.85rem;
+  color:var(--gold);
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  font-weight:600;
+  margin-bottom:14px;
+}
+.step h3 {
+  font-family:'Playfair Display',serif;
+  font-size:1.6rem; font-weight:500;
+  margin-bottom:12px;
+  letter-spacing:-0.01em;
+}
+.step p {
+  font-size:0.95rem;
+  color:var(--grey-1);
+  line-height:1.7;
+}
+
+/* === TESTIMONIAL === */
+.test {
+  padding:120px 6vw;
+  text-align:center;
+  background:var(--cream);
+}
+.test blockquote {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.5rem, 3vw, 2.4rem);
+  font-style:italic;
+  font-weight:400;
+  line-height:1.45;
+  max-width:840px;
+  margin:0 auto;
+  color:var(--black);
+}
+.test blockquote::before {
+  content:'"';
+  display:block;
+  font-size:4rem;
+  color:var(--gold);
+  line-height:0.4;
+  margin-bottom:20px;
+}
+.test cite {
+  display:block;
+  margin-top:30px;
+  font-size:0.78rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--grey-1);
+  font-style:normal;
+}
+.test .note {
+  display:block;
+  margin-top:50px;
+  font-size:0.72rem;
+  color:var(--grey-2);
+  font-style:italic;
+}
+
+/* === CONTACT + MAPA === */
+.contact-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  min-height:560px;
+}
+@media (max-width:900px) { .contact-grid { grid-template-columns:1fr; } }
+.contact-info {
+  padding:90px 6vw;
+  background:var(--black);
+  color:var(--cream);
+  display:flex; flex-direction:column; justify-content:center;
+}
+.contact-info .eyebrow {
+  font-size:0.72rem;
+  letter-spacing:0.24em;
+  text-transform:uppercase;
+  color:var(--gold-2);
+  font-weight:700;
+  margin-bottom:18px;
+}
+.contact-info h2 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.4rem, 5vw, 3.6rem);
+  font-weight:500; line-height:1;
+  margin-bottom:30px;
+  letter-spacing:-0.02em;
+}
+.contact-info h2 .it { font-style:italic; color:var(--gold-2); }
+.contact-info dl { margin:20px 0 36px; }
+.contact-info dl div {
+  display:grid;
+  grid-template-columns:130px 1fr;
+  gap:16px;
+  padding:14px 0;
+  border-bottom:1px solid rgba(247,241,232,0.15);
+  align-items:start;
+}
+.contact-info dt {
+  font-size:0.72rem;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--gold-2);
+  font-weight:500;
+}
+.contact-info dd { font-size:0.96rem; color:var(--cream); }
+.contact-info dd a { border-bottom:1px solid rgba(247,241,232,0.2); }
+.contact-info dd a:hover { border-color:var(--gold-2); }
+.contact-cta {
+  display:inline-flex; align-items:center; gap:14px;
+  background:var(--gold); color:var(--black);
+  padding:18px 30px;
+  font-weight:700; font-size:0.9rem;
+  letter-spacing:0.04em;
+  transition:background 0.3s, gap 0.3s;
+  align-self:flex-start;
+}
+.contact-cta:hover { background:var(--gold-2); gap:22px; }
+.contact-cta .arr { font-family:'Playfair Display',serif; font-size:1.3rem; }
+.map-side iframe {
+  width:100%; height:100%; min-height:480px; border:0;
+  filter:grayscale(0.4) contrast(1.05) sepia(0.1);
+}
+
+/* === FAQ === */
+.faq-zone { padding:120px 6vw; background:var(--cream); }
+.faq-inner {
+  max-width:920px; margin:0 auto;
+  display:grid; grid-template-columns:1fr 1.8fr;
+  gap:80px;
+  align-items:start;
+}
+@media (max-width:900px) { .faq-inner { grid-template-columns:1fr; gap:30px; } }
+.faq-zone .eyebrow {
+  font-size:0.72rem;
+  letter-spacing:0.24em;
+  text-transform:uppercase;
+  color:var(--gold);
+  font-weight:700;
+  margin-bottom:18px;
+}
+.faq-zone h2 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.2rem, 4.5vw, 3.4rem);
+  font-weight:500; line-height:1;
+  letter-spacing:-0.02em;
+}
+.faq-zone h2 .it { font-style:italic; color:var(--gold); }
+details.q { border-bottom:1px solid var(--line); }
+details.q:first-of-type { border-top:1px solid var(--line); }
+details.q summary {
+  padding:24px 0;
+  cursor:pointer;
+  font-family:'Playfair Display',serif;
+  font-size:1.3rem;
+  font-weight:500;
+  list-style:none;
+  display:flex; justify-content:space-between; align-items:center;
+  gap:20px;
+}
+details.q summary::-webkit-details-marker { display:none; }
+details.q summary::after {
+  content:'+';
+  font-family:'Inter',sans-serif;
+  font-size:1.3rem; font-weight:300;
+  color:var(--gold);
+  transition:transform 0.3s;
+}
+details.q[open] summary::after { transform:rotate(45deg); }
+details.q .a {
+  padding:0 0 24px;
+  color:var(--grey-1);
+  font-size:0.98rem;
+  line-height:1.75;
+}
+
+/* === FOOTER === */
+footer.foot {
+  background:var(--black);
+  color:var(--cream);
+  padding:70px 6vw 36px;
+}
+.foot-inner {
+  max-width:1280px; margin:0 auto;
+  display:grid; grid-template-columns:2fr 1fr 1fr;
+  gap:50px;
+}
+@media (max-width:768px) { .foot-inner { grid-template-columns:1fr; gap:30px; } }
+.foot-brand img { height:46px; filter:invert(1) brightness(1.5); }
+.foot-brand p {
+  margin-top:18px;
+  font-size:0.88rem;
+  color:rgba(247,241,232,0.7);
+  max-width:340px;
+  line-height:1.6;
+}
+.foot-col h4 {
+  font-size:0.74rem; font-weight:600;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--gold-2);
+  margin-bottom:16px;
+}
+.foot-col p, .foot-col a {
+  font-size:0.88rem;
+  color:rgba(247,241,232,0.85);
+  display:block;
+  margin-bottom:6px;
+}
+.foot-col a:hover { color:var(--gold-2); }
+.foot-copy {
+  margin-top:50px;
+  padding-top:24px;
+  border-top:1px solid rgba(247,241,232,0.1);
+  font-size:0.72rem;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:rgba(247,241,232,0.5);
+  text-align:center;
+}
+
+/* WA sticky */
+.wa-fab {
+  position:fixed;
+  bottom:24px; right:24px;
+  z-index:90;
+  background:#25D366;
+  width:58px; height:58px;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 14px 32px rgba(37,211,102,0.4);
+  transition:transform 0.25s;
+}
+.wa-fab:hover { transform:scale(1.08); }
+.wa-fab svg { width:28px; height:28px; fill:#fff; }
+
+/* Reveal */
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.8s, transform 0.8s; }
+.reveal.up { opacity:1; transform:none; }
+</style>
+</head>
+<body>
+
+<div class="demo-badge">DEMO · POR <a href="https://sorabyte.es" target="_blank">SORABYTE</a></div>
+
+<header>
+  <a href="#" class="brand">
+    <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/logo_peluqueria-equipos-258x73-1.png" alt="Peluquería Equipo's">
+  </a>
+  <nav class="menu">
+    <a href="#extensiones">Extensiones</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#proceso">Proceso</a>
+    <a href="#contacto">Visítanos</a>
+    <a href="https://wa.me/34615622189?text=Hola%2C%20vengo%20de%20la%20web.%20Quiero%20reservar%20una%20cita" target="_blank" class="reserve">Reservar</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <img class="bg" src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/trabajos-volumen-y-extensiones-de-pelo.jpg" alt="Peluquería Equipo's">
+  <div class="hero-content">
+    <div class="hero-tag">Nº1 en extensiones · Palma · Desde 1991</div>
+    <h1>El pelo que <span class="it">siempre quisiste,</span><br>hecho en una cita.</h1>
+    <div class="hero-bottom">
+      <p class="hero-tagline">Más de 33 años trabajando con las marcas premium del mundo: Great Lengths, Hairdreams y Xtreme. Resultado natural, garantía visible. Valoración gratuita.</p>
+      <a href="https://wa.me/34615622189?text=Hola%2C%20vengo%20de%20la%20web.%20Quiero%20una%20valoraci%C3%B3n%20de%20extensiones" target="_blank" class="hero-cta">
+        Reservar valoración <span class="arr">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE marcas -->
+<section class="brands-marquee">
+  <div class="brands-track">
+    <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/great-lengths-400x100-1.png" alt="Great Lengths">
+    <span class="sep">·</span>
+    <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/hairdreams-400x100-1.png" alt="Hairdreams">
+    <span class="sep">·</span>
+    <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/xtreme-400x100-1.png" alt="Xtreme">
+    <span class="sep">·</span>
+    <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/great-lengths-400x100-1.png" alt="Great Lengths">
+    <span class="sep">·</span>
+    <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/hairdreams-400x100-1.png" alt="Hairdreams">
+    <span class="sep">·</span>
+    <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/xtreme-400x100-1.png" alt="Xtreme">
+  </div>
+</section>
+
+<!-- INTRO -->
+<section class="intro" id="extensiones">
+  <div class="intro-text reveal">
+    <div class="eyebrow">Por qué somos Nº1</div>
+    <h2>33 años pegando pelo<br>como si fuera <span class="it">tuyo.</span></h2>
+    <p>No vendemos extensiones. Construimos pelo. Cada cliente entra con un cabello concreto y sale con otro, sin que se note la línea entre lo natural y lo añadido. Esa frontera invisible es el oficio.</p>
+    <p>Por eso solo trabajamos con tres marcas en el mundo, las que nos dan calidad y respaldo: <b>Great Lengths</b>, <b>Hairdreams</b> y <b>Xtreme</b>. Sin atajos, sin importaciones baratas.</p>
+  </div>
+
+  <div class="intro-stats reveal">
+    <div><b><span class="gold">33+</span></b><span>Años en Palma</span></div>
+    <div><b><span class="gold">3</span></b><span>Marcas premium mundiales</span></div>
+    <div><b><span class="gold">Nº1</span></b><span>Especialistas extensiones</span></div>
+    <div><b><span class="gold">+1.000</span></b><span>Pelos construidos</span></div>
+  </div>
+</section>
+
+<!-- GALERÍA -->
+<section class="gallery-wrap">
+  <div class="gallery-h">
+    <div>
+      <div class="eyebrow">Trabajos reales</div>
+      <h2>Cada pelo es <span class="it">una historia.</span></h2>
+    </div>
+    <p>Fotos reales del salón. Volumen, alisado orgánico, microblading y extensiones en clientas de Palma. La técnica se ve sola.</p>
+  </div>
+
+  <div class="mosaic">
+    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesan%20las%20Extensiones%20de%20pelo" target="_blank" class="mosaic-item reveal">
+      <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/trabajos-extensiones-de-pelo.jpg" alt="Extensiones de pelo">
+      <div class="caption"><b>Extensiones de pelo</b><span>Volumen + largo</span></div>
+    </a>
+    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20Alisado%20%2B%20Extensiones" target="_blank" class="mosaic-item reveal">
+      <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/trabajos-alisado-organico-y-extensiones-de-pelo.jpg" alt="Alisado + extensiones">
+      <div class="caption"><b>Alisado orgánico + extensiones</b><span>Combinado</span></div>
+    </a>
+    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20el%20Volumen%20de%20pelo" target="_blank" class="mosaic-item reveal">
+      <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/trabajos-relleno-volumen-de-pelo.jpg" alt="Relleno y volumen">
+      <div class="caption"><b>Relleno y volumen</b><span>Pelo fino</span></div>
+    </a>
+    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20Microblading" target="_blank" class="mosaic-item reveal">
+      <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/trabajos-microblading.jpg" alt="Microblading">
+      <div class="caption"><b>Microblading</b><span>Cejas pelo a pelo</span></div>
+    </a>
+    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20Alisado%20org%C3%A1nico" target="_blank" class="mosaic-item reveal">
+      <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/trabajos-alisado-organico.jpg" alt="Alisado orgánico">
+      <div class="caption"><b>Alisado orgánico</b><span>Keratina</span></div>
+    </a>
+    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20Volumen%20y%20Extensiones" target="_blank" class="mosaic-item reveal">
+      <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/trabajos-volumen-y-extensiones-de-pelo.jpg" alt="Volumen y extensiones">
+      <div class="caption"><b>Volumen + extensiones</b><span>Caso completo</span></div>
+    </a>
+    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20otra%20transformaci%C3%B3n%20de%20Extensiones" target="_blank" class="mosaic-item reveal">
+      <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/trabajos-extensiones-de-pelo-1.jpg" alt="Extensiones premium">
+      <div class="caption"><b>Extensiones premium</b><span>Great Lengths</span></div>
+    </a>
+    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20Microblading%20antes%20y%20despues" target="_blank" class="mosaic-item reveal">
+      <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/04/trabajos-microblading-antes-y-despues.jpg" alt="Microblading antes/después">
+      <div class="caption"><b>Microblading · A/D</b><span>Transformación completa</span></div>
+    </a>
+  </div>
+  <p class="gallery-note">8 de las +1.000 transformaciones realizadas. En la web final: rotación con todos los trabajos del archivo.</p>
+</section>
+
+<!-- SERVICIOS -->
+<section class="services" id="servicios">
+  <div class="services-h">
+    <div class="eyebrow">Servicios</div>
+    <h2>Más allá de las <span class="it">extensiones.</span></h2>
+    <p>Salón completo con servicios estrella. Cada uno desarrollado durante años, sin atajos.</p>
+  </div>
+
+  <div class="svc-grid">
+    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesan%20las%20Extensiones%20de%20pelo" target="_blank" class="svc-card">
+      <div class="snum">01</div>
+      <h3>Extensiones de pelo</h3>
+      <p>Great Lengths, Hairdreams, Xtreme. Adhesión termoplástica o keratina. Duración 4-6 meses.</p>
+      <div class="price">desde 350€ + colocación</div>
+    </a>
+    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20el%20Alisado%20brasile%C3%B1o" target="_blank" class="svc-card">
+      <div class="snum">02</div>
+      <h3>Alisado brasileño</h3>
+      <p>Keratina orgánica, sin formol. Pelo sano, brillo y movimiento durante 3-4 meses.</p>
+      <div class="price">desde 120€</div>
+    </a>
+    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20Microblading" target="_blank" class="svc-card">
+      <div class="snum">03</div>
+      <h3>Microblading de cejas</h3>
+      <p>Técnica pelo a pelo. Diseño previo, prueba de pigmento y retoque a las 6 semanas incluido.</p>
+      <div class="price">desde 290€</div>
+    </a>
+    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesan%20las%20Extensiones%20de%20pesta%C3%B1as" target="_blank" class="svc-card">
+      <div class="snum">04</div>
+      <h3>Extensiones de pestañas</h3>
+      <p>Clásicas, volumen 3D o efecto rímel. Pelo a pelo, sin tirar tu pestaña natural.</p>
+      <div class="price">desde 55€</div>
+    </a>
+    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20Peluquer%C3%ADa%20nupcial" target="_blank" class="svc-card">
+      <div class="snum">05</div>
+      <h3>Peluquería nupcial</h3>
+      <p>Sesión de prueba + día de la boda. Recogido o suelto, con o sin extensiones. Atención personalizada.</p>
+      <div class="price">desde 180€</div>
+    </a>
+    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20Depilaci%C3%B3n%20l%C3%A1ser" target="_blank" class="svc-card">
+      <div class="snum">06</div>
+      <h3>Depilación láser</h3>
+      <p>Equipo certificado. Pauta de 6-8 sesiones según fototipo y zona. Valoración previa gratuita.</p>
+      <div class="price">desde 35€/zona</div>
+    </a>
+  </div>
+</section>
+
+<!-- PROCESO extensiones -->
+<section class="proceso" id="proceso">
+  <div class="proceso-inner">
+    <div class="proceso-h">
+      <div class="eyebrow">Tu proceso de extensiones</div>
+      <h2>De la duda a tu mejor <span class="it">cabello.</span></h2>
+    </div>
+
+    <div class="steps">
+      <div class="step reveal">
+        <div class="num">Paso 01 · 30 min</div>
+        <h3>Valoración gratuita</h3>
+        <p>Vienes al salón, evaluamos tu pelo, vemos qué técnica y marca te encaja (Great Lengths, Hairdreams o Xtreme) y te decimos precio exacto. Sin compromiso.</p>
+      </div>
+      <div class="step reveal">
+        <div class="num">Paso 02 · 2-3 horas</div>
+        <h3>Colocación profesional</h3>
+        <p>Sesión cómoda, con descansos. Te colocamos las extensiones en una sola cita. Sales del salón con el cabello listo para presumir.</p>
+      </div>
+      <div class="step reveal">
+        <div class="num">Paso 03 · a las 4 semanas</div>
+        <h3>Revisión incluida</h3>
+        <p>Revisamos la fijación, ajustamos si hace falta y te damos las pautas de cuidado para que duren 4-6 meses como el primer día.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="test">
+  <blockquote>Llevo 6 años yendo. Probé extensiones en otros sitios y a los 2 meses ya se notaban. Aquí pasan 5 y nadie se da cuenta de que las llevo. Eso es lo que pagas.</blockquote>
+  <cite>Clienta · Extensiones Great Lengths</cite>
+  <span class="note">En la web final: 3-4 reseñas reales con foto y autorización.</span>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto" class="contact-grid">
+  <div class="contact-info">
+    <div class="eyebrow">Visítanos</div>
+    <h2>Calle Can Asprer 3,<br><span class="it">Palma.</span></h2>
+    <dl>
+      <div>
+        <dt>Dirección</dt>
+        <dd>Calle Can Asprer, 3<br>07012 Palma de Mallorca</dd>
+      </div>
+      <div>
+        <dt>Horario</dt>
+        <dd>Lunes a Viernes: 10:00 — 18:00<br>Sábado: 10:00 — 13:00</dd>
+      </div>
+      <div>
+        <dt>WhatsApp</dt>
+        <dd><a href="https://wa.me/34615622189" target="_blank">615 62 21 89</a></dd>
+      </div>
+      <div>
+        <dt>Teléfono</dt>
+        <dd><a href="tel:+34971799478">971 79 94 78</a></dd>
+      </div>
+      <div>
+        <dt>Email</dt>
+        <dd><a href="mailto:peluequipos@gmail.com">peluequipos@gmail.com</a></dd>
+      </div>
+    </dl>
+    <a href="https://wa.me/34615622189?text=Hola%2C%20vengo%20de%20la%20web.%20Quiero%20reservar%20mi%20valoraci%C3%B3n%20gratuita" target="_blank" class="contact-cta">
+      Reservar valoración gratuita <span class="arr">→</span>
+    </a>
+  </div>
+  <div class="map-side">
+    <iframe src="https://maps.google.com/maps?q=Calle%20Can%20Asprer%203%20Palma&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-zone">
+  <div class="faq-inner">
+    <div>
+      <div class="eyebrow">Dudas frecuentes</div>
+      <h2>Lo que <span class="it">todas</span> preguntan.</h2>
+    </div>
+    <div>
+      <details class="q">
+        <summary>¿Cuánto duran las extensiones?</summary>
+        <div class="a">Entre 4 y 6 meses con cuidado adecuado. La duración depende de la marca elegida, tu tipo de pelo y tu rutina. En la valoración te explicamos todo y damos pautas claras de mantenimiento.</div>
+      </details>
+      <details class="q">
+        <summary>¿Se nota que llevo extensiones?</summary>
+        <div class="a">Con Great Lengths, Hairdreams o Xtreme y nuestra técnica de colocación, no. La frontera entre tu pelo natural y la extensión queda invisible. Por eso solo trabajamos con estas tres marcas.</div>
+      </details>
+      <details class="q">
+        <summary>¿Daña mi pelo natural?</summary>
+        <div class="a">No, si la técnica es correcta. Las marcas premium usan adhesión termoplástica o keratina que se separa sin tirar del pelo. Por eso nunca usamos extensiones baratas: ahí sí hay riesgo.</div>
+      </details>
+      <details class="q">
+        <summary>¿Puedo lavarme el pelo como siempre?</summary>
+        <div class="a">Sí. Las primeras 48h pedimos un cuidado especial, después rutina normal con champú sin sulfatos y secado natural cuando sea posible. Te damos kit de pautas el día de la colocación.</div>
+      </details>
+      <details class="q">
+        <summary>¿Cuánto cuestan exactamente?</summary>
+        <div class="a">El precio depende del largo, cantidad y marca. El pelo desde 350€, más colocación. En la valoración gratuita te decimos cifra exacta. Hay opciones para todos los presupuestos.</div>
+      </details>
+      <details class="q">
+        <summary>¿Tenéis financiación?</summary>
+        <div class="a">Sí. Sets completos a partir de cierto importe se pueden pagar en 2 o 3 cuotas sin intereses por Bizum o transferencia.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <div class="foot-brand">
+      <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/logo_peluqueria-equipos-258x73-1.png" alt="Peluquería Equipo's">
+      <p>Nº1 en extensiones de pelo en Palma de Mallorca. Distribuidor oficial Great Lengths, Hairdreams y Xtreme.</p>
+    </div>
+    <div class="foot-col">
+      <h4>Visítanos</h4>
+      <p>Calle Can Asprer, 3<br>07012 Palma</p>
+      <p>L-V 10—18h<br>Sáb 10—13h</p>
+    </div>
+    <div class="foot-col">
+      <h4>Contacto</h4>
+      <a href="https://wa.me/34615622189" target="_blank">615 62 21 89 · WhatsApp</a>
+      <a href="tel:+34971799478">971 79 94 78</a>
+      <a href="mailto:peluequipos@gmail.com">peluequipos@gmail.com</a>
+    </div>
+  </div>
+  <div class="foot-copy">© 2026 Peluquería Equipo's · Demo preparada por Sorabyte</div>
+</footer>
+
+<a href="https://wa.me/34615622189?text=Hola%2C%20vengo%20de%20la%20web.%20Quiero%20reservar%20una%20cita" target="_blank" class="wa-fab" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('up'); io.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

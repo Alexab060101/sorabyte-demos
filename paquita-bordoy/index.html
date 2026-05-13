@@ -378,6 +378,54 @@ nav.menu .reserve:hover { background:var(--peach); }
   font-style:italic;
 }
 
+/* === RESULTADOS · grid antes/después === */
+.results-grid {
+  max-width:1280px; margin:0 auto;
+  padding:0 6vw 30px;
+  display:grid; grid-template-columns:repeat(2,1fr); gap:24px;
+}
+@media (max-width:768px) { .results-grid { grid-template-columns:1fr; gap:18px; } }
+.result-card {
+  position:relative;
+  background:#1a1a1a;
+  border:1px solid rgba(251,245,238,0.08);
+  overflow:hidden;
+  transition:transform 0.5s cubic-bezier(0.22,0.61,0.36,1), border-color 0.4s;
+}
+.result-card:hover { transform:translateY(-4px); border-color:rgba(220,190,160,0.3); }
+.result-card .result-img {
+  width:100%;
+  aspect-ratio:4/3;
+  background:#0e0e0e;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+}
+.result-card .result-img img {
+  max-width:100%; max-height:100%;
+  width:auto; height:auto;
+  object-fit:contain;
+  display:block;
+}
+.result-card .result-caption {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 22px;
+  border-top:1px solid rgba(251,245,238,0.06);
+}
+.result-card .result-caption .label {
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-size:1.08rem;
+  color:var(--cream);
+  font-weight:500;
+}
+.result-card .result-caption .tag {
+  font-size:0.7rem;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--nude);
+  font-weight:500;
+}
+
 /* === SERVICIOS · grid limpio 3×2 === */
 .svc-grid {
   display:grid; grid-template-columns:repeat(3,1fr); gap:0;
@@ -864,20 +912,42 @@ html { scroll-padding-top:80px; }
 <section class="gallery-wrap" id="trabajos">
   <div class="gallery-h">
     <div>
-      <div class="eyebrow">Trabajos reales</div>
-      <h2>Cada caso es una <span class="it">conversación.</span></h2>
+      <div class="eyebrow">Resultados reales</div>
+      <h2>Lo que se ve, <span class="it">se cuenta sola.</span></h2>
     </div>
-    <p>Aquí va una muestra de mi Instagram (@paquitabordoy.estetica): facials, microblading, manchas, exfoliación, masaje. Todo trabajo real, sin retoque.</p>
+    <p>Casos reales de clientas. Antes y después sin retoque, sin filtros. Solo trabajo y tiempo en cabina.</p>
   </div>
-  <div class="ig-mosaic">
-    <a href="https://www.instagram.com/paquitabordoy.estetica/" target="_blank" class="ig-cell ig-c2-r0"><span class="ig-cell-tag">Tratamiento facial</span></a>
-    <a href="https://www.instagram.com/paquitabordoy.estetica/" target="_blank" class="ig-cell ig-c0-r1"><span class="ig-cell-tag">Radiofrecuencia</span></a>
-    <a href="https://www.instagram.com/paquitabordoy.estetica/" target="_blank" class="ig-cell ig-c1-r2"><span class="ig-cell-tag">Mascarilla</span></a>
-    <a href="https://www.instagram.com/paquitabordoy.estetica/" target="_blank" class="ig-cell ig-c0-r3"><span class="ig-cell-tag">Microblading</span></a>
-    <a href="https://www.instagram.com/paquitabordoy.estetica/" target="_blank" class="ig-cell ig-c1-r4"><span class="ig-cell-tag">Estilo y trabajo</span></a>
-    <a href="https://www.instagram.com/paquitabordoy.estetica/" target="_blank" class="ig-cell ig-c2-r5"><span class="ig-cell-tag">Detalle de piel</span></a>
+  <div class="results-grid">
+    <article class="result-card reveal">
+      <div class="result-img"><img src="assets/antes-despues-abdomen.png" alt="Antes y después tratamiento de abdomen" loading="lazy"></div>
+      <div class="result-caption">
+        <span class="label">Abdomen, flacidez postparto</span>
+        <span class="tag">Antes / Después</span>
+      </div>
+    </article>
+    <article class="result-card reveal">
+      <div class="result-img"><img src="assets/antes-despues-papada.png" alt="Antes y después tratamiento de papada" loading="lazy"></div>
+      <div class="result-caption">
+        <span class="label">Papada y óvalo facial</span>
+        <span class="tag">Antes / Después</span>
+      </div>
+    </article>
+    <article class="result-card reveal">
+      <div class="result-img"><img src="assets/antes-despues-frente.png" alt="Antes y después arrugas de frente" loading="lazy"></div>
+      <div class="result-caption">
+        <span class="label">Arrugas de expresión, frente</span>
+        <span class="tag">Antes / Después</span>
+      </div>
+    </article>
+    <article class="result-card reveal">
+      <div class="result-img"><img src="assets/tratamiento-liposonix.png" alt="Tratamiento Liposonix en cabina" loading="lazy"></div>
+      <div class="result-caption">
+        <span class="label">Liposonix, tratamiento no invasivo</span>
+        <span class="tag">En cabina</span>
+      </div>
+    </article>
   </div>
-  <p class="gallery-note">Fotos extraídas de tu Instagram. En la web final: galería sincronizada con tus últimos trabajos automáticamente.</p>
+  <p class="gallery-note">Más casos en @paquitabordoy.estetica. Resultados varían según constancia y plan personalizado en consulta.</p>
 </section>
 
 <!-- SERVICIOS -->
@@ -1064,7 +1134,7 @@ const io = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-document.querySelectorAll('.svc-grid, .steps, .ig-mosaic').forEach(group => {
+document.querySelectorAll('.svc-grid, .steps, .results-grid').forEach(group => {
   Array.from(group.children).forEach((child, i) => {
     if(child.classList.contains('reveal') && i < 4) child.classList.add('d' + Math.min(i, 3));
   });

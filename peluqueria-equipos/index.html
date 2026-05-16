@@ -782,6 +782,185 @@ header.scrolled {
 }
 
 html { scroll-padding-top:80px; }
+
+/* === MOTION TOKENS (motion-patterns-deep) === */
+:root {
+  --m-fast: 200ms;
+  --m-base: 650ms;
+  --m-slow: 1100ms;
+  --m-ease-snap: cubic-bezier(0.4, 0, 0.2, 1);
+  --m-ease-out: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* === E1 · Mask text reveal (línea a línea) === */
+.mask-reveal { display:block; overflow:hidden; line-height:1.05; padding-bottom:0.14em; }
+.mask-reveal > .ln {
+  display:block;
+  transform:translateY(108%);
+  transition:transform var(--m-slow) var(--m-ease-out);
+  will-change:transform;
+}
+.mask-reveal.ln-2 > .ln:nth-child(2) { transition-delay:140ms; }
+.mask-reveal.ln-3 > .ln:nth-child(3) { transition-delay:280ms; }
+.mask-reveal.in > .ln { transform:translateY(0); }
+
+/* === E2 · Image clip reveal (mosaic galería) ===
+   Clip-path inset(100% 0 0 0) → 0, 1100ms. */
+.mosaic-item { will-change:clip-path; }
+.mosaic-item.cliphide { clip-path:inset(100% 0 0 0); }
+.mosaic-item.clipin { clip-path:inset(0); transition:clip-path 1100ms var(--m-ease-out); }
+.mosaic-item.cliphide img { transform:scale(1.10); }
+.mosaic-item.clipin img { transform:scale(1); transition:transform 1300ms var(--m-ease-out); }
+
+/* === A1 · Marquee scroll opposite (segunda fila servicios) ===
+   No scroll-driven, auto velocidad lenta, dirección opuesta. */
+.brands-track-2 {
+  display:flex; gap:90px; align-items:center;
+  animation:slide-x-rev 34s linear infinite;
+  white-space:nowrap;
+  margin-top:24px;
+}
+.brands-track-2 span {
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:1.35rem;
+  color:var(--gold-2);
+  letter-spacing:0.02em;
+  opacity:0.78;
+  flex-shrink:0;
+}
+.brands-track-2 .dot {
+  color:var(--gold);
+  font-style:normal;
+  font-size:1rem;
+  opacity:0.5;
+  flex-shrink:0;
+}
+@keyframes slide-x-rev {
+  from { transform:translateX(-50%); }
+  to { transform:translateX(0); }
+}
+
+/* === A3 · CARD REVEAL STACK · proceso (sticky stack) ===
+   Solo desktop. Padre directo .proceso-inner NO tiene overflow:hidden. OK.
+   .proceso (padre del padre) tampoco. OK. */
+@media (min-width:769px) {
+  .steps {
+    display:block !important;
+    grid-template-columns:none !important;
+    gap:0 !important;
+    max-width:880px;
+    margin:0 auto;
+    position:relative;
+  }
+  .steps .step {
+    position:sticky;
+    top:8rem;
+    margin-bottom:70vh;
+    padding:54px 56px 60px;
+    background:var(--cream);
+    border:1px solid var(--line);
+    border-top:2px solid var(--gold);
+    box-shadow:
+      0 1px 2px rgba(22,17,13,0.04),
+      0 18px 36px rgba(22,17,13,0.08),
+      0 36px 70px rgba(22,17,13,0.10);
+    transform-origin:center top;
+    will-change:transform, opacity;
+    transition:transform var(--m-slow) var(--m-ease-out), opacity var(--m-slow) var(--m-ease-out);
+  }
+  .steps .step:last-child { margin-bottom:0; }
+  .steps .step .num { font-size:0.92rem; }
+  .steps .step h3 { font-size:1.9rem; margin-bottom:14px; }
+  .steps .step p { font-size:1.02rem; max-width:620px; }
+}
+
+/* === Scroll progress bar superior (oro) === */
+.scroll-prog {
+  position:fixed; top:0; left:0; height:2px;
+  background:linear-gradient(90deg, var(--gold), var(--gold-2));
+  width:0%;
+  z-index:200;
+  pointer-events:none;
+  transition:width 80ms linear;
+}
+
+/* === Móvil: stack OFF, stagger pronunciado, scroll-snap mosaic, tap-state === */
+@media (max-width:768px) {
+  /* Stack desactivado en móvil: lista vertical normal con stagger */
+  .steps {
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:36px !important;
+  }
+  .steps .step {
+    position:static;
+    top:auto;
+    margin-bottom:0;
+    box-shadow:none;
+    border:none;
+    border-top:2px solid var(--gold);
+    background:transparent;
+    padding:32px 0 0;
+    transform:translateX(18px);
+    opacity:0;
+    transition:transform 0.7s var(--m-ease-out), opacity 0.7s var(--m-ease-out);
+  }
+  .steps .step.in-view { transform:none; opacity:1; }
+  .steps .step.in-view:nth-child(1) { transition-delay:0ms; }
+  .steps .step.in-view:nth-child(2) { transition-delay:120ms; }
+  .steps .step.in-view:nth-child(3) { transition-delay:240ms; }
+
+  /* Mosaic galería: scroll horizontal con scroll-snap (1.5 imagen por viewport) */
+  .mosaic {
+    display:flex !important;
+    grid-template-columns:none !important;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    gap:2px;
+    padding:0 6vw 4px;
+    scrollbar-width:none;
+  }
+  .mosaic::-webkit-scrollbar { display:none; }
+  .mosaic-item {
+    flex:0 0 66vw;
+    scroll-snap-align:start;
+    aspect-ratio:1/1.2;
+  }
+
+  /* Hero will-change para parallax JS */
+  .hero img.bg { will-change:transform; }
+
+  /* Áreas táctiles cómodas */
+  .hero-cta, .contact-cta, nav.menu .reserve { min-height:48px; align-items:center; }
+  details.q summary { padding:22px 4px; min-height:60px; }
+
+  /* Stagger pronunciado para reveals genéricos */
+  .reveal { transform:translateX(18px) translateY(20px); }
+  .reveal.up { transform:none; }
+}
+
+/* Tap-state: feedback al tocar */
+@media (hover:none) and (pointer:coarse) {
+  .svc-card:active { transform:scale(0.97); background:var(--cream-2); }
+  .mosaic-item:active { transform:scale(0.98); }
+  .hero-cta:active, .contact-cta:active, nav.menu .reserve:active { transform:scale(0.97); }
+  .step:active { transform:scale(0.98); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mask-reveal > .ln { transform:none !important; transition:none !important; }
+  .mosaic-item { clip-path:none !important; transition:none !important; }
+  .mosaic-item img { transform:none !important; transition:none !important; }
+  .hero img.bg { animation:none !important; }
+  .brands-track, .brands-track-2 { animation:none !important; }
+  .reveal { opacity:1 !important; transform:none !important; }
+  @media (min-width:769px) {
+    .steps .step { position:static !important; margin-bottom:32px !important; transform:none !important; opacity:1 !important; }
+  }
+  .wa-fab::before { display:none; }
+}
 </style>
 </head>
 <body>
@@ -806,7 +985,7 @@ html { scroll-padding-top:80px; }
   <img class="bg" src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/trabajos-volumen-y-extensiones-de-pelo.jpg" alt="Peluquería Equipo's">
   <div class="hero-content">
     <div class="hero-tag">Nº1 en extensiones · Palma · Desde 1991</div>
-    <h1>El pelo que <span class="it">siempre quisiste,</span><br>hecho en una cita.</h1>
+    <h1 class="mask-reveal ln-2"><span class="ln">El pelo que <span class="it">siempre quisiste,</span></span><span class="ln">hecho en una cita.</span></h1>
     <div class="hero-bottom">
       <p class="hero-tagline">Más de 33 años trabajando con las marcas premium del mundo: Great Lengths, Hairdreams y Xtreme. Resultado natural, garantía visible. Valoración gratuita.</p>
       <a href="https://wa.me/34615622189?text=Hola%2C%20vengo%20de%20la%20web.%20Quiero%20una%20valoraci%C3%B3n%20de%20extensiones" target="_blank" class="hero-cta">
@@ -831,13 +1010,27 @@ html { scroll-padding-top:80px; }
     <span class="sep">·</span>
     <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/xtreme-400x100-1.png" alt="Xtreme">
   </div>
+  <div class="brands-track-2" aria-hidden="true">
+    <span>Extensiones</span><span class="dot">·</span>
+    <span>Mechas</span><span class="dot">·</span>
+    <span>Corte premium</span><span class="dot">·</span>
+    <span>Tratamientos</span><span class="dot">·</span>
+    <span>Alisado orgánico</span><span class="dot">·</span>
+    <span>Microblading</span><span class="dot">·</span>
+    <span>Extensiones</span><span class="dot">·</span>
+    <span>Mechas</span><span class="dot">·</span>
+    <span>Corte premium</span><span class="dot">·</span>
+    <span>Tratamientos</span><span class="dot">·</span>
+    <span>Alisado orgánico</span><span class="dot">·</span>
+    <span>Microblading</span><span class="dot">·</span>
+  </div>
 </section>
 
 <!-- INTRO -->
 <section class="intro" id="extensiones">
   <div class="intro-text reveal">
     <div class="eyebrow">Por qué somos Nº1</div>
-    <h2>33 años pegando pelo<br>como si fuera <span class="it">tuyo.</span></h2>
+    <h2 class="mask-reveal ln-2"><span class="ln">33 años pegando pelo</span><span class="ln">como si fuera <span class="it">tuyo.</span></span></h2>
     <p>No vendemos extensiones. Construimos pelo. Cada cliente entra con un cabello concreto y sale con otro, sin que se note la línea entre lo natural y lo añadido. Esa frontera invisible es el oficio.</p>
     <p>Por eso solo trabajamos con tres marcas en el mundo, las que nos dan calidad y respaldo: <b>Great Lengths</b>, <b>Hairdreams</b> y <b>Xtreme</b>. Sin atajos, sin importaciones baratas.</p>
   </div>
@@ -855,41 +1048,41 @@ html { scroll-padding-top:80px; }
   <div class="gallery-h">
     <div>
       <div class="eyebrow">Trabajos reales</div>
-      <h2>Cada pelo es <span class="it">una historia.</span></h2>
+      <h2 class="mask-reveal ln-1"><span class="ln">Cada pelo es <span class="it">una historia.</span></span></h2>
     </div>
     <p>Fotos reales del salón. Volumen, alisado orgánico, microblading y extensiones en clientas de Palma. La técnica se ve sola.</p>
   </div>
 
   <div class="mosaic">
-    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesan%20las%20Extensiones%20de%20pelo" target="_blank" class="mosaic-item reveal">
+    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesan%20las%20Extensiones%20de%20pelo" target="_blank" class="mosaic-item cliphide" data-clipreveal>
       <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/trabajos-extensiones-de-pelo.jpg" alt="Extensiones de pelo">
       <div class="caption"><b>Extensiones de pelo</b><span>Volumen + largo</span></div>
     </a>
-    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20Alisado%20%2B%20Extensiones" target="_blank" class="mosaic-item reveal">
+    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20Alisado%20%2B%20Extensiones" target="_blank" class="mosaic-item cliphide" data-clipreveal>
       <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/trabajos-alisado-organico-y-extensiones-de-pelo.jpg" alt="Alisado + extensiones">
       <div class="caption"><b>Alisado orgánico + extensiones</b><span>Combinado</span></div>
     </a>
-    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20el%20Volumen%20de%20pelo" target="_blank" class="mosaic-item reveal">
+    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20el%20Volumen%20de%20pelo" target="_blank" class="mosaic-item cliphide" data-clipreveal>
       <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/trabajos-relleno-volumen-de-pelo.jpg" alt="Relleno y volumen">
       <div class="caption"><b>Relleno y volumen</b><span>Pelo fino</span></div>
     </a>
-    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20Microblading" target="_blank" class="mosaic-item reveal">
+    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20Microblading" target="_blank" class="mosaic-item cliphide" data-clipreveal>
       <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/trabajos-microblading.jpg" alt="Microblading">
       <div class="caption"><b>Microblading</b><span>Cejas pelo a pelo</span></div>
     </a>
-    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20Alisado%20org%C3%A1nico" target="_blank" class="mosaic-item reveal">
+    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20Alisado%20org%C3%A1nico" target="_blank" class="mosaic-item cliphide" data-clipreveal>
       <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/trabajos-alisado-organico.jpg" alt="Alisado orgánico">
       <div class="caption"><b>Alisado orgánico</b><span>Keratina</span></div>
     </a>
-    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20Volumen%20y%20Extensiones" target="_blank" class="mosaic-item reveal">
+    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20Volumen%20y%20Extensiones" target="_blank" class="mosaic-item cliphide" data-clipreveal>
       <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/trabajos-volumen-y-extensiones-de-pelo.jpg" alt="Volumen y extensiones">
       <div class="caption"><b>Volumen + extensiones</b><span>Caso completo</span></div>
     </a>
-    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20otra%20transformaci%C3%B3n%20de%20Extensiones" target="_blank" class="mosaic-item reveal">
+    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20otra%20transformaci%C3%B3n%20de%20Extensiones" target="_blank" class="mosaic-item cliphide" data-clipreveal>
       <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/trabajos-extensiones-de-pelo-1.jpg" alt="Extensiones premium">
       <div class="caption"><b>Extensiones premium</b><span>Great Lengths</span></div>
     </a>
-    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20Microblading%20antes%20y%20despues" target="_blank" class="mosaic-item reveal">
+    <a href="https://wa.me/34615622189?text=Hola%2C%20me%20interesa%20Microblading%20antes%20y%20despues" target="_blank" class="mosaic-item cliphide" data-clipreveal>
       <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/04/trabajos-microblading-antes-y-despues.jpg" alt="Microblading antes/después">
       <div class="caption"><b>Microblading · A/D</b><span>Transformación completa</span></div>
     </a>
@@ -901,7 +1094,7 @@ html { scroll-padding-top:80px; }
 <section class="services" id="servicios">
   <div class="services-h">
     <div class="eyebrow">Servicios</div>
-    <h2>Más allá de las <span class="it">extensiones.</span></h2>
+    <h2 class="mask-reveal ln-1"><span class="ln">Más allá de las <span class="it">extensiones.</span></span></h2>
     <p>Salón completo con servicios estrella. Cada uno desarrollado durante años, sin atajos.</p>
   </div>
 
@@ -950,21 +1143,21 @@ html { scroll-padding-top:80px; }
   <div class="proceso-inner">
     <div class="proceso-h">
       <div class="eyebrow">Tu proceso de extensiones</div>
-      <h2>De la duda a tu mejor <span class="it">cabello.</span></h2>
+      <h2 class="mask-reveal ln-1"><span class="ln">De la duda a tu mejor <span class="it">cabello.</span></span></h2>
     </div>
 
     <div class="steps">
-      <div class="step reveal">
+      <div class="step">
         <div class="num">Paso 01 · 30 min</div>
         <h3>Valoración gratuita</h3>
         <p>Vienes al salón, evaluamos tu pelo, vemos qué técnica y marca te encaja (Great Lengths, Hairdreams o Xtreme) y te decimos precio exacto. Sin compromiso.</p>
       </div>
-      <div class="step reveal">
+      <div class="step">
         <div class="num">Paso 02 · 2-3 horas</div>
         <h3>Colocación profesional</h3>
         <p>Sesión cómoda, con descansos. Te colocamos las extensiones en una sola cita. Sales del salón con el cabello listo para presumir.</p>
       </div>
-      <div class="step reveal">
+      <div class="step">
         <div class="num">Paso 03 · a las 4 semanas</div>
         <h3>Revisión incluida</h3>
         <p>Revisamos la fijación, ajustamos si hace falta y te damos las pautas de cuidado para que duren 4-6 meses como el primer día.</p>
@@ -984,7 +1177,7 @@ html { scroll-padding-top:80px; }
 <section id="contacto" class="contact-grid">
   <div class="contact-info">
     <div class="eyebrow">Visítanos</div>
-    <h2>Calle Can Asprer 3,<br><span class="it">Palma.</span></h2>
+    <h2 class="mask-reveal ln-2"><span class="ln">Calle Can Asprer 3,</span><span class="ln it">Palma.</span></h2>
     <dl>
       <div>
         <dt>Dirección</dt>
@@ -992,7 +1185,7 @@ html { scroll-padding-top:80px; }
       </div>
       <div>
         <dt>Horario</dt>
-        <dd>Lunes a Viernes: 10:00 — 18:00<br>Sábado: 10:00 — 13:00</dd>
+        <dd>Lunes a Viernes: 10:00 a 18:00<br>Sábado: 10:00 a 13:00</dd>
       </div>
       <div>
         <dt>WhatsApp</dt>
@@ -1021,7 +1214,7 @@ html { scroll-padding-top:80px; }
   <div class="faq-inner">
     <div>
       <div class="eyebrow">Dudas frecuentes</div>
-      <h2>Lo que <span class="it">todas</span> preguntan.</h2>
+      <h2 class="mask-reveal ln-1"><span class="ln">Lo que <span class="it">todas</span> preguntan.</span></h2>
     </div>
     <div>
       <details class="q">
@@ -1061,7 +1254,7 @@ html { scroll-padding-top:80px; }
     <div class="foot-col">
       <h4>Visítanos</h4>
       <p>Calle Can Asprer, 3<br>07012 Palma</p>
-      <p>L-V 10—18h<br>Sáb 10—13h</p>
+      <p>L-V 10 a 18h<br>Sáb 10 a 13h</p>
     </div>
     <div class="foot-col">
       <h4>Contacto</h4>
@@ -1077,25 +1270,127 @@ html { scroll-padding-top:80px; }
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
+<!-- Scroll progress bar oro -->
+<div class="scroll-prog" id="scrollProg" aria-hidden="true"></div>
+
 <script>
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('up'); io.unobserve(e.target); } });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+(function(){
+  'use strict';
 
-// Stagger por grupos
-document.querySelectorAll('.mosaic, .svc-grid, .steps').forEach(group => {
-  Array.from(group.children).forEach((child, i) => {
-    if(child.classList.contains('reveal') && i < 8) child.classList.add('d' + Math.min(i, 7));
+  const isMobile = matchMedia('(max-width:768px)').matches;
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // 1) Reveal genérico (.reveal existentes en intro)
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('up'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Stagger por grupos
+  document.querySelectorAll('.svc-grid').forEach(group => {
+    Array.from(group.children).forEach((child, i) => {
+      if(child.classList.contains('reveal') && i < 8) child.classList.add('d' + Math.min(i, 7));
+    });
   });
-});
 
-// Header scroll
-const hdr = document.querySelector('header');
-window.addEventListener('scroll', () => {
-  if (window.scrollY > 20) hdr.classList.add('scrolled');
-  else hdr.classList.remove('scrolled');
-}, { passive:true });
+  // 2) E1 · Mask-reveal headlines
+  const ioMask = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ e.target.classList.add('in'); ioMask.unobserve(e.target); }
+    });
+  }, { threshold: 0.3, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.mask-reveal').forEach(el => ioMask.observe(el));
+  // Activar hero h1 inmediato
+  requestAnimationFrame(() => {
+    const h1 = document.querySelector('.hero h1.mask-reveal');
+    if (h1) setTimeout(() => h1.classList.add('in'), 140);
+  });
+
+  // 3) E2 · Clip-reveal mosaic items
+  const ioClip = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.remove('cliphide');
+        e.target.classList.add('clipin');
+        ioClip.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('[data-clipreveal]').forEach(el => ioClip.observe(el));
+
+  // 4) Stagger pronunciado .step móvil
+  if (isMobile) {
+    const ioStep = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if(e.isIntersecting){ e.target.classList.add('in-view'); ioStep.unobserve(e.target); }
+      });
+    }, { threshold: 0.18, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.steps .step').forEach(el => ioStep.observe(el));
+  }
+
+  // 5) A3 · Card-reveal-stack: scale dinámico de la card anterior cuando la siguiente sube
+  const stepCards = Array.from(document.querySelectorAll('.steps .step'));
+
+  // 6) Single rAF scroll loop
+  const hdr = document.querySelector('header');
+  const prog = document.getElementById('scrollProg');
+  const heroBg = document.querySelector('.hero img.bg');
+  let raf = null;
+
+  function tick() {
+    const sy = window.scrollY;
+    const vh = window.innerHeight;
+    const docH = document.documentElement.scrollHeight - vh;
+
+    // Header scroll
+    if (sy > 20) hdr.classList.add('scrolled'); else hdr.classList.remove('scrolled');
+
+    // Scroll progress bar
+    if (prog && docH > 0) {
+      prog.style.width = Math.min(100, (sy / docH) * 100) + '%';
+    }
+
+    // Hero parallax suave móvil
+    if (heroBg && isMobile && !reduceMotion && sy < vh) {
+      heroBg.style.transform = `translateY(${sy * 0.16}px) scale(1.08)`;
+    }
+
+    // A3 stack scale next-driven (solo desktop, no reduced-motion)
+    if (!isMobile && !reduceMotion && stepCards.length > 1) {
+      for (let i = 0; i < stepCards.length - 1; i++) {
+        const cur = stepCards[i];
+        const nxt = stepCards[i + 1];
+        const curRect = cur.getBoundingClientRect();
+        const nxtRect = nxt.getBoundingClientRect();
+        // Cuando la next entra por abajo y se acerca al sticky-top de la cur
+        const stickyTop = curRect.top; // posición actual de la cur (ya sticky)
+        const distance = nxtRect.top - stickyTop;
+        // distance grande = next lejos abajo → progress 0
+        // distance pequeña (acerca a 0) = next encima → progress 1
+        const trigger = vh * 0.55;
+        let p = 1 - Math.max(0, Math.min(1, distance / trigger));
+        const scale = 1 - p * 0.08;       // 1 → 0.92
+        const opacity = 1 - p * 0.15;     // 1 → 0.85
+        cur.style.transform = `scale(${scale.toFixed(4)})`;
+        cur.style.opacity = opacity.toFixed(3);
+      }
+      // última card siempre en su estado
+      const last = stepCards[stepCards.length - 1];
+      last.style.transform = 'scale(1)';
+      last.style.opacity = '1';
+    }
+
+    raf = null;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!raf) raf = requestAnimationFrame(tick);
+  }, { passive: true });
+  window.addEventListener('resize', () => {
+    if (!raf) raf = requestAnimationFrame(tick);
+  }, { passive: true });
+  tick();
+})();
 </script>
 </body>
 </html>

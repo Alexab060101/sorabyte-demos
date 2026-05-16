@@ -899,6 +899,191 @@ header.scrolled {
 
 /* Smooth scroll snap suave (no obligatorio) */
 html { scroll-padding-top:80px; }
+
+/* === MOTION TOKENS (motion-patterns-deep) === */
+:root {
+  --m-fast: 200ms;
+  --m-base: 650ms;
+  --m-slow: 800ms;
+  --m-ease-snap: cubic-bezier(0.4, 0, 0.2, 1);
+  --m-ease-out: cubic-bezier(0.25, 0.1, 0.25, 1);
+  /* Paletas bg-color-sync por pack */
+  --pack-color-left:   #F5E6DC;
+  --pack-color-center: #E8D9B5;
+  --pack-color-right:  #E8C8B6;
+}
+
+/* === E1 · Mask text reveal (línea a línea) === */
+.mask-reveal { display:block; overflow:hidden; line-height:1.05; padding-bottom:0.12em; }
+.mask-reveal > .ln {
+  display:block;
+  transform:translateY(105%);
+  transition:transform var(--m-slow) var(--m-ease-out);
+  will-change:transform;
+}
+.mask-reveal.ln-2 > .ln:nth-child(2) { transition-delay:120ms; }
+.mask-reveal.ln-3 > .ln:nth-child(3) { transition-delay:240ms; }
+.mask-reveal.in > .ln { transform:translateY(0); }
+
+/* === C1 + C2 · Role-based crossfade + bg-color-sync ===
+   Center pack: scale 1.05, full opacity. Laterales: blur 3px, opacity 0.7.
+   Sección packs bg transiciona al color del center activo. */
+.packs-section {
+  position:relative;
+  transition:background var(--m-base) var(--m-ease-snap);
+  background:linear-gradient(180deg, var(--white) 0%, var(--pack-color-center) 100%);
+}
+.packs-section[data-active="left"]   { background:linear-gradient(180deg, var(--white) 0%, var(--pack-color-left) 100%); }
+.packs-section[data-active="center"] { background:linear-gradient(180deg, var(--white) 0%, var(--pack-color-center) 100%); }
+.packs-section[data-active="right"]  { background:linear-gradient(180deg, var(--white) 0%, var(--pack-color-right) 100%); }
+
+@media (min-width:769px) {
+  .packs-grid { perspective:1200px; }
+  .pack {
+    transition:
+      transform var(--m-base) var(--m-ease-snap),
+      filter var(--m-base) var(--m-ease-snap),
+      opacity var(--m-base) var(--m-ease-snap),
+      box-shadow var(--m-base) var(--m-ease-snap),
+      border-color var(--m-base) var(--m-ease-snap);
+    will-change:transform, filter, opacity;
+  }
+  /* Override polish-pass hover lift (conflicts with role-based scale) */
+  .packs-grid[data-active] .pack:hover { transform:none; }
+  .packs-grid[data-active] .pack { cursor:pointer; }
+  .packs-grid[data-active="left"]   .pack[data-role="left"],
+  .packs-grid[data-active="center"] .pack[data-role="center"],
+  .packs-grid[data-active="right"]  .pack[data-role="right"] {
+    transform:scale(1.05);
+    filter:blur(0);
+    opacity:1;
+    z-index:2;
+    box-shadow:
+      0 4px 12px rgba(201,155,130,0.18),
+      0 20px 50px rgba(201,155,130,0.26),
+      0 40px 90px rgba(201,155,130,0.30);
+  }
+  .packs-grid[data-active="left"]   .pack[data-role="center"],
+  .packs-grid[data-active="left"]   .pack[data-role="right"],
+  .packs-grid[data-active="center"] .pack[data-role="left"],
+  .packs-grid[data-active="center"] .pack[data-role="right"],
+  .packs-grid[data-active="right"]  .pack[data-role="left"],
+  .packs-grid[data-active="right"]  .pack[data-role="center"] {
+    transform:scale(0.95);
+    filter:blur(3px);
+    opacity:0.7;
+  }
+  .packs-grid[data-active] .pack[data-role="center"]:hover,
+  .packs-grid[data-active] .pack[data-role="left"]:hover,
+  .packs-grid[data-active] .pack[data-role="right"]:hover {
+    filter:blur(0);
+    opacity:1;
+  }
+  /* Locked state ignora pointer events durante transición */
+  .packs-grid.locked .pack { pointer-events:none; }
+}
+
+/* === D3 · Button-fill-from-cursor (desktop) === */
+@media (hover:hover) and (pointer:fine) {
+  .pack-cta {
+    position:relative;
+    overflow:hidden;
+    isolation:isolate;
+    --mx:50%;
+    --my:50%;
+  }
+  .pack-cta .fill {
+    position:absolute;
+    top:var(--my);
+    left:var(--mx);
+    width:14px; height:14px;
+    border-radius:50%;
+    background:var(--rose-deep);
+    transform:translate(-50%,-50%) scale(0);
+    transition:transform var(--m-base) var(--m-ease-snap);
+    pointer-events:none;
+    z-index:-1;
+  }
+  .pack-cta:hover .fill { transform:translate(-50%,-50%) scale(40); }
+  .pack-cta:hover { color:var(--white); border-color:var(--rose-deep); background:transparent; }
+  .pack.featured .pack-cta .fill { background:var(--black); }
+  .pack.featured .pack-cta:hover { color:var(--white); border-color:var(--black); }
+}
+
+/* === D2 · Image zoom with mask (gallery refinement on viewport in) === */
+.gal-card img { transform:scale(1.08); transition:transform 1.2s var(--m-ease-out); }
+.gal-card.in-view img { transform:scale(1); }
+.gal-card:hover img { transform:scale(1.05); }
+
+/* === Scroll progress bar superior (móvil) === */
+.scroll-prog {
+  position:fixed; top:0; left:0; height:2px;
+  background:linear-gradient(90deg, var(--rose-deep), var(--gold));
+  width:0%;
+  z-index:200;
+  pointer-events:none;
+  transition:width 80ms linear;
+}
+@media (min-width:769px) { .scroll-prog { display:none; } }
+
+/* === MÓVIL: carrusel scroll-snap packs + extras === */
+@media (max-width:768px) {
+  .packs-grid {
+    display:flex !important;
+    grid-template-columns:none;
+    max-width:none !important;
+    overflow-x:auto;
+    overflow-y:visible;
+    scroll-snap-type:x mandatory;
+    scroll-padding:0 5vw;
+    gap:16px;
+    padding:30px 5vw 40px;
+    margin:0 -5vw;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .packs-grid::-webkit-scrollbar { display:none; }
+  .pack {
+    flex:0 0 82%;
+    scroll-snap-align:center;
+    transition:transform var(--m-base) var(--m-ease-snap), box-shadow var(--m-base) var(--m-ease-snap);
+  }
+  .pack.featured { transform:none; }
+
+  /* Tap-state */
+  .pack:active { transform:scale(0.97); }
+  .pack-cta:active { transform:scale(0.97); filter:brightness(1.05); }
+  .btn-primary:active, .btn-ghost:active, .contact-cta:active, .nav-cta:active {
+    transform:scale(0.97); filter:brightness(1.05);
+  }
+
+  /* Stagger pronunciado gallery + proceso + bd */
+  .gal-card, .bd-card, .paso { transform:translateY(24px); opacity:0; transition:transform 0.65s var(--m-ease-out), opacity 0.65s var(--m-ease-out); }
+  .gal-card.in-view, .bd-card.in-view, .paso.in-view { transform:none; opacity:1; }
+  .galeria-grid .gal-card.in-view:nth-child(1),
+  .bd-grid .bd-card.in-view:nth-child(1),
+  .proceso-grid .paso.in-view:nth-child(1) { transition-delay:0ms; }
+  .galeria-grid .gal-card.in-view:nth-child(2),
+  .bd-grid .bd-card.in-view:nth-child(2),
+  .proceso-grid .paso.in-view:nth-child(2) { transition-delay:90ms; }
+  .galeria-grid .gal-card.in-view:nth-child(3),
+  .bd-grid .bd-card.in-view:nth-child(3),
+  .proceso-grid .paso.in-view:nth-child(3) { transition-delay:180ms; }
+  .galeria-grid .gal-card.in-view:nth-child(4) { transition-delay:270ms; }
+
+  /* Hero parallax suave: will-change */
+  .hero-visual img { will-change:transform; }
+}
+
+/* === prefers-reduced-motion === */
+@media (prefers-reduced-motion: reduce) {
+  .mask-reveal > .ln { transform:none !important; transition:none !important; }
+  .pack { transform:none !important; filter:none !important; opacity:1 !important; }
+  .pack-cta .fill { display:none !important; }
+  .gal-card img { transform:scale(1) !important; transition:none !important; }
+  .hero::before, .hero::after, .hero-visual img { animation:none !important; }
+  .reveal { opacity:1 !important; transform:none !important; }
+}
 </style>
 </head>
 <body>
@@ -930,7 +1115,7 @@ html { scroll-padding-top:80px; }
         <span class="hero-badge-dot"></span>
         Palma de Mallorca · Centro estética
       </div>
-      <h1>Resultados visibles<br>desde la <em>3ª sesión.</em></h1>
+      <h1 class="mask-reveal ln-2"><span class="ln">Resultados visibles</span><span class="ln">desde la <em>3ª sesión.</em></span></h1>
       <p class="hero-sub">Tratamientos faciales y corporales con HIFU 12D, Scultor e INDIBA. Plan personalizado, sin sorpresas. Reservas en WhatsApp en 2 minutos.</p>
       <div class="hero-actions">
         <a href="https://wa.me/34630550516?text=Hola%2C%20quiero%20reservar%20una%20sesi%C3%B3n" target="_blank" class="btn-primary">Reservar mi sesión →</a>
@@ -981,14 +1166,14 @@ html { scroll-padding-top:80px; }
 </section>
 
 <!-- TRATAMIENTOS · PACKS -->
-<section class="section" id="tratamientos">
+<section class="section packs-section" id="tratamientos" data-active="center">
   <div class="section-inner">
     <span class="section-eyebrow">Tratamientos</span>
-    <h2 class="section-h">Elige tu <em>transformación.</em></h2>
+    <h2 class="section-h mask-reveal ln-1"><span class="ln">Elige tu <em>transformación.</em></span></h2>
     <p class="section-desc">Tres formas de empezar. Diagnóstico gratuito antes de cualquier compromiso. Sin presión, sin sorpresas.</p>
 
-    <div class="packs-grid">
-      <div class="pack reveal">
+    <div class="packs-grid" data-active="center">
+      <div class="pack reveal" data-role="left" data-color="left">
         <div class="pack-name">Sesión Suelta</div>
         <div class="pack-tagline">Probar sin compromiso</div>
         <div class="pack-price">100€</div>
@@ -998,10 +1183,10 @@ html { scroll-padding-top:80px; }
           <li>Diagnóstico de tu piel incluido</li>
           <li>Plan personalizado sin compromiso</li>
         </ul>
-        <a href="https://wa.me/34630550516?text=Hola%2C%20quiero%20reservar%20una%20Sesi%C3%B3n%20Suelta" target="_blank" class="pack-cta">Reservar sesión</a>
+        <a href="https://wa.me/34630550516?text=Hola%2C%20quiero%20reservar%20una%20Sesi%C3%B3n%20Suelta" target="_blank" class="pack-cta"><span class="fill"></span>Reservar sesión</a>
       </div>
 
-      <div class="pack featured reveal">
+      <div class="pack featured reveal" data-role="center" data-color="center">
         <div class="pack-name">Pack 5 sesiones</div>
         <div class="pack-tagline">Resultados visibles</div>
         <div class="pack-price">425€</div>
@@ -1013,10 +1198,10 @@ html { scroll-padding-top:80px; }
           <li>Revisión post-tratamiento</li>
           <li>Asesor personal por WhatsApp</li>
         </ul>
-        <a href="https://wa.me/34630550516?text=Hola%2C%20quiero%20el%20Pack%205%20sesiones" target="_blank" class="pack-cta">Empezar mi pack</a>
+        <a href="https://wa.me/34630550516?text=Hola%2C%20quiero%20el%20Pack%205%20sesiones" target="_blank" class="pack-cta"><span class="fill"></span>Empezar mi pack</a>
       </div>
 
-      <div class="pack reveal">
+      <div class="pack reveal" data-role="right" data-color="right">
         <div class="pack-name">Programa Transformación</div>
         <div class="pack-tagline">Cambio profundo</div>
         <div class="pack-price">1.200€</div>
@@ -1028,7 +1213,7 @@ html { scroll-padding-top:80px; }
           <li>Revisión mensual con fotos comparativas</li>
           <li>Acceso prioritario a citas</li>
         </ul>
-        <a href="https://wa.me/34630550516?text=Hola%2C%20me%20interesa%20el%20Programa%20Transformaci%C3%B3n" target="_blank" class="pack-cta">Solicitar programa</a>
+        <a href="https://wa.me/34630550516?text=Hola%2C%20me%20interesa%20el%20Programa%20Transformaci%C3%B3n" target="_blank" class="pack-cta"><span class="fill"></span>Solicitar programa</a>
       </div>
     </div>
   </div>
@@ -1038,7 +1223,7 @@ html { scroll-padding-top:80px; }
 <section class="section galeria-section">
   <div class="section-inner">
     <span class="section-eyebrow">Catálogo</span>
-    <h2 class="section-h">Tratamientos <em>destacados.</em></h2>
+    <h2 class="section-h mask-reveal ln-1"><span class="ln">Tratamientos <em>destacados.</em></span></h2>
     <p class="section-desc">Cada uno con su propio cronograma y resultado esperado.</p>
 
     <div class="galeria-grid">
@@ -1078,7 +1263,7 @@ html { scroll-padding-top:80px; }
 <section class="section antesdespues-section" id="antesdespues">
   <div class="section-inner">
     <span class="section-eyebrow">Resultados reales</span>
-    <h2 class="section-h">Antes y <em>después.</em></h2>
+    <h2 class="section-h mask-reveal ln-1"><span class="ln">Antes y <em>después.</em></span></h2>
     <p class="section-desc">Cada caso es una historia real. Plan personalizado, evolución medible.</p>
 
     <div class="bd-grid">
@@ -1125,7 +1310,7 @@ html { scroll-padding-top:80px; }
 <section class="section">
   <div class="section-inner">
     <span class="section-eyebrow">Cómo trabajamos</span>
-    <h2 class="section-h">3 pasos. <em>Cero presión.</em></h2>
+    <h2 class="section-h mask-reveal ln-1"><span class="ln">3 pasos. <em>Cero presión.</em></span></h2>
 
     <div class="proceso-grid">
       <div class="paso reveal">
@@ -1151,7 +1336,7 @@ html { scroll-padding-top:80px; }
 <section class="section faq-section" id="faq">
   <div class="section-inner">
     <span class="section-eyebrow">Preguntas frecuentes</span>
-    <h2 class="section-h">Lo que <em>todas</em> preguntan.</h2>
+    <h2 class="section-h mask-reveal ln-1"><span class="ln">Lo que <em>todas</em> preguntan.</span></h2>
 
     <div class="faq-list" style="margin-top:50px;">
       <details class="faq">
@@ -1186,7 +1371,7 @@ html { scroll-padding-top:80px; }
 <section class="contact-grid" id="contacto">
   <div class="contact-info">
     <span class="section-eyebrow">Visítanos</span>
-    <h2>Avd. Comte Sallent <em>29.</em></h2>
+    <h2 class="mask-reveal ln-1"><span class="ln">Avd. Comte Sallent <em>29.</em></span></h2>
     <p style="color:var(--grey); font-size:1rem; line-height:1.7; margin-bottom:10px;">Diagnóstico gratis de 15 minutos. Sin compromiso. Solo tú, nosotras y lo que de verdad necesitas.</p>
     <dl>
       <div>
@@ -1195,7 +1380,7 @@ html { scroll-padding-top:80px; }
       </div>
       <div>
         <dt>Horario</dt>
-        <dd>L-V 9:00 — 19:00</dd>
+        <dd>L-V 9:00 a 19:00</dd>
       </div>
       <div>
         <dt>WhatsApp</dt>
@@ -1222,35 +1407,156 @@ html { scroll-padding-top:80px; }
   <div class="footer-copy">© 2026 Vive Estética · Demo Lifting preparado por Sorabyte</div>
 </footer>
 
+<!-- Scroll progress bar (móvil) -->
+<div class="scroll-prog" id="scrollProg" aria-hidden="true"></div>
+
 <!-- Sticky WhatsApp -->
 <a href="https://wa.me/34630550516?text=Hola%2C%20quiero%20reservar%20una%20sesi%C3%B3n" target="_blank" class="wa-sticky" aria-label="WhatsApp directo">
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
 <script>
-const io = new IntersectionObserver(entries => {
-  entries.forEach((e, idx) => {
-    if(e.isIntersecting){
-      e.target.classList.add('up');
-      io.unobserve(e.target);
+(function(){
+  'use strict';
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isMobile = matchMedia('(max-width:768px)').matches;
+  const isDesktop = matchMedia('(min-width:769px)').matches;
+
+  // 1) Reveal genérico
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('up'); io.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Stagger por grupos
+  document.querySelectorAll('.galeria-grid, .bd-grid, .proceso-grid').forEach(group => {
+    Array.from(group.children).forEach((child, i) => {
+      if(child.classList.contains('reveal') && i < 4) child.classList.add('d' + Math.min(i, 3));
+    });
+  });
+
+  // 2) E1 · Mask-reveal headlines
+  const ioMask = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ e.target.classList.add('in'); ioMask.unobserve(e.target); }
+    });
+  }, { threshold: 0.25, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.mask-reveal').forEach(el => ioMask.observe(el));
+  // Hero h1 activar inmediato
+  requestAnimationFrame(() => {
+    const h1 = document.querySelector('.hero h1.mask-reveal');
+    if (h1) setTimeout(() => h1.classList.add('in'), 120);
+  });
+
+  // 3) D2 · Image zoom gallery (in-view)
+  const ioZoom = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ e.target.classList.add('in-view'); ioZoom.unobserve(e.target); }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.gal-card, .bd-card, .paso').forEach(el => ioZoom.observe(el));
+
+  // 4) C1 + C2 · Role-based crossfade + bg-color-sync (DESKTOP)
+  const packsGrid = document.querySelector('.packs-grid');
+  const packsSection = document.querySelector('.packs-section');
+  if (packsGrid && packsSection && isDesktop && !reduceMotion) {
+    const packs = Array.from(packsGrid.querySelectorAll('.pack'));
+    let locked = false;
+    const ROLES = ['left','center','right'];
+
+    function syncBg() {
+      const center = packs.find(p => p.dataset.role === 'center');
+      const color = center ? (center.dataset.color || 'center') : 'center';
+      packsSection.setAttribute('data-active', color);
     }
-  });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-// Stagger delays automáticos por grupos de hermanos
-document.querySelectorAll('.packs-grid, .galeria-grid, .bd-grid, .proceso-grid').forEach(group => {
-  Array.from(group.children).forEach((child, i) => {
-    if(child.classList.contains('reveal') && i < 4) child.classList.add('d' + Math.min(i, 3));
-  });
-});
+    function rotateTo(clickedPack) {
+      if (locked) return;
+      const role = clickedPack.dataset.role;
+      if (!role || role === 'center') return;
+      locked = true;
+      packsGrid.classList.add('locked');
 
-// Header sombra al scroll
-const hdr = document.querySelector('header');
-window.addEventListener('scroll', () => {
-  if (window.scrollY > 20) hdr.classList.add('scrolled');
-  else hdr.classList.remove('scrolled');
-}, { passive:true });
+      // Swap roles entre el actual center y el clickeado
+      const currentCenter = packs.find(p => p.dataset.role === 'center');
+      if (currentCenter) currentCenter.dataset.role = role;
+      clickedPack.dataset.role = 'center';
+      packsGrid.setAttribute('data-active', 'center');
+      syncBg();
+
+      setTimeout(() => {
+        locked = false;
+        packsGrid.classList.remove('locked');
+      }, 650);
+    }
+
+    packs.forEach(p => {
+      p.addEventListener('click', (ev) => {
+        if (ev.target.closest('.pack-cta')) return;
+        if (p.dataset.role !== 'center') {
+          ev.preventDefault();
+          rotateTo(p);
+        }
+      });
+    });
+    syncBg();
+  }
+
+  // 4b) Móvil: bg-color-sync vía IO sobre cards visibles
+  if (packsGrid && packsSection && isMobile && !reduceMotion) {
+    const ioCenter = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting && e.intersectionRatio > 0.6) {
+          const color = e.target.dataset.color;
+          if (color) packsSection.setAttribute('data-active', color);
+        }
+      });
+    }, { threshold: [0.6, 0.8], root: packsGrid });
+    packsGrid.querySelectorAll('.pack').forEach(p => ioCenter.observe(p));
+  }
+
+  // 5) D3 · Button-fill-from-cursor: track entry point
+  if (!reduceMotion) {
+    document.querySelectorAll('.pack-cta').forEach(btn => {
+      btn.addEventListener('mouseenter', (e) => {
+        const r = btn.getBoundingClientRect();
+        btn.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        btn.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+      btn.addEventListener('mouseleave', (e) => {
+        const r = btn.getBoundingClientRect();
+        btn.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        btn.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+    });
+  }
+
+  // 6) Single rAF scroll loop · header + progress + hero parallax
+  const hdr = document.querySelector('header');
+  const prog = document.getElementById('scrollProg');
+  const heroVis = document.querySelector('.hero-visual img');
+  let raf = null;
+  function tick() {
+    const sy = window.scrollY;
+    const vh = window.innerHeight;
+    const docH = document.documentElement.scrollHeight - vh;
+
+    if (sy > 20) hdr.classList.add('scrolled'); else hdr.classList.remove('scrolled');
+
+    if (prog && docH > 0) {
+      prog.style.width = Math.min(100, (sy / docH) * 100) + '%';
+    }
+
+    if (heroVis && isMobile && !reduceMotion && sy < vh) {
+      heroVis.style.transform = `translateY(${sy * 0.12}px) scale(1.06)`;
+    }
+
+    raf = null;
+  }
+  window.addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(tick); }, { passive: true });
+  window.addEventListener('resize', () => { if (!raf) raf = requestAnimationFrame(tick); }, { passive: true });
+  tick();
+})();
 </script>
 </body>
 </html>

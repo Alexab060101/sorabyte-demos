@@ -1075,6 +1075,213 @@ html { scroll-padding-top:80px; }
   .hero-visual img { will-change:transform; }
 }
 
+/* === UPGRADE v2 · Más disruptivo === */
+
+/* Page-load mask reveal: rose-deep desde el centro 1100ms */
+.page-mask {
+  position:fixed; inset:0;
+  background:var(--rose-deep);
+  z-index:9999;
+  clip-path:circle(150% at 50% 50%);
+  pointer-events:none;
+  transition:clip-path 1100ms cubic-bezier(0.86, 0, 0.07, 1);
+}
+.page-mask.out { clip-path:circle(0% at 50% 50%); }
+
+/* Counter scroll-driven: animar números al entrar viewport */
+.stat-num { transition:opacity 0.3s; }
+.stat-num.counting { opacity:0.7; }
+
+/* B2 · Tilt 3D en packs (desktop hover only)
+   Suma al scale del role-based, no lo sustituye. */
+@media (hover:hover) and (pointer:fine) and (min-width:769px) {
+  .packs-grid { perspective:1000px; }
+  .pack {
+    transform-style:preserve-3d;
+    will-change:transform;
+  }
+  .pack.tilting {
+    transition:transform 80ms linear !important;
+  }
+}
+
+/* Comparador antes/después (drag slider) */
+.bd-img.compare {
+  cursor:ew-resize;
+  position:relative;
+  touch-action:none;
+  user-select:none;
+  -webkit-user-select:none;
+}
+.bd-img.compare::before, .bd-img.compare::after { display:none !important; }
+.bd-img.compare .ad-after,
+.bd-img.compare .ad-before {
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit:cover;
+}
+.bd-img.compare .ad-after {
+  z-index:1;
+  filter:saturate(1.05) brightness(1.02);
+}
+.bd-img.compare .ad-before {
+  z-index:2;
+  clip-path:inset(0 calc(100% - var(--pos, 50%)) 0 0);
+  filter:grayscale(0.35) brightness(0.92);
+}
+.bd-img.compare .ad-label {
+  position:absolute; top:14px; z-index:4;
+  font-size:0.66rem; font-weight:700;
+  padding:5px 10px; border-radius:4px;
+  letter-spacing:0.1em;
+  pointer-events:none;
+  font-family:'Inter',sans-serif;
+}
+.bd-img.compare .ad-label.before {
+  left:14px;
+  background:rgba(0,0,0,0.65); color:var(--white);
+}
+.bd-img.compare .ad-label.after {
+  right:14px;
+  background:var(--gold); color:var(--black);
+}
+.bd-img.compare .ad-handle {
+  position:absolute; top:0; bottom:0;
+  left:var(--pos, 50%);
+  width:2px;
+  background:var(--white);
+  z-index:3;
+  transform:translateX(-50%);
+  box-shadow:0 0 12px rgba(0,0,0,0.4);
+  pointer-events:none;
+}
+.bd-img.compare .ad-handle::after {
+  content:'⇆';
+  position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width:44px; height:44px;
+  border-radius:50%;
+  background:var(--white);
+  color:var(--black);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem; font-weight:700;
+  box-shadow:0 4px 14px rgba(0,0,0,0.3);
+}
+.bd-img.compare span:not(.ad-label) {
+  position:absolute; bottom:14px; left:14px; z-index:4;
+  color:var(--white);
+  font-family:'Cormorant Garamond',serif;
+  font-size:1rem; font-style:italic;
+  text-shadow:0 2px 6px rgba(0,0,0,0.5);
+}
+
+/* Pack 5: breakdown sesión toggle (click en precio) */
+.pack-price.clickable {
+  cursor:pointer;
+  position:relative;
+  display:inline-block;
+  transition:color 0.3s;
+}
+.pack-price.clickable::after {
+  content:'';
+  display:inline-block;
+  width:10px; height:10px;
+  margin-left:8px;
+  border-right:2px solid var(--rose-deep);
+  border-bottom:2px solid var(--rose-deep);
+  transform:rotate(45deg) translateY(-3px);
+  transition:transform 0.3s;
+}
+.pack-price.clickable.open::after {
+  transform:rotate(-135deg) translateY(0);
+}
+.pack-breakdown {
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 0.5s cubic-bezier(0.22,0.61,0.36,1), margin 0.3s;
+  margin:0;
+}
+.pack-breakdown.open {
+  max-height:120px;
+  margin:6px 0 18px;
+}
+.pack-breakdown-inner {
+  background:var(--rose-bg);
+  border-left:2px solid var(--rose-deep);
+  padding:12px 14px;
+  font-size:0.85rem;
+  color:var(--grey);
+}
+.pack-breakdown-inner b {
+  color:var(--rose-deep);
+  font-weight:700;
+}
+
+/* === MÓVIL: Flip card en long-press === */
+@media (max-width:768px) {
+  .pack {
+    transform-style:preserve-3d;
+    perspective:1200px;
+    position:relative;
+  }
+  .pack-faces {
+    position:relative;
+    transform-style:preserve-3d;
+    transition:transform 600ms cubic-bezier(0.22,0.61,0.36,1);
+  }
+  .pack.flipped .pack-faces {
+    transform:rotateY(180deg);
+  }
+  .pack-front, .pack-back {
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+  }
+  .pack-back {
+    position:absolute; inset:0;
+    transform:rotateY(180deg);
+    background:linear-gradient(180deg, var(--rose-bg), var(--white));
+    border-radius:20px;
+    padding:32px 26px;
+    display:flex; flex-direction:column;
+    overflow-y:auto;
+  }
+  .pack-back h4 {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.2rem;
+    color:var(--rose-deep);
+    margin-bottom:14px;
+    font-weight:600;
+  }
+  .pack-back ul {
+    list-style:none;
+    margin-bottom:18px;
+  }
+  .pack-back ul li {
+    padding:8px 0;
+    font-size:0.86rem;
+    color:var(--grey);
+    border-bottom:1px solid rgba(0,0,0,0.05);
+    display:flex; align-items:start; gap:8px;
+  }
+  .pack-back ul li::before {
+    content:'→';
+    color:var(--rose-deep);
+    flex-shrink:0;
+  }
+  .pack-back .back-hint {
+    margin-top:auto;
+    font-size:0.74rem;
+    color:var(--grey-soft);
+    text-align:center;
+    padding-top:10px;
+    font-style:italic;
+  }
+  .pack.long-pressing { transform:scale(0.97); transition:transform 0.2s; }
+}
+@media (min-width:769px) {
+  .pack-back { display:none; }
+}
+
 /* === prefers-reduced-motion === */
 @media (prefers-reduced-motion: reduce) {
   .mask-reveal > .ln { transform:none !important; transition:none !important; }
@@ -1083,10 +1290,15 @@ html { scroll-padding-top:80px; }
   .gal-card img { transform:scale(1) !important; transition:none !important; }
   .hero::before, .hero::after, .hero-visual img { animation:none !important; }
   .reveal { opacity:1 !important; transform:none !important; }
+  .page-mask { display:none !important; }
+  .pack-faces { transform:none !important; }
+  .pack.flipped .pack-faces { transform:none !important; }
 }
 </style>
 </head>
 <body>
+
+<div class="page-mask" id="pageMask"></div>
 
 <!-- DEMO BADGE: para que ellos sepan que es preview -->
 <div class="demo-badge">
@@ -1137,7 +1349,7 @@ html { scroll-padding-top:80px; }
       <div class="stat-label">Equipos premium</div>
     </div>
     <div>
-      <div class="stat-num">3ª sesión</div>
+      <div class="stat-num" data-target="3" data-suffix="ª sesión">3ª sesión</div>
       <div class="stat-label">Resultados visibles</div>
     </div>
     <div>
@@ -1174,46 +1386,98 @@ html { scroll-padding-top:80px; }
 
     <div class="packs-grid" data-active="center">
       <div class="pack reveal" data-role="left" data-color="left">
-        <div class="pack-name">Sesión Suelta</div>
-        <div class="pack-tagline">Probar sin compromiso</div>
-        <div class="pack-price">100€</div>
-        <div class="pack-price-sub">por sesión · sin paquete</div>
-        <ul>
-          <li>1 sesión HIFU 12D facial o corporal</li>
-          <li>Diagnóstico de tu piel incluido</li>
-          <li>Plan personalizado sin compromiso</li>
-        </ul>
-        <a href="https://wa.me/34630550516?text=Hola%2C%20quiero%20reservar%20una%20Sesi%C3%B3n%20Suelta" target="_blank" class="pack-cta"><span class="fill"></span>Reservar sesión</a>
+        <div class="pack-faces">
+          <div class="pack-front">
+            <div class="pack-name">Sesión Suelta</div>
+            <div class="pack-tagline">Probar sin compromiso</div>
+            <div class="pack-price">100€</div>
+            <div class="pack-price-sub">por sesión · sin paquete</div>
+            <ul>
+              <li>1 sesión HIFU 12D facial o corporal</li>
+              <li>Diagnóstico de tu piel incluido</li>
+              <li>Plan personalizado sin compromiso</li>
+            </ul>
+            <a href="https://wa.me/34630550516?text=Hola%2C%20quiero%20reservar%20una%20Sesi%C3%B3n%20Suelta" target="_blank" class="pack-cta"><span class="fill"></span>Reservar sesión</a>
+          </div>
+          <div class="pack-back">
+            <h4>Cómo funciona</h4>
+            <ul>
+              <li>Reservas por WhatsApp en 2 minutos</li>
+              <li>Llegas, diagnóstico real en cabina</li>
+              <li>Sesión de 45-60 min según zona</li>
+              <li>Te explicamos el plan, decides después</li>
+              <li>Garantía: si no te convence el centro, no cobramos</li>
+            </ul>
+            <div class="back-hint">Mantén pulsado para volver</div>
+          </div>
+        </div>
       </div>
 
       <div class="pack featured reveal" data-role="center" data-color="center">
-        <div class="pack-name">Pack 5 sesiones</div>
-        <div class="pack-tagline">Resultados visibles</div>
-        <div class="pack-price">425€</div>
-        <div class="pack-price-sub"><s>500€</s> · ahorras 75€</div>
-        <ul>
-          <li>5 sesiones HIFU 12D (corporal o facial)</li>
-          <li>Plan personalizado a tu cuerpo</li>
-          <li>Seguimiento foto sesión a sesión</li>
-          <li>Revisión post-tratamiento</li>
-          <li>Asesor personal por WhatsApp</li>
-        </ul>
-        <a href="https://wa.me/34630550516?text=Hola%2C%20quiero%20el%20Pack%205%20sesiones" target="_blank" class="pack-cta"><span class="fill"></span>Empezar mi pack</a>
+        <div class="pack-faces">
+          <div class="pack-front">
+            <div class="pack-name">Pack 5 sesiones</div>
+            <div class="pack-tagline">Resultados visibles</div>
+            <div class="pack-price clickable" data-breakdown>425€</div>
+            <div class="pack-price-sub"><s>500€</s> · ahorras 75€</div>
+            <div class="pack-breakdown" id="breakdown5">
+              <div class="pack-breakdown-inner">
+                <b>85€ por sesión</b> · 5 sesiones · pagas una vez, espacias en 6-8 semanas. Ahorro real de 75€ frente a sesión suelta.
+              </div>
+            </div>
+            <ul>
+              <li>5 sesiones HIFU 12D (corporal o facial)</li>
+              <li>Plan personalizado a tu cuerpo</li>
+              <li>Seguimiento foto sesión a sesión</li>
+              <li>Revisión post-tratamiento</li>
+              <li>Asesor personal por WhatsApp</li>
+            </ul>
+            <a href="https://wa.me/34630550516?text=Hola%2C%20quiero%20el%20Pack%205%20sesiones" target="_blank" class="pack-cta"><span class="fill"></span>Empezar mi pack</a>
+          </div>
+          <div class="pack-back">
+            <h4>Qué incluye de verdad</h4>
+            <ul>
+              <li>5 sesiones HIFU 12D agendadas según tu ciclo</li>
+              <li>Diagnóstico inicial y foto base</li>
+              <li>Foto comparativa cada 2 sesiones</li>
+              <li>Revisión post-tratamiento sin coste</li>
+              <li>WhatsApp directo con tu asesora</li>
+              <li>Financiable en 2 o 3 plazos sin intereses</li>
+            </ul>
+            <div class="back-hint">Mantén pulsado para volver</div>
+          </div>
+        </div>
       </div>
 
       <div class="pack reveal" data-role="right" data-color="right">
-        <div class="pack-name">Programa Transformación</div>
-        <div class="pack-tagline">Cambio profundo</div>
-        <div class="pack-price">1.200€</div>
-        <div class="pack-price-sub">12 sesiones + asesoría completa</div>
-        <ul>
-          <li>12 sesiones HIFU 12D + INDIBA + Scultor combinados</li>
-          <li>Plan integral 3 meses</li>
-          <li>Asesor personal exclusivo</li>
-          <li>Revisión mensual con fotos comparativas</li>
-          <li>Acceso prioritario a citas</li>
-        </ul>
-        <a href="https://wa.me/34630550516?text=Hola%2C%20me%20interesa%20el%20Programa%20Transformaci%C3%B3n" target="_blank" class="pack-cta"><span class="fill"></span>Solicitar programa</a>
+        <div class="pack-faces">
+          <div class="pack-front">
+            <div class="pack-name">Programa Transformación</div>
+            <div class="pack-tagline">Cambio profundo</div>
+            <div class="pack-price">1.200€</div>
+            <div class="pack-price-sub">12 sesiones + asesoría completa</div>
+            <ul>
+              <li>12 sesiones HIFU 12D + INDIBA + Scultor combinados</li>
+              <li>Plan integral 3 meses</li>
+              <li>Asesor personal exclusivo</li>
+              <li>Revisión mensual con fotos comparativas</li>
+              <li>Acceso prioritario a citas</li>
+            </ul>
+            <a href="https://wa.me/34630550516?text=Hola%2C%20me%20interesa%20el%20Programa%20Transformaci%C3%B3n" target="_blank" class="pack-cta"><span class="fill"></span>Solicitar programa</a>
+          </div>
+          <div class="pack-back">
+            <h4>3 meses de cambio</h4>
+            <ul>
+              <li>Mes 1: ataque inicial (HIFU + INDIBA)</li>
+              <li>Mes 2: refinamiento + Scultor</li>
+              <li>Mes 3: consolidación y mantenimiento</li>
+              <li>Revisión mensual con fotos comparativas</li>
+              <li>Acceso prioritario a huecos de última hora</li>
+              <li>Financiable hasta en 6 plazos sin intereses</li>
+            </ul>
+            <div class="back-hint">Mantén pulsado para volver</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1268,9 +1532,12 @@ html { scroll-padding-top:80px; }
 
     <div class="bd-grid">
       <div class="bd-card reveal">
-        <div class="bd-img">
-          <img src="https://viveestetica.es/wp-content/uploads/2022/05/ultracavitacion-01-800x480-1-1024x683.jpg" alt="Ultracavitación">
-          <div class="overlay-grad"></div>
+        <div class="bd-img compare" data-compare style="--pos:50%;">
+          <img class="ad-after" src="https://viveestetica.es/wp-content/uploads/2022/05/ultracavitacion-01-800x480-1-1024x683.jpg" alt="Después">
+          <img class="ad-before" src="https://viveestetica.es/wp-content/uploads/2022/05/ultracavitacion-01-800x480-1-1024x683.jpg" alt="Antes">
+          <span class="ad-label before">ANTES</span>
+          <span class="ad-label after">DESPUÉS</span>
+          <div class="ad-handle"></div>
           <span>Ultracavitación</span>
         </div>
         <div class="bd-card-body">
@@ -1279,9 +1546,12 @@ html { scroll-padding-top:80px; }
         </div>
       </div>
       <div class="bd-card reveal">
-        <div class="bd-img">
-          <img src="https://viveestetica.es/wp-content/uploads/2022/04/148.jpg" alt="Tratamiento facial">
-          <div class="overlay-grad"></div>
+        <div class="bd-img compare" data-compare style="--pos:50%;">
+          <img class="ad-after" src="https://viveestetica.es/wp-content/uploads/2022/04/148.jpg" alt="Después">
+          <img class="ad-before" src="https://viveestetica.es/wp-content/uploads/2022/04/148.jpg" alt="Antes">
+          <span class="ad-label before">ANTES</span>
+          <span class="ad-label after">DESPUÉS</span>
+          <div class="ad-handle"></div>
           <span>Lifting facial</span>
         </div>
         <div class="bd-card-body">
@@ -1290,9 +1560,12 @@ html { scroll-padding-top:80px; }
         </div>
       </div>
       <div class="bd-card reveal">
-        <div class="bd-img">
-          <img src="https://viveestetica.es/wp-content/uploads/2022/04/ipl-web.png" alt="Tonificación">
-          <div class="overlay-grad"></div>
+        <div class="bd-img compare" data-compare style="--pos:50%;">
+          <img class="ad-after" src="https://viveestetica.es/wp-content/uploads/2022/04/ipl-web.png" alt="Después">
+          <img class="ad-before" src="https://viveestetica.es/wp-content/uploads/2022/04/ipl-web.png" alt="Antes">
+          <span class="ad-label before">ANTES</span>
+          <span class="ad-label after">DESPUÉS</span>
+          <div class="ad-handle"></div>
           <span>Tonificación corporal</span>
         </div>
         <div class="bd-card-body">
@@ -1302,7 +1575,7 @@ html { scroll-padding-top:80px; }
       </div>
     </div>
 
-    <p class="demo-note">📷 En la web final: vuestras fotos reales de antes/después con autorización de las clientas. Aquí mostramos cómo se vería el bloque.</p>
+    <p class="demo-note">📷 Arrastra el deslizador para comparar antes y después. En la web final: vuestras fotos reales con autorización de las clientas.</p>
   </div>
 </section>
 
@@ -1556,6 +1829,185 @@ html { scroll-padding-top:80px; }
   window.addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(tick); }, { passive: true });
   window.addEventListener('resize', () => { if (!raf) raf = requestAnimationFrame(tick); }, { passive: true });
   tick();
+
+  // === UPGRADE v2 ===
+
+  // Page-load mask reveal
+  const pm = document.getElementById('pageMask');
+  if (pm && !reduceMotion) {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => pm.classList.add('out'));
+    });
+    setTimeout(() => pm && pm.parentNode && pm.parentNode.removeChild(pm), 1500);
+  } else if (pm) {
+    pm.parentNode && pm.parentNode.removeChild(pm);
+  }
+
+  // Counter scroll-driven (stat-num con data-target)
+  const ioCount = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = parseInt(el.dataset.target, 10);
+      if (!target || reduceMotion) { ioCount.unobserve(el); return; }
+      const prefix = el.dataset.prefix || '';
+      const suffix = el.dataset.suffix || '';
+      const duration = 1400;
+      const start = performance.now();
+      el.classList.add('counting');
+      function step(now) {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const v = Math.floor(target * eased);
+        const formatted = v >= 1000 ? v.toLocaleString('es-ES') : v;
+        el.textContent = prefix + formatted + suffix;
+        if (t < 1) requestAnimationFrame(step);
+        else { el.classList.remove('counting'); }
+      }
+      requestAnimationFrame(step);
+      ioCount.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.stat-num[data-target]').forEach(el => ioCount.observe(el));
+
+  // B2 · Tilt 3D en packs (desktop hover only)
+  if (isDesktop && matchMedia('(hover:hover) and (pointer:fine)').matches && !reduceMotion) {
+    document.querySelectorAll('.pack').forEach(pack => {
+      let rafId = null;
+      function getBaseScale() {
+        // Si el role-based aplica scale (active center: 1.05; inactive: 0.95; default featured center: 1.05) usamos el computed
+        const role = pack.dataset.role;
+        const grid = pack.closest('.packs-grid');
+        if (!grid) return 1;
+        const active = grid.getAttribute('data-active');
+        if (active === role) return 1.05;
+        if (active) return 0.95;
+        return 1;
+      }
+      pack.addEventListener('mousemove', (e) => {
+        const r = pack.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        const baseScale = getBaseScale();
+        const hoverScale = baseScale * 1.02;
+        if (rafId) return;
+        rafId = requestAnimationFrame(() => {
+          pack.classList.add('tilting');
+          pack.style.transform = `scale(${hoverScale}) rotateX(${-y * 10}deg) rotateY(${x * 10}deg)`;
+          rafId = null;
+        });
+      });
+      pack.addEventListener('mouseleave', () => {
+        pack.classList.remove('tilting');
+        pack.style.transform = '';
+      });
+    });
+  }
+
+  // Pack 5 breakdown toggle (click en precio)
+  document.querySelectorAll('[data-breakdown]').forEach(price => {
+    price.addEventListener('click', (e) => {
+      e.stopPropagation();
+      price.classList.toggle('open');
+      const bd = price.parentNode.querySelector('.pack-breakdown');
+      if (bd) bd.classList.toggle('open');
+    });
+  });
+
+  // Comparador antes/después (drag touch + mouse)
+  document.querySelectorAll('[data-compare]').forEach(box => {
+    let dragging = false;
+    function setPos(clientX) {
+      const r = box.getBoundingClientRect();
+      let pct = ((clientX - r.left) / r.width) * 100;
+      pct = Math.max(0, Math.min(100, pct));
+      box.style.setProperty('--pos', pct + '%');
+    }
+    function onDown(e) {
+      dragging = true;
+      const cx = e.touches ? e.touches[0].clientX : e.clientX;
+      setPos(cx);
+      e.preventDefault();
+    }
+    function onMove(e) {
+      if (!dragging) return;
+      const cx = e.touches ? e.touches[0].clientX : e.clientX;
+      setPos(cx);
+    }
+    function onUp() { dragging = false; }
+    box.addEventListener('mousedown', onDown);
+    box.addEventListener('touchstart', onDown, { passive:false });
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('touchmove', onMove, { passive:true });
+    window.addEventListener('mouseup', onUp);
+    window.addEventListener('touchend', onUp);
+    // Animación de entrada: pasar de 50 a 35 y volver suavemente para indicar interactividad
+    const ioFirst = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting && !reduceMotion) {
+          box.style.transition = 'none';
+          let step = 0;
+          const seq = [50, 35, 65, 50];
+          function next() {
+            if (step >= seq.length) return;
+            box.style.setProperty('--pos', seq[step] + '%');
+            const handle = box.querySelector('.ad-handle');
+            const before = box.querySelector('.ad-before');
+            if (handle) handle.style.transition = 'left 600ms cubic-bezier(0.22,0.61,0.36,1)';
+            if (before) before.style.transition = 'clip-path 600ms cubic-bezier(0.22,0.61,0.36,1)';
+            step++;
+            setTimeout(next, 650);
+          }
+          setTimeout(next, 300);
+          ioFirst.unobserve(box);
+        }
+      });
+    }, { threshold: 0.4 });
+    ioFirst.observe(box);
+  });
+
+  // Móvil: flip card en long-press (>500ms)
+  if (isMobile && !reduceMotion) {
+    document.querySelectorAll('.pack').forEach(pack => {
+      let pressTimer = null;
+      let pressStartX = 0, pressStartY = 0;
+      let moved = false;
+
+      pack.addEventListener('touchstart', (e) => {
+        if (e.target.closest('.pack-cta') || e.target.closest('[data-breakdown]')) return;
+        moved = false;
+        pressStartX = e.touches[0].clientX;
+        pressStartY = e.touches[0].clientY;
+        pack.classList.add('long-pressing');
+        pressTimer = setTimeout(() => {
+          if (!moved) {
+            pack.classList.toggle('flipped');
+            if (navigator.vibrate) navigator.vibrate(30);
+          }
+          pack.classList.remove('long-pressing');
+        }, 500);
+      }, { passive:true });
+
+      pack.addEventListener('touchmove', (e) => {
+        const dx = Math.abs(e.touches[0].clientX - pressStartX);
+        const dy = Math.abs(e.touches[0].clientY - pressStartY);
+        if (dx > 10 || dy > 10) {
+          moved = true;
+          clearTimeout(pressTimer);
+          pack.classList.remove('long-pressing');
+        }
+      }, { passive:true });
+
+      pack.addEventListener('touchend', () => {
+        clearTimeout(pressTimer);
+        pack.classList.remove('long-pressing');
+      });
+      pack.addEventListener('touchcancel', () => {
+        clearTimeout(pressTimer);
+        pack.classList.remove('long-pressing');
+      });
+    });
+  }
 })();
 </script>
 </body>

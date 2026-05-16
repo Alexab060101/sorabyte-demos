@@ -527,12 +527,120 @@ footer.foot {
 .wa-fab:hover { transform:scale(1.08); }
 .wa-fab svg { width:28px; height:28px; fill:#fff; }
 
+/* === MOTION TOKENS (motion-patterns-deep) === */
+:root {
+  --m-fast: 200ms;
+  --m-base: 650ms;
+  --m-slow: 800ms;
+  --m-ease-snap: cubic-bezier(0.4, 0, 0.2, 1);
+  --m-ease-out: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
 /* Reveal */
-.reveal { opacity:0; transform:translateY(28px); transition:opacity 0.95s cubic-bezier(0.22,0.61,0.36,1), transform 0.95s cubic-bezier(0.22,0.61,0.36,1); }
+.reveal { opacity:0; transform:translateY(28px); transition:opacity var(--m-slow) var(--m-ease-out), transform var(--m-slow) var(--m-ease-out); }
 .reveal.up { opacity:1; transform:none; }
 .reveal.up.d1 { transition-delay:0.08s; }
 .reveal.up.d2 { transition-delay:0.16s; }
 .reveal.up.d3 { transition-delay:0.24s; }
+
+/* === E1 · Mask text reveal (línea a línea) ===
+   Para h1 hero y h2 sections. Cada línea sube desde su propia máscara. */
+.mask-reveal { display:block; overflow:hidden; line-height:1.05; padding-bottom:0.12em; }
+.mask-reveal > .ln {
+  display:block;
+  transform:translateY(105%);
+  transition:transform var(--m-slow) var(--m-ease-out);
+  will-change:transform;
+}
+.mask-reveal.ln-2 > .ln:nth-child(2) { transition-delay:120ms; }
+.mask-reveal.ln-3 > .ln:nth-child(3) { transition-delay:240ms; }
+.mask-reveal.in > .ln { transform:translateY(0); }
+
+/* === A2 · Char reveal on scroll ===
+   Cada letra de un párrafo va de opacity 0.15 a 1 según scrollY.
+   Aplicar a .char-scroll en el body. */
+.char-scroll .ch {
+  position:relative;
+  display:inline-block;
+  white-space:pre;
+}
+.char-scroll .ch > .ph { visibility:hidden; }
+.char-scroll .ch > .ac {
+  position:absolute; inset:0;
+  opacity:0.15;
+  transition:opacity 120ms linear;
+  color:inherit;
+}
+
+/* === D2 · Image clip reveal + slow zoom ===
+   Foto especialista entra con clip-path + scale graceful. */
+.spec-img { will-change:clip-path; }
+.spec-img.cliphide { clip-path:inset(0 0 100% 0); }
+.spec-img.clipreveal { clip-path:inset(0); transition:clip-path 1100ms var(--m-ease-out); }
+.spec-img.cliphide img { transform:scale(1.12); }
+.spec-img.clipreveal img { transform:scale(1); transition:transform 1400ms var(--m-ease-out); }
+
+/* === Scroll progress bar superior ===
+   1px accent, crece 0 → 100% según scroll. Solo móvil. */
+.scroll-prog {
+  position:fixed; top:0; left:0; height:2px;
+  background:linear-gradient(90deg, var(--accent), var(--gold));
+  width:0%;
+  z-index:200;
+  pointer-events:none;
+  transition:width 80ms linear;
+}
+@media (min-width:769px) { .scroll-prog { display:none; } }
+
+/* === Móvil: animaciones tap-friendly + stagger pronunciado === */
+@media (max-width:768px) {
+  /* Hero: imagen con will-change para parallax JS */
+  .hero-full img.bg { will-change:transform; }
+
+  /* Tratamientos: lista crece línea a línea con stagger pronunciado */
+  .t-row { transform:translateX(18px); opacity:0; transition:transform 0.55s var(--m-ease-out), opacity 0.55s var(--m-ease-out); }
+  .t-row.in-view { transform:none; opacity:1; }
+  .t-row.in-view:nth-child(1) { transition-delay:0ms; }
+  .t-row.in-view:nth-child(2) { transition-delay:70ms; }
+  .t-row.in-view:nth-child(3) { transition-delay:140ms; }
+  .t-row.in-view:nth-child(4) { transition-delay:210ms; }
+  .t-row.in-view:nth-child(5) { transition-delay:280ms; }
+  .t-row.in-view:nth-child(6) { transition-delay:350ms; }
+
+  /* Sticky desactivado en móvil */
+  .treatments-visual { position:relative; top:auto; }
+
+  /* Áreas táctiles cómodas */
+  .hero-cta-pill, .contact-cta, nav.menu .reserve { min-height:48px; align-items:center; }
+  details.q summary { padding:22px 4px; min-height:60px; }
+
+  /* Test reducido */
+  .test { padding:80px 6vw; }
+}
+
+/* Touch tap-state: feedback al tocar */
+@media (hover:none) and (pointer:coarse) {
+  .t-row:active { background:var(--lav); transform:translateX(4px); }
+  .hero-cta-pill:active, .contact-cta:active, nav.menu .reserve:active { transform:scale(0.97); }
+}
+
+/* Touch device: degradar hovers a tap-friendly */
+@media (hover:none) and (pointer:coarse) {
+  .t-row:hover { padding-left:0; }
+  .t-row:hover::before { width:0; }
+  .treatments-visual:hover { transform:none; }
+  .treatments-visual:hover img { transform:none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mask-reveal > .ln { transform:none !important; }
+  .char-scroll .ch > .ac { opacity:1 !important; }
+  .spec-img { clip-path:none !important; }
+  .spec-img img { transform:none !important; }
+  .hero-full img.bg { animation:none !important; }
+  .reveal { opacity:1 !important; transform:none !important; }
+  .wa-fab::before { display:none; }
+}
 
 /* === POLISH PASS DERMATIVA · upgrades === */
 
@@ -707,7 +815,7 @@ html { scroll-padding-top:80px; }
   <img class="bg" src="https://dermativa.es/wp-content/uploads/2019/04/tratamientos-dermativa-47.jpg" alt="Dermativa">
   <div class="hero-top">
     <div class="hero-eyebrow">Palma de Mallorca · Desde 2014</div>
-    <h1>Tu piel,<br><span class="it">en sus manos.</span></h1>
+    <h1 class="mask-reveal ln-2"><span class="ln">Tu piel,</span><span class="ln it">en sus manos.</span></h1>
   </div>
   <div class="hero-content">
     <div class="hero-bottom">
@@ -751,7 +859,7 @@ html { scroll-padding-top:80px; }
 <section class="section" id="tratamientos">
   <div style="margin-bottom:60px; max-width:680px;">
     <div class="eyebrow">Catálogo</div>
-    <h2 class="section-h">Ocho tratamientos. <span class="it">Cada uno con su porqué.</span></h2>
+    <h2 class="section-h mask-reveal ln-2"><span class="ln">Ocho tratamientos.</span><span class="ln it">Cada uno con su porqué.</span></h2>
   </div>
 
   <div class="treatments">
@@ -814,7 +922,7 @@ html { scroll-padding-top:80px; }
 
 <!-- 3. ESPECIALISTA · split 1 imagen + texto -->
 <section id="especialista" class="spec-section">
-  <div class="spec-img">
+  <div class="spec-img cliphide" data-clipreveal>
     <img src="https://dermativa.es/wp-content/uploads/2019/04/tratamientos-dermativa-44.jpg" alt="Thais González">
     <div class="spec-img-tag">
       <div class="n">Thais González</div>
@@ -823,8 +931,8 @@ html { scroll-padding-top:80px; }
   </div>
   <div class="spec-text">
     <div class="eyebrow">La especialista</div>
-    <h2 class="section-h">10 años cuidando<br>la piel de <span class="it">Palma.</span></h2>
-    <p>Dermativa no es una franquicia. Es la consulta de Thais: una sola especialista certificada, equipos profesionales Alma Lasers y una promesa que no se mueve. <b>Si tu caso no es para nosotros, te lo decimos antes de cobrarte.</b></p>
+    <h2 class="section-h mask-reveal ln-2"><span class="ln">10 años cuidando</span><span class="ln">la piel de <span class="it">Palma.</span></span></h2>
+    <p class="char-scroll" data-char-scroll>Dermativa no es una franquicia. Es la consulta de Thais: una sola especialista certificada, equipos profesionales Alma Lasers y una promesa que no se mueve. Si tu caso no es para nosotros, te lo decimos antes de cobrarte.</p>
     <p>Cada tratamiento empieza con una valoración personal. Sin protocolos genéricos. Sin venta agresiva. Sin promesas que no se puedan sostener.</p>
   </div>
 </section>
@@ -839,7 +947,7 @@ html { scroll-padding-top:80px; }
 <section id="contacto" class="contact-grid">
   <div class="contact-info">
     <div class="eyebrow">Visítanos</div>
-    <h2 class="section-h">Picasso 56,<br><span class="it">Palma.</span></h2>
+    <h2 class="section-h mask-reveal ln-2"><span class="ln">Picasso 56,</span><span class="ln it">Palma.</span></h2>
     <dl>
       <div>
         <dt>Dirección</dt>
@@ -847,7 +955,7 @@ html { scroll-padding-top:80px; }
       </div>
       <div>
         <dt>Horario</dt>
-        <dd>Lunes a Viernes: 9:30 — 21:00<br>Sábado: 10:00 — 15:00</dd>
+        <dd>Lunes a Viernes: 9:30 a 21:00<br>Sábado: 10:00 a 15:00</dd>
       </div>
       <div>
         <dt>Teléfono</dt>
@@ -876,7 +984,7 @@ html { scroll-padding-top:80px; }
   <div class="faq-inner">
     <div>
       <div class="eyebrow">Dudas frecuentes</div>
-      <h2 class="section-h">Lo que <span class="it">todas</span> preguntan.</h2>
+      <h2 class="section-h mask-reveal ln-1"><span class="ln">Lo que <span class="it">todas</span> preguntan.</span></h2>
     </div>
     <div>
       <details class="q">
@@ -912,7 +1020,7 @@ html { scroll-padding-top:80px; }
     <div class="foot-col">
       <h4>Visítanos</h4>
       <p>Avd. Picasso 56<br>07014 Palma</p>
-      <p>L-V 9:30—21h<br>Sáb 10—15h</p>
+      <p>L-V 9:30 a 21h<br>Sáb 10 a 15h</p>
     </div>
     <div class="foot-col">
       <h4>Contacto</h4>
@@ -928,25 +1036,133 @@ html { scroll-padding-top:80px; }
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
+<!-- Scroll progress bar (móvil) -->
+<div class="scroll-prog" id="scrollProg" aria-hidden="true"></div>
+
 <script>
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('up'); io.unobserve(e.target); } });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+(function(){
+  'use strict';
 
-// Stagger por grupos de hermanos
-document.querySelectorAll('.steps, .bd-grid, .reviews-grid').forEach(group => {
-  Array.from(group.children).forEach((child, i) => {
-    if(child.classList.contains('reveal') && i < 4) child.classList.add('d' + Math.min(i, 3));
+  // 1) Reveal genérico (los .reveal existentes)
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('up'); io.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Stagger por grupos
+  document.querySelectorAll('.steps, .bd-grid, .reviews-grid').forEach(group => {
+    Array.from(group.children).forEach((child, i) => {
+      if(child.classList.contains('reveal') && i < 4) child.classList.add('d' + Math.min(i, 3));
+    });
   });
-});
 
-// Header scroll
-const hdr = document.querySelector('header');
-window.addEventListener('scroll', () => {
-  if (window.scrollY > 20) hdr.classList.add('scrolled');
-  else hdr.classList.remove('scrolled');
-}, { passive:true });
+  // 2) E1 · Mask-reveal headlines (línea a línea)
+  const ioMask = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ e.target.classList.add('in'); ioMask.unobserve(e.target); }
+    });
+  }, { threshold: 0.3, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.mask-reveal').forEach(el => ioMask.observe(el));
+  // Activar hero h1 inmediatamente (no esperar scroll)
+  requestAnimationFrame(() => {
+    const h1 = document.querySelector('.hero-full h1.mask-reveal');
+    if (h1) setTimeout(() => h1.classList.add('in'), 120);
+  });
+
+  // 3) D2 · Clip-reveal imagen especialista
+  const ioClip = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ e.target.classList.remove('cliphide'); e.target.classList.add('clipreveal'); ioClip.unobserve(e.target); }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('[data-clipreveal]').forEach(el => ioClip.observe(el));
+
+  // 4) A2 · Char-reveal scroll (cada letra opacity 0.15 → 1 según progreso)
+  const charScrollEls = [];
+  document.querySelectorAll('[data-char-scroll]').forEach(p => {
+    const text = p.textContent;
+    p.textContent = '';
+    const overlays = [];
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      const wrap = document.createElement('span');
+      wrap.className = 'ch';
+      const ph = document.createElement('span');
+      ph.className = 'ph';
+      ph.textContent = ch;
+      const ac = document.createElement('span');
+      ac.className = 'ac';
+      ac.textContent = ch;
+      wrap.appendChild(ph);
+      wrap.appendChild(ac);
+      p.appendChild(wrap);
+      overlays.push(ac);
+    }
+    charScrollEls.push({ el: p, overlays });
+  });
+
+  // Stagger móvil t-row
+  const ioRows = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ e.target.classList.add('in-view'); ioRows.unobserve(e.target); }
+    });
+  }, { threshold: 0.2, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.t-row').forEach(el => ioRows.observe(el));
+
+  // 5) Single rAF scroll loop
+  const hdr = document.querySelector('header');
+  const prog = document.getElementById('scrollProg');
+  const heroBg = document.querySelector('.hero-full img.bg');
+  const isMobile = matchMedia('(max-width:768px)').matches;
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let raf = null;
+  function tick() {
+    const sy = window.scrollY;
+    const vh = window.innerHeight;
+    const docH = document.documentElement.scrollHeight - vh;
+
+    // Header scroll
+    if (sy > 20) hdr.classList.add('scrolled'); else hdr.classList.remove('scrolled');
+
+    // Scroll progress (móvil)
+    if (prog && docH > 0) {
+      prog.style.width = Math.min(100, (sy / docH) * 100) + '%';
+    }
+
+    // Hero parallax suave móvil (la imagen sube más lento que el contenido)
+    if (heroBg && isMobile && !reduceMotion && sy < vh) {
+      heroBg.style.transform = `translateY(${sy * 0.18}px) scale(1.08)`;
+    }
+
+    // Char-scroll
+    charScrollEls.forEach(({ el, overlays }) => {
+      const rect = el.getBoundingClientRect();
+      // Activa cuando el párrafo entra desde 0.85vh y termina cuando sale por 0.15vh
+      const startY = vh * 0.85;
+      const endY = vh * 0.15;
+      const total = (startY - endY) + rect.height;
+      const passed = startY - rect.top;
+      let progress = passed / total;
+      progress = Math.max(0, Math.min(1, progress));
+      const n = overlays.length;
+      const point = progress * n;
+      for (let i = 0; i < n; i++) {
+        const d = point - i;
+        const op = Math.max(0.15, Math.min(1, 0.15 + d * 0.85));
+        overlays[i].style.opacity = op.toFixed(2);
+      }
+    });
+
+    raf = null;
+  }
+  window.addEventListener('scroll', () => {
+    if (!raf) raf = requestAnimationFrame(tick);
+  }, { passive: true });
+  window.addEventListener('resize', () => {
+    if (!raf) raf = requestAnimationFrame(tick);
+  }, { passive: true });
+  tick();
+})();
 </script>
 </body>
 </html>

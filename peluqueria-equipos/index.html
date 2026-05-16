@@ -952,7 +952,7 @@ html { scroll-padding-top:80px; }
 @media (prefers-reduced-motion: reduce) {
   .mask-reveal > .ln { transform:none !important; transition:none !important; }
   .mosaic-item { clip-path:none !important; transition:none !important; }
-  .mosaic-item img { transform:none !important; transition:none !important; }
+  .mosaic-item img { transform:none !important; transition:none !important; filter:none !important; }
   .hero img.bg { animation:none !important; }
   .brands-track, .brands-track-2 { animation:none !important; }
   .reveal { opacity:1 !important; transform:none !important; }
@@ -961,9 +961,203 @@ html { scroll-padding-top:80px; }
   }
   .wa-fab::before { display:none; }
 }
+
+/* === UPGRADE v2 · disruptivo === */
+
+/* Page-load mask reveal: oro corre desde el centro 1100ms */
+.page-mask {
+  position:fixed; inset:0;
+  background:var(--gold);
+  z-index:999;
+  clip-path:circle(150% at 50% 50%);
+  pointer-events:none;
+  transition:clip-path 1100ms cubic-bezier(0.86, 0, 0.07, 1);
+}
+.page-mask.out { clip-path:circle(0% at 50% 50%); }
+@media (prefers-reduced-motion: reduce) {
+  .page-mask { display:none !important; }
+}
+
+/* Counter scroll-driven · sutil opacity tick */
+.intro-stats > div b .gold { transition:opacity 0.3s; }
+.intro-stats > div b .gold.counting { opacity:0.72; }
+
+/* SVG distort en mosaic (solo hover:hover + pointer:fine) */
+@media (hover:hover) and (pointer:fine) {
+  .mosaic-item img { transition:transform 0.9s cubic-bezier(0.22,0.61,0.36,1), filter 0.45s ease; }
+  .mosaic-item:hover img { filter:url(#distort-filter); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mosaic-item:hover img { filter:none !important; }
+}
+
+/* === A6 · Pin horizontal marcas (desktop only) ===
+   Sección 100vh sticky con franja horizontal de logos gigantes.
+   En móvil queda OFF y se ve el .brands-marquee normal. */
+.brands-pin { display:none; }
+@media (min-width:769px) {
+  .brands-marquee { display:none; }
+  .brands-pin {
+    display:block;
+    position:relative;
+    background:var(--black);
+    color:var(--cream);
+    /* alto = 5 viewports para 5 paneles */
+    height:500vh;
+  }
+  .brands-pin .pin-sticky {
+    position:sticky; top:0;
+    width:100%; height:100vh;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+  }
+  .brands-pin .pin-track {
+    display:flex;
+    height:100%;
+    /* 5 paneles, cada uno 100vw */
+    width:500vw;
+    will-change:transform;
+  }
+  .brands-pin .pin-panel {
+    flex:0 0 100vw;
+    height:100%;
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    padding:0 8vw;
+  }
+  .brands-pin .pin-panel::before {
+    content:attr(data-num);
+    position:absolute;
+    top:50px; left:8vw;
+    font-family:'Playfair Display',serif;
+    font-style:italic;
+    font-size:0.78rem;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    color:var(--gold-2);
+    opacity:0.7;
+  }
+  .brands-pin .pin-panel::after {
+    content:attr(data-foot);
+    position:absolute;
+    bottom:50px; left:8vw; right:8vw;
+    font-size:0.74rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:rgba(247,241,232,0.55);
+    text-align:center;
+  }
+  .brands-pin .pin-panel img {
+    max-height:36vh;
+    max-width:72vw;
+    width:auto; height:auto;
+    filter:invert(1) brightness(2);
+    opacity:0.95;
+  }
+  .brands-pin .pin-panel.text-panel {
+    font-family:'Playfair Display',serif;
+    font-style:italic;
+    font-size:clamp(3rem, 8vw, 7rem);
+    line-height:0.95;
+    letter-spacing:-0.02em;
+    color:var(--gold-2);
+    text-align:center;
+  }
+  .brands-pin .pin-panel.text-panel small {
+    display:block;
+    margin-top:24px;
+    font-family:'Inter',sans-serif;
+    font-style:normal;
+    font-size:0.78rem;
+    letter-spacing:0.24em;
+    text-transform:uppercase;
+    color:rgba(247,241,232,0.65);
+    font-weight:500;
+  }
+  /* progress bar inferior del pin */
+  .brands-pin .pin-progress {
+    position:absolute;
+    bottom:0; left:0;
+    height:3px;
+    width:0%;
+    background:var(--gold);
+    z-index:3;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  @media (min-width:769px) {
+    .brands-pin { height:auto !important; }
+    .brands-pin .pin-sticky { position:static !important; height:auto !important; }
+    .brands-pin .pin-track { width:auto !important; flex-wrap:wrap; transform:none !important; }
+    .brands-pin .pin-panel { flex:1 1 33%; height:240px; padding:30px; }
+    .brands-pin .pin-panel.text-panel { font-size:2rem; }
+  }
+}
+
+/* === Móvil: swipe horizontal en proceso con dots paginadores === */
+@media (max-width:768px) {
+  .proceso-inner { position:relative; }
+
+  .steps {
+    display:flex !important;
+    grid-template-columns:none !important;
+    gap:0 !important;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    scroll-behavior:smooth;
+    scrollbar-width:none;
+    margin:0 -6vw;
+    padding:0 6vw;
+  }
+  .steps::-webkit-scrollbar { display:none; }
+  .steps .step {
+    flex:0 0 86vw;
+    scroll-snap-align:center;
+    margin-right:14px;
+    padding:32px 24px 36px;
+    background:var(--cream);
+    border:1px solid var(--line);
+    border-top:2px solid var(--gold);
+    box-shadow:0 8px 24px rgba(22,17,13,0.06);
+    transform:translateX(18px);
+    opacity:0;
+    transition:transform 0.7s var(--m-ease-out), opacity 0.7s var(--m-ease-out);
+  }
+  .steps .step:last-child { margin-right:6vw; }
+  .steps .step.in-view { transform:none; opacity:1; }
+
+  .steps-dots {
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-top:24px;
+  }
+  .steps-dots button {
+    appearance:none;
+    border:none;
+    background:var(--line);
+    width:8px; height:8px;
+    border-radius:50%;
+    padding:0;
+    cursor:pointer;
+    transition:background 0.3s, width 0.3s;
+  }
+  .steps-dots button.active {
+    background:var(--gold);
+    width:24px;
+    border-radius:4px;
+  }
+}
+@media (min-width:769px) {
+  .steps-dots { display:none; }
+}
 </style>
 </head>
 <body>
+
+<div class="page-mask" id="pageMask"></div>
 
 <div class="demo-badge">DEMO · POR <a href="https://sorabyte.es" target="_blank">SORABYTE</a></div>
 
@@ -1026,6 +1220,32 @@ html { scroll-padding-top:80px; }
   </div>
 </section>
 
+<!-- PIN HORIZONTAL marcas premium (desktop) -->
+<section class="brands-pin" id="brandsPin" aria-label="Marcas premium">
+  <div class="pin-sticky">
+    <div class="pin-track" id="pinTrack">
+      <div class="pin-panel text-panel" data-num="Marca 01 · 1991" data-foot="Tres marcas. Cero atajos.">
+        Tres marcas<br>en el <em style="font-style:italic;">mundo.</em>
+        <small>Las únicas con las que trabajamos</small>
+      </div>
+      <div class="pin-panel" data-num="Marca 01 · Italia" data-foot="Pelo 100% europeo. Trazabilidad certificada.">
+        <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/great-lengths-400x100-1.png" alt="Great Lengths">
+      </div>
+      <div class="pin-panel" data-num="Marca 02 · Austria" data-foot="Pelo natural premium. Sistema Hairdreams MicroLines.">
+        <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/hairdreams-400x100-1.png" alt="Hairdreams">
+      </div>
+      <div class="pin-panel" data-num="Marca 03 · USA" data-foot="Adhesión termoplástica. Xtreme Hair Strands.">
+        <img src="https://peluqueriaequipos.com/wp-content/uploads/2021/03/xtreme-400x100-1.png" alt="Xtreme">
+      </div>
+      <div class="pin-panel text-panel" data-num="04 · Sigue" data-foot="Distribuidor oficial en Mallorca">
+        Solo nosotros.<br><em style="font-style:italic;">En Mallorca.</em>
+        <small>Distribuidor oficial Great Lengths · Hairdreams · Xtreme</small>
+      </div>
+    </div>
+    <div class="pin-progress" id="pinProgress"></div>
+  </div>
+</section>
+
 <!-- INTRO -->
 <section class="intro" id="extensiones">
   <div class="intro-text reveal">
@@ -1036,10 +1256,10 @@ html { scroll-padding-top:80px; }
   </div>
 
   <div class="intro-stats reveal">
-    <div><b><span class="gold">33+</span></b><span>Años en Palma</span></div>
-    <div><b><span class="gold">3</span></b><span>Marcas premium mundiales</span></div>
+    <div><b><span class="gold" data-target="33" data-suffix="+">33+</span></b><span>Años en Palma</span></div>
+    <div><b><span class="gold" data-target="3">3</span></b><span>Marcas premium mundiales</span></div>
     <div><b><span class="gold">Nº1</span></b><span>Especialistas extensiones</span></div>
-    <div><b><span class="gold">+1.000</span></b><span>Pelos construidos</span></div>
+    <div><b><span class="gold" data-target="1000" data-prefix="+">+1.000</span></b><span>Pelos construidos</span></div>
   </div>
 </section>
 
@@ -1163,6 +1383,11 @@ html { scroll-padding-top:80px; }
         <p>Revisamos la fijación, ajustamos si hace falta y te damos las pautas de cuidado para que duren 4-6 meses como el primer día.</p>
       </div>
     </div>
+    <div class="steps-dots" id="stepsDots" aria-hidden="true">
+      <button class="active" data-i="0" aria-label="Paso 1"></button>
+      <button data-i="1" aria-label="Paso 2"></button>
+      <button data-i="2" aria-label="Paso 3"></button>
+    </div>
   </div>
 </section>
 
@@ -1270,6 +1495,14 @@ html { scroll-padding-top:80px; }
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
+<!-- SVG distort filter (mosaic hover) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="distort-filter">
+    <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" seed="3" result="noise"/>
+    <feDisplacementMap id="distort-map" in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
 <!-- Scroll progress bar oro -->
 <div class="scroll-prog" id="scrollProg" aria-hidden="true"></div>
 
@@ -1331,6 +1564,144 @@ html { scroll-padding-top:80px; }
   // 5) A3 · Card-reveal-stack: scale dinámico de la card anterior cuando la siguiente sube
   const stepCards = Array.from(document.querySelectorAll('.steps .step'));
 
+  // Page-load mask reveal (1100ms)
+  const pm = document.getElementById('pageMask');
+  if (pm) {
+    if (reduceMotion) { pm.remove(); }
+    else {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => pm.classList.add('out'));
+      });
+      setTimeout(() => { if (pm.parentNode) pm.parentNode.removeChild(pm); }, 1400);
+    }
+  }
+
+  // Counter scroll-driven (data-target en .intro-stats .gold)
+  const ioCount = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = parseInt(el.dataset.target, 10);
+      if (!target) { ioCount.unobserve(el); return; }
+      const prefix = el.dataset.prefix || '';
+      const suffix = el.dataset.suffix || '';
+      if (reduceMotion) { ioCount.unobserve(el); return; }
+      const duration = 1500;
+      const start = performance.now();
+      el.classList.add('counting');
+      function step(now) {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const v = Math.floor(target * eased);
+        const formatted = v >= 1000 ? v.toLocaleString('es-ES') : v;
+        el.textContent = prefix + formatted + suffix;
+        if (t < 1) requestAnimationFrame(step);
+        else { el.classList.remove('counting'); }
+      }
+      requestAnimationFrame(step);
+      ioCount.unobserve(el);
+    });
+  }, { threshold: 0.6 });
+  document.querySelectorAll('.intro-stats [data-target]').forEach(el => ioCount.observe(el));
+
+  // SVG distort hover en mosaic items (solo hover:hover + pointer:fine)
+  const distortMap = document.getElementById('distort-map');
+  if (distortMap && matchMedia('(hover:hover) and (pointer:fine)').matches && !reduceMotion) {
+    let scaleRaf = null, currentScale = 0, targetScale = 0;
+    function animDistort() {
+      currentScale += (targetScale - currentScale) * 0.18;
+      distortMap.setAttribute('scale', currentScale.toFixed(2));
+      if (Math.abs(targetScale - currentScale) > 0.05) {
+        scaleRaf = requestAnimationFrame(animDistort);
+      } else {
+        currentScale = targetScale;
+        distortMap.setAttribute('scale', currentScale.toFixed(2));
+        scaleRaf = null;
+      }
+    }
+    document.querySelectorAll('.mosaic-item').forEach(item => {
+      item.addEventListener('mouseenter', () => {
+        targetScale = 8;
+        if (!scaleRaf) scaleRaf = requestAnimationFrame(animDistort);
+      });
+      item.addEventListener('mouseleave', () => {
+        targetScale = 0;
+        if (!scaleRaf) scaleRaf = requestAnimationFrame(animDistort);
+      });
+    });
+  }
+
+  // Pin horizontal marcas (desktop only, no reduced-motion)
+  const pinSection = document.getElementById('brandsPin');
+  const pinTrack = document.getElementById('pinTrack');
+  const pinProgress = document.getElementById('pinProgress');
+  const pinEnabled = pinSection && pinTrack && !isMobile && !reduceMotion;
+
+  // Mobile swipe horizontal steps: dots + auto-scroll
+  const stepsEl = document.querySelector('.steps');
+  const dotsEl = document.getElementById('stepsDots');
+  let autoScrollTimer = null;
+  let autoScrollPaused = false;
+  if (isMobile && stepsEl && dotsEl && !reduceMotion) {
+    const dots = Array.from(dotsEl.querySelectorAll('button'));
+    const cards = Array.from(stepsEl.querySelectorAll('.step'));
+
+    function setActiveDot(i) {
+      dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
+    }
+
+    // Scroll listener → activar dot según card centrado
+    let scrollDeb = null;
+    stepsEl.addEventListener('scroll', () => {
+      if (scrollDeb) return;
+      scrollDeb = requestAnimationFrame(() => {
+        const center = stepsEl.scrollLeft + stepsEl.clientWidth / 2;
+        let bestI = 0, bestD = Infinity;
+        cards.forEach((c, i) => {
+          const cc = c.offsetLeft + c.offsetWidth / 2;
+          const d = Math.abs(cc - center);
+          if (d < bestD) { bestD = d; bestI = i; }
+        });
+        setActiveDot(bestI);
+        scrollDeb = null;
+      });
+    }, { passive: true });
+
+    // Click dot → scroll a card
+    dots.forEach(d => {
+      d.addEventListener('click', () => {
+        const i = parseInt(d.dataset.i, 10);
+        if (cards[i]) {
+          stepsEl.scrollTo({ left: cards[i].offsetLeft - (stepsEl.clientWidth - cards[i].offsetWidth) / 2, behavior: 'smooth' });
+        }
+        autoScrollPaused = true;
+        clearTimeout(autoScrollTimer);
+      });
+    });
+
+    // Auto-scroll cada 4s (pausable on touch)
+    function autoAdvance() {
+      if (autoScrollPaused) return;
+      const center = stepsEl.scrollLeft + stepsEl.clientWidth / 2;
+      let curI = 0, bestD = Infinity;
+      cards.forEach((c, i) => {
+        const cc = c.offsetLeft + c.offsetWidth / 2;
+        const d = Math.abs(cc - center);
+        if (d < bestD) { bestD = d; curI = i; }
+      });
+      const nextI = (curI + 1) % cards.length;
+      stepsEl.scrollTo({ left: cards[nextI].offsetLeft - (stepsEl.clientWidth - cards[nextI].offsetWidth) / 2, behavior: 'smooth' });
+    }
+    autoScrollTimer = setInterval(autoAdvance, 4000);
+
+    ['touchstart','pointerdown'].forEach(ev => {
+      stepsEl.addEventListener(ev, () => {
+        autoScrollPaused = true;
+        clearInterval(autoScrollTimer);
+      }, { passive: true });
+    });
+  }
+
   // 6) Single rAF scroll loop
   const hdr = document.querySelector('header');
   const prog = document.getElementById('scrollProg');
@@ -1353,6 +1724,20 @@ html { scroll-padding-top:80px; }
     // Hero parallax suave móvil
     if (heroBg && isMobile && !reduceMotion && sy < vh) {
       heroBg.style.transform = `translateY(${sy * 0.16}px) scale(1.08)`;
+    }
+
+    // Pin horizontal marcas (desktop): translateX del track según scroll dentro de la sección
+    if (pinEnabled) {
+      const rect = pinSection.getBoundingClientRect();
+      const total = pinSection.offsetHeight - vh; // 400vh de scroll efectivo
+      let p = (-rect.top) / total;
+      p = Math.max(0, Math.min(1, p));
+      const panels = 5;
+      const maxTranslate = (panels - 1) * 100; // % de pin-track (pero pin-track es 500vw, así que -100*p panels = -((panels-1)*100) en % relativo? )
+      // pin-track tiene width:500vw; el viewport muestra 1/5 = 20%. Para mover de panel 0 a panel 4 hay que moverse -4*100vw, es decir -80% del track.
+      const tx = -((panels - 1) * 20) * p; // % del track (que mide 500vw)
+      pinTrack.style.transform = `translate3d(${tx}%, 0, 0)`;
+      if (pinProgress) pinProgress.style.width = (p * 100).toFixed(2) + '%';
     }
 
     // A3 stack scale next-driven (solo desktop, no reduced-motion)

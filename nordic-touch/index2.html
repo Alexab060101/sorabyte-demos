@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nordic Touch · v2 Editorial</title>
+<meta name="description" content="Nordic Touch · Estética avanzada en Palma. Versión editorial dark inspirada en portfolios premium.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0c0a08;
+    --bg-soft: #14110d;
+    --fg: #f3ede3;
+    --fg-soft: #b9b0a0;
+    --fg-mute: #6e6557;
+    --gold: #A38249;
+    --gold-s: #C7A56C;
+    --line: rgba(243,237,227,0.08);
+    --line-strong: rgba(243,237,227,0.16);
+    --m-base: 600ms;
+    --m-slow: 900ms;
+    --m-snap: cubic-bezier(0.4, 0, 0.2, 1);
+    --m-out: cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+  html, body {
+    background: var(--bg); color: var(--fg);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+  body { line-height: 1.55; }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; background: none; border: none; color: inherit; }
+  img, svg { display: block; max-width: 100%; }
+  ::selection { background: var(--gold); color: var(--bg); }
+
+  .it { font-family: 'Newsreader', serif; font-style: italic; font-weight: 400; }
+
+  /* === NOISE OVERLAY === */
+  .grain {
+    position: fixed; inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.45;
+    mix-blend-mode: soft-light;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-size: 220px 220px;
+  }
+
+  /* === PAGE-LOAD MASK === */
+  .page-mask {
+    position: fixed; inset: 0; z-index: 999;
+    background: var(--gold);
+    clip-path: circle(150% at 50% 50%);
+    transition: clip-path 1100ms cubic-bezier(0.86,0,0.07,1);
+    pointer-events: none;
+  }
+  .page-mask.out { clip-path: circle(0% at 50% 50%); }
+
+  /* === SCROLL PROG (móvil) === */
+  .scroll-prog {
+    position: fixed; top: 0; left: 0;
+    height: 2px;
+    background: var(--gold);
+    width: 0%;
+    z-index: 200;
+    transition: width 60ms linear;
+    pointer-events: none;
+  }
+  @media (min-width: 769px) { .scroll-prog { display: none; } }
+
+  /* === DEMO BADGE === */
+  .demo-badge {
+    position: fixed;
+    top: 86px; left: 50%; transform: translateX(-50%);
+    background: rgba(12,10,8,0.92);
+    border: 1px solid var(--line-strong);
+    padding: 7px 16px;
+    z-index: 49;
+    font-size: 0.64rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--fg-soft);
+    border-radius: 999px;
+    backdrop-filter: blur(12px);
+  }
+  .demo-badge a { color: var(--gold-s); }
+  @media (max-width: 640px) { .demo-badge { font-size: 0.56rem; padding: 5px 12px; top: 72px; } }
+
+  /* === NAV === */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 50;
+    padding: 22px 5vw;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(12,10,8,0);
+    backdrop-filter: blur(0px);
+    transition: background var(--m-base) var(--m-snap), backdrop-filter var(--m-base) var(--m-snap), padding var(--m-base) var(--m-snap), border-color var(--m-base) var(--m-snap);
+    border-bottom: 1px solid transparent;
+  }
+  .nav.scrolled { background: rgba(12,10,8,0.78); backdrop-filter: blur(20px); padding: 14px 5vw; border-bottom-color: var(--line); }
+  .nav-brand { display: flex; align-items: center; gap: 12px; font-family: 'Newsreader', serif; font-size: 1.2rem; font-weight: 500; letter-spacing: 0.01em; }
+  .nav-brand em { font-style: italic; color: var(--gold-s); }
+  .nav-brand .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); }
+  .nav-links { display: flex; gap: 26px; align-items: center; font-size: 0.78rem; }
+  .nav-links a { color: var(--fg-soft); letter-spacing: 0.06em; transition: color 200ms; text-transform: uppercase; }
+  .nav-links a:hover { color: var(--fg); }
+  .nav-cta {
+    padding: 10px 18px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transition: all var(--m-base) var(--m-snap);
+  }
+  .nav-cta:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  @media (max-width: 768px) {
+    .nav-links a:not(.nav-cta) { display: none; }
+    .nav { padding: 14px 6vw; }
+  }
+
+  /* === HERO ASIMÉTRICO === */
+  .hero {
+    position: relative; z-index: 10;
+    padding: 18vh 5vw 10vh;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 80px;
+    align-items: end;
+    min-height: 100svh;
+  }
+  @media (max-width: 1000px) { .hero { grid-template-columns: 1fr; gap: 50px; padding-top: 16vh; } }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 12px;
+    color: var(--fg-mute);
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+  }
+  .hero-eyebrow::before { content: ''; width: 38px; height: 1px; background: var(--fg-mute); }
+  .hero h1 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: clamp(2.8rem, 8vw, 7.2rem);
+    letter-spacing: -0.035em;
+    line-height: 0.96;
+    color: var(--fg);
+  }
+  .hero h1 .ln {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.1em;
+    line-height: 1.05;
+  }
+  .hero h1 .ln > span {
+    display: block;
+    transform: translateY(110%);
+    transition: transform 1100ms var(--m-out);
+    will-change: transform;
+  }
+  .hero h1.in .ln > span { transform: translateY(0); }
+  .hero h1.in .ln:nth-child(2) > span { transition-delay: 140ms; }
+  .hero h1.in .ln:nth-child(3) > span { transition-delay: 280ms; }
+  .hero h1 .it { color: var(--gold-s); }
+
+  .hero-sub {
+    margin-top: 38px;
+    max-width: 480px;
+    color: var(--fg-soft);
+    font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+    line-height: 1.7;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity var(--m-slow) var(--m-out), transform var(--m-slow) var(--m-out);
+    transition-delay: 520ms;
+  }
+  .hero.in .hero-sub { opacity: 1; transform: none; }
+  .hero-cta-wrap {
+    margin-top: 42px;
+    display: flex; gap: 14px; flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity var(--m-slow) var(--m-out), transform var(--m-slow) var(--m-out);
+    transition-delay: 720ms;
+  }
+  .hero.in .hero-cta-wrap { opacity: 1; transform: none; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 15px 28px;
+    border-radius: 999px;
+    font-size: 0.86rem; font-weight: 500;
+    letter-spacing: 0.04em;
+    transition: transform 200ms var(--m-snap), background var(--m-base) var(--m-snap), color var(--m-base) var(--m-snap);
+  }
+  .btn-primary { background: var(--gold); color: var(--bg); }
+  .btn-primary:hover { transform: translateY(-2px); background: var(--gold-s); }
+  .btn-ghost { border: 1px solid var(--line-strong); color: var(--fg); }
+  .btn-ghost:hover { background: rgba(243,237,227,0.05); }
+  .btn .arr { font-family: 'Newsreader', serif; font-style: italic; transition: transform 200ms var(--m-snap); }
+  .btn:hover .arr { transform: translateX(4px); }
+
+  /* Stat card big Max Reed style */
+  .hero-stat {
+    position: relative;
+    border: 1px solid var(--line-strong);
+    border-radius: 16px;
+    padding: 38px 32px 34px;
+    background: linear-gradient(180deg, rgba(163,130,73,0.06), rgba(20,17,13,0.4));
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity var(--m-slow) var(--m-out), transform var(--m-slow) var(--m-out);
+    transition-delay: 900ms;
+  }
+  .hero.in .hero-stat { opacity: 1; transform: none; }
+  .hero-stat-label {
+    font-size: 0.66rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--fg-mute);
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 26px;
+  }
+  .hero-stat-label::before, .hero-stat-label::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+  .hero-stat-big {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(6rem, 14vw, 10rem);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    color: var(--fg);
+    text-align: center;
+    background: linear-gradient(180deg, var(--fg) 0%, var(--gold-s) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-stat-stars {
+    text-align: center;
+    color: var(--gold);
+    font-size: 1.1rem;
+    letter-spacing: 0.18em;
+    margin-top: 14px;
+  }
+  .hero-stat-sub {
+    text-align: center;
+    margin-top: 18px;
+    color: var(--fg-soft);
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+  }
+  .hero-stat-sub b { color: var(--gold-s); font-weight: 500; }
+  .hero-stat-line {
+    margin-top: 26px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--fg-soft);
+    line-height: 1.5;
+  }
+  .hero-stat-line .who {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    display: block;
+    margin-top: 8px;
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-mute);
+  }
+
+  /* === MARQUEE TILES (cards rect 200x300) === */
+  .tile-marq {
+    position: relative; z-index: 10;
+    padding: 6vh 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .tile-marq::before, .tile-marq::after {
+    content: ''; position: absolute; top: 0; bottom: 0; width: 140px; z-index: 2; pointer-events: none;
+  }
+  .tile-marq::before { left: 0; background: linear-gradient(90deg, var(--bg), transparent); }
+  .tile-marq::after { right: 0; background: linear-gradient(-90deg, var(--bg), transparent); }
+  .tile-track {
+    display: flex; gap: 18px;
+    width: max-content;
+    animation: tile-slide 48s linear infinite;
+  }
+  .tile-card {
+    flex-shrink: 0;
+    width: 200px; height: 300px;
+    border-radius: 14px;
+    border: 1px solid var(--line-strong);
+    background: linear-gradient(160deg, rgba(163,130,73,0.18), rgba(20,17,13,0.6));
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 22px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .tile-card::before {
+    content: ''; position: absolute; top: -40%; right: -30%;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(199,165,108,0.22), transparent 70%);
+    pointer-events: none;
+  }
+  .tile-num {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 0.8rem;
+    color: var(--fg-mute);
+    letter-spacing: 0.1em;
+  }
+  .tile-name {
+    font-family: 'Newsreader', serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.1;
+    color: var(--fg);
+    letter-spacing: -0.01em;
+  }
+  .tile-name .it { display: block; color: var(--gold-s); }
+  @keyframes tile-slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @media (max-width: 768px) {
+    .tile-track { animation: none; overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 6vw; gap: 14px; -webkit-overflow-scrolling: touch; }
+    .tile-card { scroll-snap-align: center; width: 180px; height: 260px; }
+  }
+
+  /* === SECTION === */
+  section.s {
+    position: relative; z-index: 10;
+    padding: 14vh 5vw;
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    color: var(--gold);
+    font-size: 0.68rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    font-weight: 500;
+  }
+  .eyebrow::before { content: ''; width: 18px; height: 1px; background: var(--gold); }
+  h2 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: clamp(2.2rem, 5vw, 4.2rem);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 32px;
+    max-width: 18ch;
+    color: var(--fg);
+  }
+  h2 .ln { display: block; overflow: hidden; padding-bottom: 0.14em; line-height: 1.05; }
+  h2 .ln > span {
+    display: block;
+    transform: translateY(108%);
+    transition: transform var(--m-slow) var(--m-out);
+    will-change: transform;
+  }
+  h2 .ln:nth-child(2) > span { transition-delay: 120ms; }
+  h2.in .ln > span { transform: translateY(0); }
+  h2 .it { color: var(--gold-s); }
+
+  .lede {
+    max-width: 540px;
+    color: var(--fg-soft);
+    font-size: 1.02rem;
+    line-height: 1.7;
+  }
+
+  /* === 3-COL FEATURES GRID (equipo Max Reed style) === */
+  .feat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 56px;
+  }
+  @media (max-width: 900px) { .feat-grid { grid-template-columns: 1fr; gap: 16px; } }
+  .feat-card {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    min-height: 460px;
+    padding: 28px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    transition: transform var(--m-base) var(--m-snap), box-shadow var(--m-base) var(--m-snap), border-color var(--m-base) var(--m-snap);
+  }
+  .feat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px var(--line-strong);
+    border-color: transparent;
+  }
+  .feat-photo {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    background: linear-gradient(160deg, rgba(163,130,73,0.18), rgba(20,17,13,0.95));
+    z-index: 0;
+  }
+  .feat-photo::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 30%, rgba(12,10,8,0.85) 100%);
+  }
+  .feat-initial {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 14rem;
+    line-height: 1;
+    color: rgba(199,165,108,0.18);
+    user-select: none;
+  }
+  .feat-label {
+    position: relative; z-index: 2;
+    font-size: 0.66rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--fg-mute);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .feat-label::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+  .feat-body { position: relative; z-index: 2; }
+  .feat-name {
+    font-family: 'Newsreader', serif;
+    font-size: 2.4rem;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.015em;
+    margin-bottom: 12px;
+    color: var(--fg);
+  }
+  .feat-role {
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold-s);
+    margin-bottom: 16px;
+  }
+  .feat-line {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    color: var(--fg-soft);
+    font-size: 1rem;
+    line-height: 1.5;
+    max-width: 22ch;
+  }
+
+  /* === SERVICIOS · TLIST estilo dermativa === */
+  .tlist {
+    border-top: 1px solid var(--line);
+    margin-top: 40px;
+  }
+  .t-row {
+    display: grid;
+    grid-template-columns: 80px 1fr auto auto 32px;
+    gap: 28px;
+    align-items: center;
+    padding: 26px 0;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+    transition: padding var(--m-base) var(--m-snap), color var(--m-base) var(--m-snap);
+  }
+  .t-row:hover { padding-left: 18px; padding-right: 18px; }
+  .t-row::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 0;
+    background: linear-gradient(90deg, rgba(163,130,73,0.08), transparent);
+    transition: width var(--m-base) var(--m-snap);
+    pointer-events: none;
+  }
+  .t-row:hover::before { width: 100%; }
+  .t-num {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    color: var(--fg-mute);
+    font-size: 1.3rem;
+  }
+  .t-name {
+    font-family: 'Newsreader', serif;
+    font-size: clamp(1.15rem, 2.2vw, 1.6rem);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--fg);
+  }
+  .t-dur {
+    color: var(--fg-mute);
+    font-size: 0.74rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .t-price {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 1.5rem;
+    color: var(--gold-s);
+    letter-spacing: -0.01em;
+  }
+  .t-arr {
+    color: var(--fg-mute);
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    transition: color var(--m-base) var(--m-snap), transform var(--m-base) var(--m-snap);
+  }
+  .t-row:hover .t-arr { color: var(--gold); transform: translateX(6px); }
+  .t-row:hover .t-name { color: var(--gold-s); }
+  @media (max-width: 640px) {
+    .t-row { grid-template-columns: 1fr auto; gap: 6px 16px; padding: 22px 0; }
+    .t-num { display: none; }
+    .t-name { grid-column: 1; }
+    .t-price { grid-column: 2; grid-row: 1; }
+    .t-dur { grid-column: 1 / -1; font-size: 0.68rem; }
+    .t-arr { display: none; }
+    .t-row:hover { padding-left: 6px; padding-right: 6px; }
+  }
+
+  /* === TIMELINE / TRAYECTORIA === */
+  .timeline-wrap {
+    margin-top: 56px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 16px 0;
+  }
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+  }
+  @media (max-width: 900px) { .timeline { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 540px) { .timeline { grid-template-columns: 1fr; } }
+  .tl-item {
+    padding: 26px 22px;
+    border-left: 1px solid var(--line);
+    display: flex; flex-direction: column; gap: 10px;
+    transition: background var(--m-base) var(--m-snap);
+  }
+  .tl-item:first-child { border-left: none; }
+  .tl-item:hover { background: rgba(163,130,73,0.04); }
+  .tl-year {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 1.8rem;
+    color: var(--gold-s);
+    line-height: 1;
+  }
+  .tl-event {
+    font-size: 0.78rem;
+    color: var(--fg-soft);
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+  }
+  .tl-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+  @media (max-width: 900px) {
+    .tl-item { border-left: none; border-top: 1px solid var(--line); }
+    .tl-item:first-child { border-top: none; }
+  }
+
+  /* === BIG STAT (reach card style) === */
+  .big-stat-section {
+    position: relative; z-index: 10;
+    padding: 14vh 5vw;
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+  .big-stat {
+    border: 1px solid var(--line-strong);
+    border-radius: 18px;
+    padding: 60px 5vw;
+    text-align: center;
+    background:
+      radial-gradient(ellipse at center top, rgba(163,130,73,0.12), transparent 60%),
+      linear-gradient(180deg, rgba(20,17,13,0.4), rgba(12,10,8,0.6));
+    position: relative;
+    overflow: hidden;
+  }
+  .big-stat-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 28px;
+  }
+  .big-stat-num {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(7rem, 18vw, 16rem);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    background: linear-gradient(180deg, var(--fg) 0%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .big-stat-num .slash { color: var(--fg-mute); font-size: 0.55em; -webkit-text-fill-color: var(--fg-mute); }
+  .big-stat-num .small {
+    font-size: 0.42em;
+    -webkit-text-fill-color: var(--gold-s);
+    background: none;
+    color: var(--gold-s);
+  }
+  .big-stat-stars {
+    margin-top: 22px;
+    color: var(--gold);
+    font-size: 1.4rem;
+    letter-spacing: 0.18em;
+  }
+  .big-stat-caption {
+    margin-top: 26px;
+    color: var(--fg-soft);
+    font-size: 0.92rem;
+    letter-spacing: 0.04em;
+    max-width: 420px;
+    margin-left: auto; margin-right: auto;
+    line-height: 1.6;
+  }
+  .big-stat-cta { margin-top: 38px; }
+
+  /* === REVIEWS === */
+  .rev-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 56px;
+  }
+  @media (max-width: 900px) { .rev-grid { grid-template-columns: 1fr; } }
+  .rev {
+    border: 1px solid var(--line);
+    background: var(--bg-soft);
+    border-radius: 14px;
+    padding: 32px 28px;
+    transition: transform var(--m-base) var(--m-snap), border-color var(--m-base) var(--m-snap);
+  }
+  .rev:hover { transform: translateY(-4px); border-color: var(--line-strong); }
+  .rev-stars { color: var(--gold); font-size: 0.92rem; letter-spacing: 0.14em; margin-bottom: 18px; }
+  .rev-text {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 1.08rem;
+    line-height: 1.55;
+    color: var(--fg);
+    margin-bottom: 22px;
+  }
+  .rev-author {
+    font-size: 0.74rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-mute);
+  }
+  .rev-author b { color: var(--gold-s); font-weight: 500; }
+
+  /* === REACH CONTACT CARD (Max Reed dark) === */
+  .reach {
+    position: relative; z-index: 10;
+    padding: 10vh 5vw 14vh;
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+  .reach-card {
+    border: 1px solid var(--line-strong);
+    border-radius: 20px;
+    background:
+      radial-gradient(circle at 80% 20%, rgba(163,130,73,0.14), transparent 50%),
+      linear-gradient(180deg, var(--bg-soft), rgba(12,10,8,0.7));
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 520px;
+  }
+  @media (max-width: 900px) { .reach-card { grid-template-columns: 1fr; } }
+  .reach-body {
+    padding: 60px 50px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  @media (max-width: 600px) { .reach-body { padding: 40px 28px; } }
+  .reach-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 28px;
+  }
+  .reach-label::before { content: ''; width: 18px; height: 1px; background: var(--gold); }
+  .reach-title {
+    font-family: 'Newsreader', serif;
+    font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 36px;
+  }
+  .reach-title .it { color: var(--gold-s); }
+  .reach-info { display: flex; flex-direction: column; gap: 18px; margin-bottom: 36px; }
+  .reach-row { display: grid; grid-template-columns: 120px 1fr; gap: 18px; padding: 14px 0; border-bottom: 1px solid var(--line); align-items: start; }
+  .reach-row dt {
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-mute);
+  }
+  .reach-row dd { font-size: 0.94rem; color: var(--fg); }
+  .reach-row dd a { border-bottom: 1px solid var(--line); transition: border-color var(--m-base) var(--m-snap); }
+  .reach-row dd a:hover { border-color: var(--gold); }
+  .reach-map {
+    position: relative;
+    min-height: 360px;
+    border-left: 1px solid var(--line);
+  }
+  @media (max-width: 900px) { .reach-map { border-left: none; border-top: 1px solid var(--line); min-height: 320px; } }
+  .reach-map iframe {
+    width: 100%; height: 100%; min-height: 360px; border: 0;
+    filter: grayscale(1) invert(0.92) contrast(0.95) brightness(0.95);
+  }
+
+  /* === FAQ === */
+  .faq-zone {
+    padding: 12vh 5vw 14vh;
+    max-width: 1240px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 80px;
+    position: relative; z-index: 10;
+  }
+  @media (max-width: 900px) { .faq-zone { grid-template-columns: 1fr; gap: 40px; } }
+  details.q { border-bottom: 1px solid var(--line); }
+  details.q:first-of-type { border-top: 1px solid var(--line); }
+  details.q summary {
+    padding: 26px 0;
+    list-style: none;
+    cursor: pointer;
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+    display: flex; justify-content: space-between; gap: 24px; align-items: center;
+    transition: color var(--m-base) var(--m-snap);
+  }
+  details.q summary::-webkit-details-marker { display: none; }
+  details.q summary::after {
+    content: '+';
+    color: var(--gold);
+    font-size: 1.4rem;
+    font-style: normal;
+    font-family: 'Inter';
+    font-weight: 300;
+    transition: transform var(--m-base) var(--m-snap);
+  }
+  details.q[open] summary::after { transform: rotate(45deg); }
+  details.q[open] summary { color: var(--gold-s); }
+  details.q .a {
+    padding: 0 0 26px;
+    color: var(--fg-soft);
+    line-height: 1.7;
+    font-size: 0.96rem;
+    max-width: 62ch;
+  }
+
+  /* === FOOTER === */
+  footer {
+    position: relative; z-index: 10;
+    padding: 8vh 5vw 4vh;
+    border-top: 1px solid var(--line);
+  }
+  .foot-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 50px;
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+  @media (max-width: 768px) { .foot-grid { grid-template-columns: 1fr 1fr; gap: 36px; } }
+  .foot-brand {
+    font-family: 'Newsreader', serif;
+    font-size: 1.6rem;
+    font-weight: 500;
+  }
+  .foot-brand em { font-style: italic; color: var(--gold-s); }
+  .foot-brand p {
+    font-family: 'Inter';
+    font-style: normal;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    margin-top: 14px;
+    color: var(--fg-soft);
+    max-width: 320px;
+  }
+  .foot-col h4 {
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-mute);
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+  .foot-col a, .foot-col p {
+    display: block;
+    font-size: 0.88rem;
+    color: var(--fg-soft);
+    margin-bottom: 6px;
+    transition: color var(--m-base) var(--m-snap);
+  }
+  .foot-col a:hover { color: var(--gold-s); }
+  .foot-bottom {
+    max-width: 1240px;
+    margin: 60px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; gap: 16px;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-mute);
+    flex-wrap: wrap;
+  }
+  .foot-bottom .v2 {
+    color: var(--gold-s);
+    border-bottom: 1px solid var(--gold-s);
+    padding-bottom: 1px;
+  }
+
+  /* === BOOKSY FAB === */
+  .booksy-fab {
+    position: fixed; bottom: 24px; right: 24px;
+    z-index: 80;
+    background: var(--gold);
+    color: var(--bg);
+    padding: 14px 22px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 10px;
+    box-shadow: 0 18px 40px rgba(163,130,73,0.4);
+    transition: transform 200ms var(--m-snap), background var(--m-base) var(--m-snap);
+  }
+  .booksy-fab:hover { transform: translateY(-3px); background: var(--gold-s); }
+  .booksy-fab svg { width: 18px; height: 18px; fill: currentColor; }
+  @media (max-width: 600px) { .booksy-fab { padding: 12px 16px; font-size: 0.72rem; bottom: 18px; right: 18px; } }
+
+  /* === REVEAL === */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity var(--m-slow) var(--m-out), transform var(--m-slow) var(--m-out); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* === REDUCED MOTION === */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .hero h1 .ln > span, h2 .ln > span { transform: none !important; }
+    .page-mask { display: none; }
+    .reveal { opacity: 1; transform: none; }
+    .tile-track { animation: none !important; }
+  }
+
+  /* === Tap state mobile === */
+  @media (hover:none) and (pointer:coarse) {
+    .btn-primary:active, .btn-ghost:active, .nav-cta:active, .booksy-fab:active, .feat-card:active, .rev:active {
+      transform: scale(0.97);
+      transition: transform 120ms var(--m-snap);
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-mask" id="pageMask"></div>
+<div class="grain"></div>
+<div class="scroll-prog" id="scrollProg" aria-hidden="true"></div>
+
+<div class="demo-badge">Demo · v2 Editorial · por <a href="https://sorabyte.es" target="_blank">Sorabyte</a></div>
+
+<header class="nav" id="nav">
+  <a href="#" class="nav-brand">
+    <span class="dot"></span>
+    <span>Nordic <em>Touch</em></span>
+  </a>
+  <nav class="nav-links">
+    <a href="#equipo">Equipo</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#trayectoria">Trayectoria</a>
+    <a href="#contacto">Contacto</a>
+    <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="nav-cta">Reservar</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div>
+    <div class="hero-eyebrow">Palma de Mallorca · Estética avanzada</div>
+    <h1 id="heroH1">
+      <span class="ln"><span>Tu piel,</span></span>
+      <span class="ln"><span>tu plan,</span></span>
+      <span class="ln"><span class="it">nuestra técnica.</span></span>
+    </h1>
+    <p class="hero-sub">Centro en Avd. Picasso. Tecnología profesional (LPG, Genesis, m.pen, Cosmelan) en manos de Elaine, Mónica y Débora. Sin protocolos genéricos: cada caso tiene su plan.</p>
+    <div class="hero-cta-wrap">
+      <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="btn btn-primary">Reservar en Booksy <span class="arr">→</span></a>
+      <a href="#servicios" class="btn btn-ghost">Ver tratamientos</a>
+    </div>
+  </div>
+
+  <aside class="hero-stat">
+    <div class="hero-stat-label">Booksy verificado</div>
+    <div class="hero-stat-big" data-target="5" data-decimals="1">5.0</div>
+    <div class="hero-stat-stars">★ ★ ★ ★ ★</div>
+    <div class="hero-stat-sub"><b data-target="48">48</b> reseñas reales · 100% verificadas</div>
+    <div class="hero-stat-line">
+      "Son super profesionales y encantadoras. Las mejores con diferencia."
+      <span class="who">Nekane · Booksy verificado</span>
+    </div>
+  </aside>
+</section>
+
+<!-- MARQUEE TILES (servicios estrella) -->
+<section class="tile-marq" aria-hidden="false">
+  <div class="tile-track">
+    <article class="tile-card"><div class="tile-num">01 · Corporal</div><div class="tile-name">LPG <span class="it">Endermologie</span></div></article>
+    <article class="tile-card"><div class="tile-num">02 · Facial</div><div class="tile-name">Genesis <span class="it">Skincare</span></div></article>
+    <article class="tile-card"><div class="tile-num">03 · Facial</div><div class="tile-name">m.pen <span class="it">Microneedling</span></div></article>
+    <article class="tile-card"><div class="tile-num">04 · Facial</div><div class="tile-name">Cosmelan <span class="it">Peeling</span></div></article>
+    <article class="tile-card"><div class="tile-num">05 · Corporal</div><div class="tile-name">Madero<span class="it">terapia</span></div></article>
+    <article class="tile-card"><div class="tile-num">06 · Antiedad</div><div class="tile-name">Age <span class="it">Element</span></div></article>
+    <article class="tile-card"><div class="tile-num">07 · Mirada</div><div class="tile-name">Micro<span class="it">blading</span></div></article>
+    <article class="tile-card"><div class="tile-num">08 · Mirada</div><div class="tile-name">Lifting <span class="it">pestañas</span></div></article>
+    <!-- duplicate for seamless loop -->
+    <article class="tile-card" aria-hidden="true"><div class="tile-num">01 · Corporal</div><div class="tile-name">LPG <span class="it">Endermologie</span></div></article>
+    <article class="tile-card" aria-hidden="true"><div class="tile-num">02 · Facial</div><div class="tile-name">Genesis <span class="it">Skincare</span></div></article>
+    <article class="tile-card" aria-hidden="true"><div class="tile-num">03 · Facial</div><div class="tile-name">m.pen <span class="it">Microneedling</span></div></article>
+    <article class="tile-card" aria-hidden="true"><div class="tile-num">04 · Facial</div><div class="tile-name">Cosmelan <span class="it">Peeling</span></div></article>
+    <article class="tile-card" aria-hidden="true"><div class="tile-num">05 · Corporal</div><div class="tile-name">Madero<span class="it">terapia</span></div></article>
+    <article class="tile-card" aria-hidden="true"><div class="tile-num">06 · Antiedad</div><div class="tile-name">Age <span class="it">Element</span></div></article>
+    <article class="tile-card" aria-hidden="true"><div class="tile-num">07 · Mirada</div><div class="tile-name">Micro<span class="it">blading</span></div></article>
+    <article class="tile-card" aria-hidden="true"><div class="tile-num">08 · Mirada</div><div class="tile-name">Lifting <span class="it">pestañas</span></div></article>
+  </div>
+</section>
+
+<!-- EQUIPO 3-COL FEATURES -->
+<section class="s" id="equipo">
+  <div style="max-width:720px;">
+    <div class="eyebrow">El equipo</div>
+    <h2>
+      <span class="ln"><span>Tres manos,</span></span>
+      <span class="ln"><span class="it">un mismo nivel.</span></span>
+    </h2>
+    <p class="lede">Cada especialista con su área de dominio. Cuando reservas, eliges con quién, o nos pides recomendación según tu caso. Sin alquileres de cabina ni rotación: el mismo equipo siempre.</p>
+  </div>
+
+  <div class="feat-grid">
+    <article class="feat-card">
+      <div class="feat-photo"><div class="feat-initial">E</div></div>
+      <div class="feat-label">01 · Facial</div>
+      <div class="feat-body">
+        <div class="feat-name">Elaine</div>
+        <div class="feat-role">Especialista facial</div>
+        <p class="feat-line">"La piel cuenta lo que hace falta cambiar. Yo solo escucho."</p>
+      </div>
+    </article>
+    <article class="feat-card">
+      <div class="feat-photo"><div class="feat-initial">M</div></div>
+      <div class="feat-label">02 · Corporal</div>
+      <div class="feat-body">
+        <div class="feat-name">Mónica</div>
+        <div class="feat-role">Corporal & LPG</div>
+        <p class="feat-line">"Resultados visibles desde la 3ª sesión. Sin promesas vacías."</p>
+      </div>
+    </article>
+    <article class="feat-card">
+      <div class="feat-photo"><div class="feat-initial">D</div></div>
+      <div class="feat-label">03 · Mirada</div>
+      <div class="feat-body">
+        <div class="feat-name">Débora</div>
+        <div class="feat-role">Microblading & cejas</div>
+        <p class="feat-line">"La cara cambia cuando la mirada está bien dibujada."</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- SERVICIOS TLIST -->
+<section class="s" id="servicios">
+  <div class="eyebrow">Servicios & precios</div>
+  <h2>
+    <span class="ln"><span>Once tratamientos.</span></span>
+    <span class="ln"><span class="it">Precio fijo, sin sorpresas.</span></span>
+  </h2>
+  <p class="lede">Duración real y precio cerrado. Reserva cualquier servicio directamente en Booksy y elige especialista al momento.</p>
+
+  <div class="tlist">
+    <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="t-row">
+      <div class="t-num">01</div>
+      <div class="t-name">LPG Corporal</div>
+      <div class="t-dur">50 min</div>
+      <div class="t-price">70 €</div>
+      <div class="t-arr">→</div>
+    </a>
+    <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="t-row">
+      <div class="t-num">02</div>
+      <div class="t-name">Higiene facial profunda</div>
+      <div class="t-dur">50 min</div>
+      <div class="t-price">60 €</div>
+      <div class="t-arr">→</div>
+    </a>
+    <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="t-row">
+      <div class="t-num">03</div>
+      <div class="t-name">Age Element antiedad</div>
+      <div class="t-dur">50 min</div>
+      <div class="t-price">75 €</div>
+      <div class="t-arr">→</div>
+    </a>
+    <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="t-row">
+      <div class="t-num">04</div>
+      <div class="t-name">Masaje facial</div>
+      <div class="t-dur">25 min</div>
+      <div class="t-price">38 €</div>
+      <div class="t-arr">→</div>
+    </a>
+    <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="t-row">
+      <div class="t-num">05</div>
+      <div class="t-name">Microblading + retoque</div>
+      <div class="t-dur">90 min</div>
+      <div class="t-price">290 €</div>
+      <div class="t-arr">→</div>
+    </a>
+    <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="t-row">
+      <div class="t-num">06</div>
+      <div class="t-name">Lifting pestañas + tinte</div>
+      <div class="t-dur">60 min</div>
+      <div class="t-price">49 €</div>
+      <div class="t-arr">→</div>
+    </a>
+    <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="t-row">
+      <div class="t-num">07</div>
+      <div class="t-name">Pestañas clásicas</div>
+      <div class="t-dur">60 min</div>
+      <div class="t-price">70 €</div>
+      <div class="t-arr">→</div>
+    </a>
+    <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="t-row">
+      <div class="t-num">08</div>
+      <div class="t-name">Depilación cejas</div>
+      <div class="t-dur">15 min</div>
+      <div class="t-price">8 €</div>
+      <div class="t-arr">→</div>
+    </a>
+    <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="t-row">
+      <div class="t-num">09</div>
+      <div class="t-name">Masaje corporal</div>
+      <div class="t-dur">50 min</div>
+      <div class="t-price">65 €</div>
+      <div class="t-arr">→</div>
+    </a>
+    <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="t-row">
+      <div class="t-num">10</div>
+      <div class="t-name">Maderoterapia</div>
+      <div class="t-dur">50 min</div>
+      <div class="t-price">65 €</div>
+      <div class="t-arr">→</div>
+    </a>
+    <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="t-row">
+      <div class="t-num">11</div>
+      <div class="t-name">Pedicura SPA semipermanente</div>
+      <div class="t-dur">75 min</div>
+      <div class="t-price">45 €</div>
+      <div class="t-arr">→</div>
+    </a>
+  </div>
+</section>
+
+<!-- TRAYECTORIA TIMELINE -->
+<section class="s" id="trayectoria">
+  <div style="max-width:720px;">
+    <div class="eyebrow">Trayectoria</div>
+    <h2>
+      <span class="ln"><span>Ocho años</span></span>
+      <span class="ln"><span>cuidando <span class="it">Palma.</span></span></span>
+    </h2>
+    <p class="lede">No abrimos ayer. Cada técnica entró cuando supimos hacerla bien, no antes.</p>
+  </div>
+
+  <div class="timeline-wrap">
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2018</div><div class="tl-event">Apertura del centro en Avd. Picasso, Palma.</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2020</div><div class="tl-event">Incorporación de LPG Endermologie corporal.</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2022</div><div class="tl-event">Llega Genesis Skincare y Age Element facial.</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2024</div><div class="tl-event">Microblading certificado con Débora.</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2026</div><div class="tl-event">5.0 ★ Booksy · 48 reseñas verificadas.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BIG STAT -->
+<section class="big-stat-section">
+  <div class="big-stat reveal">
+    <div class="big-stat-eyebrow">Booksy · Estado actual</div>
+    <div class="big-stat-num">
+      <span data-target="5" data-decimals="1">5.0</span><span class="slash"> / </span><span class="small" data-target="48">48</span>
+    </div>
+    <div class="big-stat-stars">★ ★ ★ ★ ★</div>
+    <p class="big-stat-caption">48 reseñas reales y verificadas. Solo escriben quienes vinieron de verdad. Cancelación gratuita hasta 24 h antes.</p>
+    <div class="big-stat-cta">
+      <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="btn btn-primary">Leer las 48 reseñas <span class="arr">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="s" id="resenas">
+  <div style="max-width:720px;">
+    <div class="eyebrow">Lo que dicen las clientas</div>
+    <h2>
+      <span class="ln"><span>Cinco estrellas,</span></span>
+      <span class="ln"><span class="it">48 veces.</span></span>
+    </h2>
+  </div>
+
+  <div class="rev-grid">
+    <article class="rev reveal">
+      <div class="rev-stars">★ ★ ★ ★ ★</div>
+      <p class="rev-text">"Son super profesionales y encantadoras. Las mejores con diferencia."</p>
+      <div class="rev-author"><b>Nekane</b> · Booksy verificado</div>
+    </article>
+    <article class="rev reveal">
+      <div class="rev-stars">★ ★ ★ ★ ★</div>
+      <p class="rev-text">"This is without a doubt one of my favourite spas on this island."</p>
+      <div class="rev-author"><b>Cindy</b> · Booksy verificado</div>
+    </article>
+    <article class="rev reveal">
+      <div class="rev-stars">★ ★ ★ ★ ★</div>
+      <p class="rev-text">"Trato impecable, resultado visible desde la primera sesión."</p>
+      <div class="rev-author"><b>Marta R.</b> · Booksy verificado</div>
+    </article>
+  </div>
+</section>
+
+<!-- REACH CONTACT CARD -->
+<section class="reach" id="contacto">
+  <div class="reach-card">
+    <div class="reach-body">
+      <div>
+        <div class="reach-label">Visítanos</div>
+        <h2 class="reach-title">
+          Avd. Picasso 3,<br><span class="it">Palma.</span>
+        </h2>
+        <dl class="reach-info">
+          <div class="reach-row"><dt>Dirección</dt><dd>Avinguda Picasso, 3<br>07014 Palma de Mallorca</dd></div>
+          <div class="reach-row"><dt>Reservas</dt><dd><a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank">Booksy · 5.0 ★ (48)</a></dd></div>
+          <div class="reach-row"><dt>Horario</dt><dd>L a V · 10:00 a 20:00<br>Sábado · 10:00 a 14:00</dd></div>
+          <div class="reach-row"><dt>Cancelación</dt><dd>Gratuita hasta 24 h antes</dd></div>
+        </dl>
+      </div>
+      <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="btn btn-primary" style="align-self:flex-start;">Reservar ahora <span class="arr">→</span></a>
+    </div>
+    <div class="reach-map">
+      <iframe src="https://maps.google.com/maps?q=Avinguda%20Picasso%203%20Palma&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-zone">
+  <div>
+    <div class="eyebrow">Dudas frecuentes</div>
+    <h2>
+      <span class="ln"><span>Lo que <span class="it">todas</span></span></span>
+      <span class="ln"><span>preguntan.</span></span>
+    </h2>
+  </div>
+  <div>
+    <details class="q">
+      <summary>¿Qué es LPG Endermologie?</summary>
+      <div class="a">Tecnología francesa de masaje mecánico que reactiva el tejido en profundidad. Reduce volumen localizado, mejora circulación y firmeza. Indoloro, sin baja, resultado visible desde la 3ª o 4ª sesión.</div>
+    </details>
+    <details class="q">
+      <summary>¿Cuántas sesiones para Cosmelan?</summary>
+      <div class="a">Una sesión inicial con seguimiento domiciliario controlado de 4 a 6 semanas. Indicado para manchas solares y melasma. Diagnóstico previo obligatorio: no todas las pieles responden igual.</div>
+    </details>
+    <details class="q">
+      <summary>¿Hacéis tratamientos médicos (Botox, ácido hialurónico)?</summary>
+      <div class="a">No. Somos centro de estética avanzada. Nuestros tratamientos son no invasivos: faciales, corporal, microblading, pestañas, peelings. Si buscas medicina estética inyectable, te derivamos a profesionales colegiados.</div>
+    </details>
+    <details class="q">
+      <summary>¿Puedo elegir especialista al reservar?</summary>
+      <div class="a">Sí. En Booksy ves los horarios de Elaine, Mónica y Débora. Si no estás segura, reserva valoración y te recomendamos la mejor según tu caso.</div>
+    </details>
+    <details class="q">
+      <summary>¿Aceptáis tarjeta? ¿Bizum?</summary>
+      <div class="a">Sí, ambas. También efectivo. Los bonos completos se pueden fraccionar.</div>
+    </details>
+    <details class="q">
+      <summary>Política de cancelación</summary>
+      <div class="a">Cancelación gratuita hasta 24 horas antes. Después se factura el 50% del servicio para respetar a las clientas en lista de espera.</div>
+    </details>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-grid">
+    <div>
+      <div class="foot-brand">Nordic <em>Touch</em></div>
+      <p>Centro de estética avanzada en Palma de Mallorca. Tecnología profesional, atención personal. 5.0 ★ en Booksy con 48 reseñas verificadas.</p>
+    </div>
+    <div class="foot-col">
+      <h4>Visítanos</h4>
+      <p>Avd. Picasso, 3<br>07014 Palma</p>
+      <p style="color:var(--fg-mute); margin-top:6px;">L a V 10 a 20 h<br>Sáb 10 a 14 h</p>
+    </div>
+    <div class="foot-col">
+      <h4>Reservas</h4>
+      <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank">Booksy · 5.0 ★</a>
+      <a href="#contacto">Cómo llegar</a>
+    </div>
+    <div class="foot-col">
+      <h4>Versiones</h4>
+      <a href="./index.html">v1 · Clásica</a>
+      <a href="./index2.html" style="color:var(--gold-s);">v2 · Editorial</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 Nordic Touch</span>
+    <span class="v2">Demo v2 · Sorabyte</span>
+  </div>
+</footer>
+
+<a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="booksy-fab" aria-label="Reservar en Booksy">
+  <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5zm-1 6h2v4h4v2h-4v4h-2v-4H7v-2h4V8z"/></svg>
+  Reservar en Booksy
+</a>
+
+<script>
+(function(){
+  'use strict';
+
+  // Page-load mask
+  const pm = document.getElementById('pageMask');
+  if (pm) {
+    requestAnimationFrame(() => requestAnimationFrame(() => pm.classList.add('out')));
+    setTimeout(() => pm && pm.parentNode && pm.parentNode.removeChild(pm), 1500);
+  }
+
+  // Hero in
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      const hero = document.getElementById('hero');
+      const h1 = document.getElementById('heroH1');
+      if (hero) hero.classList.add('in');
+      if (h1) h1.classList.add('in');
+    }, 200);
+  });
+
+  // h2 mask reveal + reveal
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('h2, .reveal').forEach(el => io.observe(el));
+
+  // Counter scroll-driven
+  const reduceMo = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ioCount = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = parseFloat(el.dataset.target);
+      if (isNaN(target)) { ioCount.unobserve(el); return; }
+      const decimals = parseInt(el.dataset.decimals, 10) || 0;
+      if (reduceMo) { ioCount.unobserve(el); return; }
+      const dur = 1400;
+      const start = performance.now();
+      function step(now) {
+        const t = Math.min(1, (now - start) / dur);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const v = target * eased;
+        el.textContent = decimals > 0 ? v.toFixed(decimals) : Math.floor(v).toString();
+        if (t < 1) requestAnimationFrame(step);
+        else el.textContent = decimals > 0 ? target.toFixed(decimals) : Math.floor(target).toString();
+      }
+      requestAnimationFrame(step);
+      ioCount.unobserve(el);
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('[data-target]').forEach(el => ioCount.observe(el));
+
+  // Single rAF scroll loop: nav scrolled + progress
+  const nav = document.getElementById('nav');
+  const prog = document.getElementById('scrollProg');
+  let raf = null;
+  function tick() {
+    const sy = window.scrollY;
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    if (sy > 30) nav.classList.add('scrolled'); else nav.classList.remove('scrolled');
+    if (prog && docH > 0) prog.style.width = Math.min(100, (sy / docH) * 100) + '%';
+    raf = null;
+  }
+  window.addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(tick); }, { passive: true });
+  tick();
+})();
+</script>
+
+</body>
+</html>

@@ -628,12 +628,68 @@ footer.foot {
 .booksy-fab:hover { background:var(--gold); transform:translateY(-2px); }
 .booksy-fab svg { width:18px; height:18px; fill:currentColor; }
 
+/* === MOTION TOKENS (motion-patterns-deep) === */
+:root {
+  --m-fast: 200ms;
+  --m-base: 650ms;
+  --m-slow: 800ms;
+  --m-ease-snap: cubic-bezier(0.4, 0, 0.2, 1);
+  --m-ease-out: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
 /* Reveal */
-.reveal { opacity:0; transform:translateY(28px); transition:opacity 0.95s cubic-bezier(0.22,0.61,0.36,1), transform 0.95s cubic-bezier(0.22,0.61,0.36,1); }
+.reveal { opacity:0; transform:translateY(28px); transition:opacity var(--m-slow) var(--m-ease-out), transform var(--m-slow) var(--m-ease-out); }
 .reveal.up { opacity:1; transform:none; }
 .reveal.up.d1 { transition-delay:0.08s; }
 .reveal.up.d2 { transition-delay:0.16s; }
 .reveal.up.d3 { transition-delay:0.24s; }
+
+/* === E1 · Mask text reveal (línea a línea, stagger 120ms) ===
+   Para h1 hero y h2 sections. Cada línea sube desde su propia máscara. */
+.mask-reveal { display:block; overflow:hidden; line-height:1.05; padding-bottom:0.12em; }
+.mask-reveal > .ln {
+  display:block;
+  transform:translateY(105%);
+  transition:transform var(--m-slow) var(--m-ease-out);
+  will-change:transform;
+}
+.mask-reveal.ln-2 > .ln:nth-child(2) { transition-delay:120ms; }
+.mask-reveal.ln-3 > .ln:nth-child(3) { transition-delay:240ms; }
+.mask-reveal.in > .ln { transform:translateY(0); }
+
+/* === A2 · Char reveal on scroll ===
+   Cada letra del manifiesto va de opacity 0.15 a 1 según scrollY. */
+.char-scroll .ch {
+  position:relative;
+  display:inline-block;
+  white-space:pre;
+}
+.char-scroll .ch > .ph { visibility:hidden; }
+.char-scroll .ch > .ac {
+  position:absolute; inset:0;
+  opacity:0.15;
+  transition:opacity 120ms linear;
+  color:inherit;
+}
+
+/* === D2 · Image clip reveal + slow zoom (equipo) ===
+   Fotos de equipo entran con clip-path + scale graceful. */
+.team-photo { will-change:clip-path; overflow:hidden; }
+.team-photo.cliphide { clip-path:inset(0 0 100% 0); }
+.team-photo.cliphide > * { transform:scale(1.08); }
+.team-photo.clipreveal { clip-path:inset(0); transition:clip-path 1100ms var(--m-ease-out); }
+.team-photo.clipreveal > * { transform:scale(1); transition:transform 1400ms var(--m-ease-out); }
+
+/* === Scroll progress bar (solo móvil) === */
+.scroll-prog {
+  position:fixed; top:0; left:0; height:2px;
+  background:linear-gradient(90deg, var(--gold), var(--gold-s));
+  width:0%;
+  z-index:200;
+  pointer-events:none;
+  transition:width 80ms linear;
+}
+@media (min-width:769px) { .scroll-prog { display:none; } }
 
 /* === POLISH NORDIC TOUCH === */
 body::before {
@@ -642,14 +698,17 @@ body::before {
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 
-/* Hero card Booksy: tilt + lift on hover */
+/* Hero card Booksy: tilt + lift on hover refinado */
 .hero-card {
-  transition:transform 0.6s cubic-bezier(0.22,0.61,0.36,1), box-shadow 0.6s;
+  transition:transform var(--m-base) var(--m-ease-snap), box-shadow var(--m-base) var(--m-ease-snap);
   transform:rotate(-1deg);
 }
 .hero-card:hover {
-  transform:rotate(0) translateY(-6px);
-  box-shadow:0 40px 90px rgba(26,24,22,0.20);
+  transform:rotate(0deg) translateY(-8px);
+  box-shadow:
+    0 4px 12px rgba(26,24,22,0.10),
+    0 24px 56px rgba(26,24,22,0.18),
+    0 48px 110px rgba(26,24,22,0.24);
 }
 
 /* Hero h1 text-shadow */
@@ -780,6 +839,76 @@ header.scrolled {
 }
 
 html { scroll-padding-top:80px; }
+
+/* === Móvil: stagger pronunciado en team + reviews + svc-rows === */
+@media (max-width:768px) {
+  .team-card, .review {
+    transform:translateY(18px); opacity:0;
+    transition:transform 0.55s var(--m-ease-out), opacity 0.55s var(--m-ease-out);
+  }
+  .team-card.in-view, .review.in-view { transform:none; opacity:1; }
+  .team-card.in-view:nth-child(1) { transition-delay:0ms; }
+  .team-card.in-view:nth-child(2) { transition-delay:90ms; }
+  .team-card.in-view:nth-child(3) { transition-delay:180ms; }
+  .review.in-view:nth-child(1) { transition-delay:0ms; }
+  .review.in-view:nth-child(2) { transition-delay:90ms; }
+  .review.in-view:nth-child(3) { transition-delay:180ms; }
+
+  .svc-row {
+    transform:translateX(14px); opacity:0;
+    transition:transform 0.5s var(--m-ease-out), opacity 0.5s var(--m-ease-out), padding-left 0.4s var(--m-ease-snap);
+  }
+  .svc-row.in-view { transform:none; opacity:1; }
+  .svc-row.in-view:nth-child(1) { transition-delay:0ms; }
+  .svc-row.in-view:nth-child(2) { transition-delay:50ms; }
+  .svc-row.in-view:nth-child(3) { transition-delay:100ms; }
+  .svc-row.in-view:nth-child(4) { transition-delay:150ms; }
+  .svc-row.in-view:nth-child(5) { transition-delay:200ms; }
+  .svc-row.in-view:nth-child(6) { transition-delay:250ms; }
+
+  /* Hero card sin rotate en móvil (más legible) */
+  .hero-card { transform:rotate(0deg); }
+
+  /* Hero parallax sutil */
+  .hero { will-change:background-position; }
+
+  /* Áreas táctiles cómodas */
+  .btn-fill, .btn-ghost, .contact-cta, nav.menu .reserve, .cta-booksy a, .booksy-fab {
+    min-height:48px; align-items:center;
+  }
+  details.q summary { padding:22px 4px; min-height:60px; }
+}
+
+/* === Tap-state feedback (touch devices) === */
+@media (hover:none) and (pointer:coarse) {
+  .btn-fill:active, .btn-ghost:active, .contact-cta:active,
+  nav.menu .reserve:active, .cta-booksy a:active, .booksy-fab:active,
+  .team-card:active, .review:active, .svc-row:active, .hero-card:active {
+    transform:scale(0.97);
+    transition:transform 120ms var(--m-ease-snap);
+  }
+  /* Degradar hovers que estorban en touch */
+  .svc-row:hover { padding-left:0; }
+  .svc-row:hover::before { width:0; }
+  .team-card:hover { transform:none; }
+  .hero-card:hover { transform:rotate(0deg); }
+}
+
+/* === Reduced motion === */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration:0.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:0.001ms !important;
+  }
+  .mask-reveal > .ln { transform:none !important; }
+  .char-scroll .ch > .ac { opacity:1 !important; }
+  .team-photo { clip-path:none !important; }
+  .team-photo > * { transform:none !important; }
+  .reveal { opacity:1 !important; transform:none !important; }
+  .hero::after { animation:none !important; }
+  .booksy-fab::before { display:none !important; }
+}
 </style>
 </head>
 <body>
@@ -804,7 +933,7 @@ html { scroll-padding-top:80px; }
 <section class="hero">
   <div class="hero-text">
     <div class="hero-eyebrow">Estética avanzada · Palma de Mallorca</div>
-    <h1>Tu piel, <span class="it">tu plan,</span><br>nuestra técnica.</h1>
+    <h1 class="mask-reveal ln-2"><span class="ln">Tu piel, <span class="it">tu plan,</span></span><span class="ln">nuestra técnica.</span></h1>
     <p class="hero-lead">Centro de estética avanzada en Avd. Picasso. Tecnología profesional (LPG, Genesis, m.pen, Cosmelan) en manos de Elaine, Mónica y Débora. Reserva online en Booksy en 2 minutos.</p>
     <div class="hero-actions">
       <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank" class="btn-fill">Reservar en Booksy <span class="arr">→</span></a>
@@ -854,13 +983,13 @@ html { scroll-padding-top:80px; }
 <section class="section" id="equipo">
   <div style="max-width:720px; margin-bottom:60px;">
     <div class="eyebrow">El equipo</div>
-    <h2 class="section-h">Tres manos, <span class="it">un mismo nivel.</span></h2>
-    <p style="color:var(--grey-1); font-size:1rem; line-height:1.7;">Cada especialista con su área de dominio. Cuando reservas, eliges con quién — o nos pides recomendación según tu caso.</p>
+    <h2 class="section-h mask-reveal ln-2"><span class="ln">Tres manos,</span><span class="ln it">un mismo nivel.</span></h2>
+    <p class="char-scroll" data-char-scroll style="color:var(--grey-1); font-size:1rem; line-height:1.7;">Cada especialista con su área de dominio. Cuando reservas, eliges con quién, o nos pides recomendación según tu caso.</p>
   </div>
 
   <div class="team">
     <div class="team-card reveal">
-      <div class="team-photo">
+      <div class="team-photo cliphide" data-clipreveal>
         <div class="team-photo-initial">E</div>
         <div class="placeholder-note">(Foto del equipo en la web final)</div>
       </div>
@@ -870,7 +999,7 @@ html { scroll-padding-top:80px; }
       </div>
     </div>
     <div class="team-card reveal">
-      <div class="team-photo">
+      <div class="team-photo cliphide" data-clipreveal>
         <div class="team-photo-initial">M</div>
         <div class="placeholder-note">(Foto del equipo en la web final)</div>
       </div>
@@ -880,7 +1009,7 @@ html { scroll-padding-top:80px; }
       </div>
     </div>
     <div class="team-card reveal">
-      <div class="team-photo">
+      <div class="team-photo cliphide" data-clipreveal>
         <div class="team-photo-initial">D</div>
         <div class="placeholder-note">(Foto del equipo en la web final)</div>
       </div>
@@ -897,7 +1026,7 @@ html { scroll-padding-top:80px; }
   <section class="svc-section">
     <div style="max-width:720px; margin-bottom:30px;">
       <div class="eyebrow">Servicios y precios</div>
-      <h2 class="section-h">Sin sorpresas. <span class="it">Todo claro.</span></h2>
+      <h2 class="section-h mask-reveal ln-2"><span class="ln">Sin sorpresas.</span><span class="ln it">Todo claro.</span></h2>
       <p style="color:var(--grey-1); font-size:1rem; line-height:1.7;">Precios fijos. Duración real. Reserva cualquier servicio directamente en Booksy.</p>
     </div>
 
@@ -985,7 +1114,7 @@ html { scroll-padding-top:80px; }
 
 <!-- CTA BOOKSY -->
 <section class="cta-booksy">
-  <h2>¿Lista para <span class="it">reservar?</span></h2>
+  <h2 class="mask-reveal ln-1"><span class="ln">¿Lista para <span class="it">reservar?</span></span></h2>
   <p>Cuadrante actualizado en directo. Eliges servicio, especialista y hora. Confirmación inmediata.</p>
   <a href="https://booksy.com/es-es/160589_nordic-touch_medicina-estetica_69069_palma-de-mallorca" target="_blank">
     Abrir Booksy ahora <span class="arr">→</span>
@@ -998,7 +1127,7 @@ html { scroll-padding-top:80px; }
   <div class="reviews-inner">
     <div class="reviews-h">
       <div class="eyebrow">Lo que dicen las clientas</div>
-      <h2 class="section-h">5.0 estrellas. <span class="it">48 reseñas reales.</span></h2>
+      <h2 class="section-h mask-reveal ln-2"><span class="ln">5.0 estrellas.</span><span class="ln it">48 reseñas reales.</span></h2>
       <p style="color:var(--grey-1); font-size:1rem; line-height:1.7; margin-top:14px;">Todas verificadas por Booksy: solo escriben quienes vinieron de verdad.</p>
     </div>
 
@@ -1030,7 +1159,7 @@ html { scroll-padding-top:80px; }
 <section id="contacto" class="contact-grid">
   <div class="contact-info">
     <div class="eyebrow">Visítanos</div>
-    <h2 class="section-h">Avd. Picasso 3,<br><span class="it">Palma.</span></h2>
+    <h2 class="section-h mask-reveal ln-2"><span class="ln">Avd. Picasso 3,</span><span class="ln it">Palma.</span></h2>
     <dl>
       <div>
         <dt>Dirección</dt>
@@ -1067,7 +1196,7 @@ html { scroll-padding-top:80px; }
   <div class="faq-inner">
     <div>
       <div class="eyebrow">Dudas frecuentes</div>
-      <h2 class="section-h">Lo que <span class="it">todas</span> preguntan.</h2>
+      <h2 class="section-h mask-reveal ln-1"><span class="ln">Lo que <span class="it">todas</span> preguntan.</span></h2>
     </div>
     <div>
       <details class="q">
@@ -1122,23 +1251,132 @@ html { scroll-padding-top:80px; }
   Reservar en Booksy
 </a>
 
+<!-- Scroll progress bar (móvil) -->
+<div class="scroll-prog" id="scrollProg" aria-hidden="true"></div>
+
 <script>
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('up'); io.unobserve(e.target); } });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+(function(){
+  'use strict';
 
-document.querySelectorAll('.team, .reviews-grid').forEach(group => {
-  Array.from(group.children).forEach((child, i) => {
-    if(child.classList.contains('reveal') && i < 4) child.classList.add('d' + Math.min(i, 3));
+  // 1) Reveal genérico
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('up'); io.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Stagger por grupos
+  document.querySelectorAll('.team, .reviews-grid').forEach(group => {
+    Array.from(group.children).forEach((child, i) => {
+      if(child.classList.contains('reveal') && i < 4) child.classList.add('d' + Math.min(i, 3));
+    });
   });
-});
 
-const hdr = document.querySelector('header');
-window.addEventListener('scroll', () => {
-  if (window.scrollY > 20) hdr.classList.add('scrolled');
-  else hdr.classList.remove('scrolled');
-}, { passive:true });
+  // 2) E1 · Mask-reveal (línea a línea, stagger 120ms)
+  const ioMask = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ e.target.classList.add('in'); ioMask.unobserve(e.target); }
+    });
+  }, { threshold: 0.3, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.mask-reveal').forEach(el => ioMask.observe(el));
+  // Hero h1 inmediato
+  requestAnimationFrame(() => {
+    const h1 = document.querySelector('.hero h1.mask-reveal');
+    if (h1) setTimeout(() => h1.classList.add('in'), 120);
+  });
+
+  // 3) D2 · Clip-reveal team photos
+  const ioClip = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ e.target.classList.remove('cliphide'); e.target.classList.add('clipreveal'); ioClip.unobserve(e.target); }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('[data-clipreveal]').forEach(el => ioClip.observe(el));
+
+  // 4) A2 · Char-reveal scroll en manifiesto
+  const charScrollEls = [];
+  document.querySelectorAll('[data-char-scroll]').forEach(p => {
+    const text = p.textContent;
+    p.textContent = '';
+    const overlays = [];
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      const wrap = document.createElement('span');
+      wrap.className = 'ch';
+      const ph = document.createElement('span');
+      ph.className = 'ph';
+      ph.textContent = ch;
+      const ac = document.createElement('span');
+      ac.className = 'ac';
+      ac.textContent = ch;
+      wrap.appendChild(ph);
+      wrap.appendChild(ac);
+      p.appendChild(wrap);
+      overlays.push(ac);
+    }
+    charScrollEls.push({ el: p, overlays });
+  });
+
+  // 5) Stagger móvil: team-card, review, svc-row
+  const ioRows = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ e.target.classList.add('in-view'); ioRows.unobserve(e.target); }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.team-card, .review, .svc-row').forEach(el => ioRows.observe(el));
+
+  // 6) Single rAF scroll loop
+  const hdr = document.querySelector('header');
+  const prog = document.getElementById('scrollProg');
+  const hero = document.querySelector('.hero');
+  const isMobile = matchMedia('(max-width:768px)').matches;
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let raf = null;
+  function tick() {
+    const sy = window.scrollY;
+    const vh = window.innerHeight;
+    const docH = document.documentElement.scrollHeight - vh;
+
+    // Header scroll
+    if (sy > 20) hdr.classList.add('scrolled'); else hdr.classList.remove('scrolled');
+
+    // Scroll progress (móvil)
+    if (prog && docH > 0) {
+      prog.style.width = Math.min(100, (sy / docH) * 100) + '%';
+    }
+
+    // Hero parallax suave móvil (bg position shift)
+    if (hero && isMobile && !reduceMotion && sy < vh) {
+      hero.style.backgroundPosition = `80% ${20 + sy * 0.04}%, center top`;
+    }
+
+    // Char-scroll progress
+    charScrollEls.forEach(({ el, overlays }) => {
+      const rect = el.getBoundingClientRect();
+      const startY = vh * 0.85;
+      const endY = vh * 0.15;
+      const total = (startY - endY) + rect.height;
+      const passed = startY - rect.top;
+      let progress = passed / total;
+      progress = Math.max(0, Math.min(1, progress));
+      const n = overlays.length;
+      const point = progress * n;
+      for (let i = 0; i < n; i++) {
+        const d = point - i;
+        const op = Math.max(0.15, Math.min(1, 0.15 + d * 0.85));
+        overlays[i].style.opacity = op.toFixed(2);
+      }
+    });
+
+    raf = null;
+  }
+  window.addEventListener('scroll', () => {
+    if (!raf) raf = requestAnimationFrame(tick);
+  }, { passive: true });
+  window.addEventListener('resize', () => {
+    if (!raf) raf = requestAnimationFrame(tick);
+  }, { passive: true });
+  tick();
+})();
 </script>
 </body>
 </html>

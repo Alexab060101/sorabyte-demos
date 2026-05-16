@@ -963,9 +963,178 @@ header.scrolled {
 }
 
 html { scroll-padding-top:80px; }
+
+/* === UPGRADE v2 · paquita warm === */
+
+/* Comparador antes/despues */
+.compare {
+  position:relative;
+  width:100%;
+  aspect-ratio:4/3;
+  overflow:hidden;
+  background:#0e0e0e;
+  user-select:none;
+  --pos:50%;
+  touch-action:pan-y;
+  cursor:ew-resize;
+}
+.compare .layer {
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  overflow:hidden;
+}
+.compare .layer img {
+  position:absolute;
+  width:100%; height:200%;
+  top:0; left:0;
+  object-fit:cover;
+  pointer-events:none;
+  display:block;
+}
+/* Stacked vertical: antes arriba (mostrar top), despues abajo (desplazar -50%) */
+.compare.stack .layer.antes img { transform:translateY(0); }
+.compare.stack .layer.despues img { transform:translateY(-50%); }
+/* Side-by-side horizontal */
+.compare.side .layer img {
+  width:200%; height:100%;
+  top:0; left:0;
+}
+.compare.side .layer.antes img { transform:translateX(0); }
+.compare.side .layer.despues img { transform:translateX(-50%); }
+
+.compare .layer.despues {
+  clip-path:inset(0 0 0 var(--pos));
+}
+.compare .lbl {
+  position:absolute;
+  top:14px;
+  background:rgba(0,0,0,0.55);
+  color:#fff;
+  font-size:0.62rem;
+  font-weight:600;
+  letter-spacing:0.18em;
+  padding:5px 10px;
+  text-transform:uppercase;
+  z-index:3;
+  backdrop-filter:blur(4px);
+}
+.compare .lbl.l { left:14px; }
+.compare .lbl.r { right:14px; }
+.compare .drag-handle {
+  position:absolute;
+  top:0; bottom:0;
+  left:var(--pos);
+  width:3px;
+  background:rgba(255,255,255,0.95);
+  transform:translateX(-50%);
+  z-index:4;
+  pointer-events:none;
+  box-shadow:0 0 12px rgba(0,0,0,0.45);
+}
+.compare .drag-handle::before {
+  content:'';
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width:48px; height:48px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:0 4px 16px rgba(0,0,0,0.4);
+}
+.compare .drag-handle::after {
+  content:'';
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width:24px; height:24px;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231F1814' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><polyline points='15 18 9 12 15 6'/><polyline points='9 6 15 12 9 18' transform='translate(6 0)'/></svg>");
+  background-size:contain;
+  background-repeat:no-repeat;
+}
+
+/* Cursor custom (desktop only) */
+.cursor-dot, .cursor-ring { display:none; }
+@media (hover:hover) and (pointer:fine) {
+  body { cursor:none; }
+  body * { cursor:none; }
+  .cursor-dot {
+    display:block;
+    position:fixed;
+    top:0; left:0;
+    width:8px; height:8px;
+    background:#fff;
+    border-radius:50%;
+    pointer-events:none;
+    z-index:9998;
+    mix-blend-mode:difference;
+    transform:translate(-50%,-50%);
+    transition:opacity 0.2s;
+  }
+  .cursor-ring {
+    display:flex;
+    position:fixed;
+    top:0; left:0;
+    width:18px; height:18px;
+    border:1.5px solid #fff;
+    border-radius:50%;
+    pointer-events:none;
+    z-index:9998;
+    mix-blend-mode:difference;
+    transform:translate(-50%,-50%);
+    align-items:center; justify-content:center;
+    transition:width 0.35s cubic-bezier(0.22,0.61,0.36,1),
+               height 0.35s cubic-bezier(0.22,0.61,0.36,1),
+               background 0.3s;
+    font-family:'Inter',sans-serif;
+    font-size:0;
+    font-weight:600;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:#1F1814;
+    text-align:center;
+    line-height:1;
+    overflow:hidden;
+  }
+  .cursor-ring.grow {
+    width:90px; height:90px;
+    background:#fff;
+    border-color:#fff;
+    font-size:0.62rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  body, body * { cursor:auto !important; }
+  .cursor-dot, .cursor-ring { display:none !important; }
+}
+
+/* Page-load mask reveal */
+.page-mask {
+  position:fixed; inset:0;
+  background:var(--peach);
+  z-index:999;
+  clip-path:circle(150% at 50% 50%);
+  pointer-events:none;
+  transition:clip-path 1100ms cubic-bezier(0.86, 0, 0.07, 1);
+}
+.page-mask.out { clip-path:circle(0% at 50% 50%); }
+@media (prefers-reduced-motion: reduce) {
+  .page-mask { display:none; }
+}
+
+/* Counter scroll-driven */
+.intro-stats > div b.counting { opacity:0.7; transition:opacity 0.3s; }
+
+@media (max-width:768px) {
+  .compare .drag-handle::before { width:54px; height:54px; }
+  .compare .drag-handle::after { width:26px; height:26px; }
+}
 </style>
 </head>
 <body>
+
+<div class="page-mask" id="pageMask"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
 
 <div class="demo-badge">DEMO PERSONALIZADA · POR <a href="https://sorabyte.es" target="_blank">SORABYTE</a></div>
 
@@ -991,7 +1160,7 @@ html { scroll-padding-top:80px; }
       <a href="https://www.instagram.com/paquitabordoy.estetica/" target="_blank" class="btn-ghost">Ver mi Instagram</a>
     </div>
   </div>
-  <div class="hero-ig-wrap reveal magnet-wrap" id="magnetWrap">
+  <div class="hero-ig-wrap reveal magnet-wrap" id="magnetWrap" data-cursor="cabina">
     <div class="magnet-inner" id="magnetInner">
       <div class="hero-ig">
         <img src="assets/tratamiento-liposonix.png" alt="Paquita Bordoy aplicando tratamiento Liposonix en cabina">
@@ -1043,9 +1212,9 @@ html { scroll-padding-top:80px; }
       <p>Cada cita empieza con una valoración personal. Sin protocolos genéricos. Sin venderte 10 sesiones cuando con 3 te basta. Si tu caso no es para mí, te lo digo antes de cobrarte.</p>
     </div>
     <div class="intro-stats reveal">
-      <div><b><span class="it">10+</span></b><span>Años en Mallorca</span></div>
-      <div><b><span class="it">+700</span></b><span>Clientas atendidas</span></div>
-      <div><b><span class="it">100%</span></b><span>Atención personal</span></div>
+      <div><b data-target="10" data-suffix="+"><span class="it">10+</span></b><span>Años en Mallorca</span></div>
+      <div><b data-target="700" data-prefix="+"><span class="it">+700</span></b><span>Clientas atendidas</span></div>
+      <div><b data-target="100" data-suffix="%"><span class="it">100%</span></b><span>Atención personal</span></div>
       <div><b><span class="it">@IG</span></b><span>Mi portfolio público</span></div>
     </div>
   </div>
@@ -1061,11 +1230,17 @@ html { scroll-padding-top:80px; }
     <p>Casos reales de clientas. Antes y después sin retoque, sin filtros. Solo trabajo y tiempo en cabina.</p>
   </div>
   <div class="results-grid">
-    <article class="result-card reveal">
-      <div class="result-img clip-reveal" data-clipreveal><img src="assets/antes-despues-abdomen.png" alt="Antes y después tratamiento de abdomen" loading="lazy"></div>
+    <article class="result-card reveal" data-cursor="compare">
+      <div class="compare stack" data-compare>
+        <div class="layer antes"><img src="assets/antes-despues-abdomen.png" alt="Abdomen antes del tratamiento" loading="lazy"></div>
+        <div class="layer despues"><img src="assets/antes-despues-abdomen.png" alt="Abdomen después del tratamiento" loading="lazy" aria-hidden="true"></div>
+        <span class="lbl l">Antes</span>
+        <span class="lbl r">Después</span>
+        <div class="drag-handle" aria-hidden="true"></div>
+      </div>
       <div class="result-caption">
         <span class="label">Abdomen, flacidez postparto</span>
-        <span class="tag">Antes / Después</span>
+        <span class="tag">Arrastra para comparar</span>
       </div>
     </article>
     <article class="result-card reveal">
@@ -1075,11 +1250,17 @@ html { scroll-padding-top:80px; }
         <span class="tag">Antes / Después</span>
       </div>
     </article>
-    <article class="result-card reveal">
-      <div class="result-img clip-reveal" data-clipreveal><img src="assets/antes-despues-frente.png" alt="Antes y después arrugas de frente" loading="lazy"></div>
+    <article class="result-card reveal" data-cursor="compare">
+      <div class="compare side" data-compare>
+        <div class="layer antes"><img src="assets/antes-despues-frente.png" alt="Frente antes del tratamiento" loading="lazy"></div>
+        <div class="layer despues"><img src="assets/antes-despues-frente.png" alt="Frente después del tratamiento" loading="lazy" aria-hidden="true"></div>
+        <span class="lbl l">Antes</span>
+        <span class="lbl r">Después</span>
+        <div class="drag-handle" aria-hidden="true"></div>
+      </div>
       <div class="result-caption">
         <span class="label">Arrugas de expresión, frente</span>
-        <span class="tag">Antes / Después</span>
+        <span class="tag">Arrastra para comparar</span>
       </div>
     </article>
     <article class="result-card reveal">
@@ -1377,6 +1558,97 @@ html { scroll-padding-top:80px; }
     if (!raf) raf = requestAnimationFrame(tick);
   }, { passive: true });
   tick();
+
+  // 6) Comparador antes/despues (mouse + touch drag)
+  document.querySelectorAll('[data-compare]').forEach(box => {
+    let dragging = false;
+    function setPos(clientX) {
+      const r = box.getBoundingClientRect();
+      let pct = ((clientX - r.left) / r.width) * 100;
+      pct = Math.max(0, Math.min(100, pct));
+      box.style.setProperty('--pos', pct + '%');
+    }
+    box.addEventListener('mousedown', (e) => { dragging = true; setPos(e.clientX); e.preventDefault(); });
+    window.addEventListener('mousemove', (e) => { if (dragging) setPos(e.clientX); });
+    window.addEventListener('mouseup', () => { dragging = false; });
+    box.addEventListener('click', (e) => { setPos(e.clientX); });
+    box.addEventListener('touchstart', (e) => { dragging = true; setPos(e.touches[0].clientX); }, { passive:true });
+    box.addEventListener('touchmove', (e) => { if (dragging) { setPos(e.touches[0].clientX); e.preventDefault(); } }, { passive:false });
+    box.addEventListener('touchend', () => { dragging = false; });
+  });
+
+  // 7) Cursor custom contextual (desktop only)
+  if (isFinePointer && !reduceMotion) {
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    if (dot && ring) {
+      let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+      let rx = mx, ry = my;
+      window.addEventListener('mousemove', (e) => {
+        mx = e.clientX; my = e.clientY;
+        dot.style.transform = 'translate(' + mx + 'px,' + my + 'px) translate(-50%,-50%)';
+      }, { passive:true });
+      function loop() {
+        rx += (mx - rx) * 0.18;
+        ry += (my - ry) * 0.18;
+        ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)';
+        requestAnimationFrame(loop);
+      }
+      loop();
+      // Contextual hovers
+      document.querySelectorAll('[data-cursor]').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          const kind = el.dataset.cursor;
+          const txt = kind === 'compare' ? 'Arrastra' : kind === 'cabina' ? 'En cabina' : '';
+          ring.textContent = txt;
+          ring.classList.add('grow');
+        });
+        el.addEventListener('mouseleave', () => {
+          ring.classList.remove('grow');
+          ring.textContent = '';
+        });
+      });
+    }
+  }
+
+  // 8) Page-load mask reveal
+  const pm = document.getElementById('pageMask');
+  if (pm && !reduceMotion) {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => pm.classList.add('out'));
+    });
+    setTimeout(() => { if (pm && pm.parentNode) pm.parentNode.removeChild(pm); }, 1500);
+  } else if (pm) {
+    pm.parentNode.removeChild(pm);
+  }
+
+  // 9) Counter scroll-driven en intro-stats
+  const ioCount = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = parseInt(el.dataset.target, 10);
+      if (!target) { ioCount.unobserve(el); return; }
+      if (reduceMotion) { ioCount.unobserve(el); return; }
+      const prefix = el.dataset.prefix || '';
+      const suffix = el.dataset.suffix || '';
+      const duration = 1400;
+      const start = performance.now();
+      el.classList.add('counting');
+      const itSpan = el.querySelector('.it');
+      function step(now) {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const v = Math.floor(target * eased);
+        if (itSpan) itSpan.textContent = prefix + v + suffix;
+        if (t < 1) requestAnimationFrame(step);
+        else el.classList.remove('counting');
+      }
+      requestAnimationFrame(step);
+      ioCount.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.intro-stats b[data-target]').forEach(el => ioCount.observe(el));
 })();
 </script>
 </body>

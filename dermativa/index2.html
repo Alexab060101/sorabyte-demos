@@ -3,812 +3,1161 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dermativa · v2 Editorial</title>
-<meta name="description" content="Dermativa · Thais González. Centro de estética avanzada en Palma. Versión editorial moderna.">
+<title>Dermativa · Láser que cuida</title>
+<meta name="description" content="Dermativa Palma. Depilación láser, fotorejuvenecimiento, INDIBA. Thais González. Valoración personal antes de cualquier tratamiento.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
-    --bg: #0a0908;
-    --bg-soft: #131110;
-    --fg: #f5f1ea;
-    --fg-soft: #b8b0a3;
-    --fg-mute: #6b665e;
-    --accent: #c9a36b;
-    --line: rgba(245,241,234,0.08);
-    --m-base: 650ms;
-    --m-slow: 900ms;
+    --bg: #F5F5F7;
+    --bg-card: #FFFFFF;
+    --bg-dark: #1d1d1f;
+    --fg: #1d1d1f;
+    --fg-soft: #6e6e73;
+    --fg-mute: #86868b;
+    --line: rgba(0,0,0,0.08);
+    --accent: #6E59A5;
+    --accent-bg: #EFE9F3;
+    --m-base: 600ms;
+    --m-fast: 200ms;
     --m-snap: cubic-bezier(0.4, 0, 0.2, 1);
     --m-out: cubic-bezier(0.25, 0.1, 0.25, 1);
   }
-  html, body { background: var(--bg); color: var(--fg); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; overflow-x: clip; }
-  body { line-height: 1.55; }
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, 'Inter', BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+    font-weight: 400;
+    line-height: 1.47059;
+    letter-spacing: -0.022em;
+  }
   img { display: block; max-width: 100%; }
   a { color: inherit; text-decoration: none; }
   button { font-family: inherit; cursor: pointer; background: none; border: none; color: inherit; }
-  ::selection { background: var(--accent); color: var(--bg); }
-
-  .it { font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; }
-
-  /* ============ FIXED BACKGROUND GRADIENT ============ */
-  .bg-layer {
-    position: fixed; inset: 0;
-    z-index: 0;
-    background:
-      radial-gradient(circle at 20% 20%, rgba(201,163,107,0.10), transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(142,111,176,0.08), transparent 55%),
-      linear-gradient(180deg, #0a0908 0%, #0d0a08 50%, #0a0908 100%);
-    pointer-events: none;
-  }
-  .grain {
-    position: fixed; inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    opacity: 0.4;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-  }
+  ::selection { background: var(--accent); color: #fff; }
 
   /* ============ PAGE MASK ============ */
-  .page-mask { position: fixed; inset: 0; z-index: 999; background: var(--accent); clip-path: circle(150% at 50% 50%); transition: clip-path 1100ms cubic-bezier(0.86,0,0.07,1); pointer-events: none; }
+  .page-mask { position: fixed; inset: 0; z-index: 999; background: var(--bg); clip-path: circle(150% at 50% 50%); transition: clip-path 1000ms cubic-bezier(0.86,0,0.07,1); pointer-events: none; }
   .page-mask.out { clip-path: circle(0% at 50% 50%); }
 
-  /* ============ NAV ============ */
+  /* ============ NAV (Apple-style) ============ */
   .nav {
-    position: fixed; top: 0; left: 0; right: 0;
+    position: sticky; top: 0;
     z-index: 50;
-    padding: 24px 5vw;
-    display: flex; align-items: center; justify-content: space-between;
-    background: rgba(10,9,8,0);
-    backdrop-filter: blur(0px);
-    transition: background var(--m-base) var(--m-snap), backdrop-filter var(--m-base) var(--m-snap), padding var(--m-base) var(--m-snap);
+    height: 44px;
+    background: rgba(245,245,247,0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--line);
+    transition: background var(--m-base) var(--m-snap);
   }
-  .nav.scrolled { background: rgba(10,9,8,0.72); backdrop-filter: blur(20px); padding: 16px 5vw; border-bottom: 1px solid var(--line); }
-  .nav-brand { display: flex; align-items: center; gap: 12px; font-weight: 600; letter-spacing: 0.05em; }
-  .nav-brand .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
-  .nav-links { display: flex; gap: 28px; align-items: center; font-size: 0.82rem; }
-  .nav-links a { color: var(--fg-soft); transition: color var(--m-fast,200ms); letter-spacing: 0.04em; }
+  .nav-inner {
+    max-width: 1024px;
+    margin: 0 auto;
+    height: 100%;
+    padding: 0 22px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px;
+  }
+  .nav-brand {
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: -0.022em;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .nav-brand::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .nav-links {
+    display: flex; gap: 28px;
+    font-size: 0.76rem;
+    color: var(--fg-soft);
+  }
+  .nav-links a { transition: color var(--m-fast); }
   .nav-links a:hover { color: var(--fg); }
-  .nav-cta { padding: 10px 18px; border: 1px solid var(--line); border-radius: 999px; transition: all var(--m-base) var(--m-snap); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; }
-  .nav-cta:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .nav-cta {
+    padding: 6px 14px;
+    border-radius: 980px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 500;
+    transition: background var(--m-fast);
+  }
+  .nav-cta:hover { background: #5b4895; }
   @media (max-width: 768px) {
     .nav-links a:not(.nav-cta) { display: none; }
-    .nav { padding: 16px 6vw; }
+    .nav-inner { padding: 0 16px; }
   }
-
-  /* ============ HERO ============ */
-  .hero {
-    position: relative; z-index: 10;
-    min-height: 100svh;
-    padding: 16vh 5vw 8vh;
-    display: flex; flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  }
-  .hero-eyebrow {
-    display: inline-flex; align-items: center; gap: 12px;
-    color: var(--fg-mute);
-    font-size: 0.72rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    margin-bottom: 32px;
-  }
-  .hero-eyebrow::before, .hero-eyebrow::after { content: ''; width: 40px; height: 1px; background: var(--fg-mute); }
-  .hero h1 {
-    font-weight: 400;
-    font-size: clamp(2.8rem, 8vw, 8rem);
-    letter-spacing: -0.03em;
-    line-height: 0.95;
-    max-width: 12ch;
-  }
-  .hero h1 .ln {
-    display: block;
-    overflow: hidden;
-    padding-bottom: 0.12em;
-    line-height: 1.05;
-  }
-  .hero h1 .ln > span {
-    display: block;
-    transform: translateY(110%);
-    transition: transform 1100ms var(--m-out);
-    will-change: transform;
-  }
-  .hero h1.in .ln > span { transform: translateY(0); }
-  .hero h1.in .ln:nth-child(2) > span { transition-delay: 140ms; }
-  .hero h1.in .ln:nth-child(3) > span { transition-delay: 280ms; }
-  .hero-sub {
-    margin-top: 36px;
-    max-width: 540px;
-    font-size: clamp(0.95rem, 1.5vw, 1.05rem);
-    color: var(--fg-soft);
-    line-height: 1.65;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity var(--m-slow) var(--m-out), transform var(--m-slow) var(--m-out);
-    transition-delay: 500ms;
-  }
-  .hero.in .hero-sub { opacity: 1; transform: none; }
-  .hero-cta-wrap {
-    margin-top: 44px;
-    display: flex;
-    gap: 14px;
-    flex-wrap: wrap;
-    justify-content: center;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity var(--m-slow) var(--m-out), transform var(--m-slow) var(--m-out);
-    transition-delay: 700ms;
-  }
-  .hero.in .hero-cta-wrap { opacity: 1; transform: none; }
-  .btn {
-    display: inline-flex; align-items: center; gap: 10px;
-    padding: 14px 26px;
-    border-radius: 999px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    transition: transform 200ms var(--m-snap), background var(--m-base) var(--m-snap), color var(--m-base) var(--m-snap);
-  }
-  .btn-primary { background: var(--fg); color: var(--bg); }
-  .btn-primary:hover { transform: translateY(-2px); }
-  .btn-ghost { border: 1px solid var(--line); color: var(--fg); }
-  .btn-ghost:hover { background: rgba(255,255,255,0.05); }
-  .btn .arr { display: inline-block; transition: transform 200ms var(--m-snap); }
-  .btn:hover .arr { transform: translateX(4px); }
-
-  .hero-photo {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 65vw; max-width: 720px;
-    aspect-ratio: 3 / 4;
-    border-radius: 12px;
-    overflow: hidden;
-    z-index: -1;
-    opacity: 0.18;
-    filter: grayscale(0.4) contrast(1.05);
-    mask-image: radial-gradient(ellipse 80% 70% at center, #000 30%, transparent 80%);
-  }
-  .hero-photo img { width: 100%; height: 100%; object-fit: cover; }
-
-  /* Scroll cue */
-  .scroll-cue {
-    position: absolute;
-    bottom: 36px; left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.7rem; letter-spacing: 0.2em;
-    color: var(--fg-mute);
-    display: flex; flex-direction: column; align-items: center; gap: 10px;
-    text-transform: uppercase;
-    animation: cueBob 2s ease-in-out infinite;
-  }
-  .scroll-cue::after { content: ''; width: 1px; height: 40px; background: linear-gradient(180deg, var(--fg-mute), transparent); }
-  @keyframes cueBob { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 6px); } }
-
-  /* ============ STAT ROW ============ */
-  .stat-row {
-    position: relative; z-index: 10;
-    padding: 8vh 5vw;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 36px;
-    max-width: 1200px;
-    margin: 0 auto;
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-  }
-  @media (max-width: 768px) { .stat-row { grid-template-columns: repeat(2, 1fr); gap: 36px 28px; } }
-  .stat .num {
-    font-family: 'Instrument Serif', serif;
-    font-style: italic;
-    font-size: clamp(2.4rem, 5vw, 4rem);
-    color: var(--accent);
-    line-height: 0.95;
-    letter-spacing: -0.02em;
-  }
-  .stat .lbl {
-    margin-top: 14px;
-    font-size: 0.72rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--fg-mute);
-  }
-
-  /* ============ SECTION ============ */
-  section.s {
-    position: relative; z-index: 10;
-    padding: 14vh 5vw;
-    max-width: 1180px;
-    margin: 0 auto;
-  }
-  .eyebrow {
-    display: inline-flex; align-items: center; gap: 10px;
-    color: var(--accent);
-    font-size: 0.7rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    margin-bottom: 18px;
-  }
-  .eyebrow::before { content: ''; width: 18px; height: 1px; background: var(--accent); }
-
-  h2 {
-    font-weight: 400;
-    font-size: clamp(2.2rem, 5vw, 4.4rem);
-    letter-spacing: -0.025em;
-    line-height: 1;
-    margin-bottom: 32px;
-    max-width: 18ch;
-  }
-  h2 .ln {
-    display: block;
-    overflow: hidden;
-    padding-bottom: 0.14em;
-    line-height: 1.05;
-  }
-  h2 .ln > span {
-    display: block;
-    transform: translateY(108%);
-    transition: transform var(--m-slow) var(--m-out);
-    will-change: transform;
-  }
-  h2 .ln:nth-child(2) > span { transition-delay: 120ms; }
-  h2.in .ln > span { transform: translateY(0); }
-
-  /* ============ TREATMENTS LIST ============ */
-  .tlist {
-    border-top: 1px solid var(--line);
-    margin-top: 36px;
-  }
-  .t-row {
-    display: grid;
-    grid-template-columns: 80px 1fr auto 32px;
-    gap: 24px;
-    align-items: center;
-    padding: 28px 0;
-    border-bottom: 1px solid var(--line);
-    position: relative;
-    transition: padding var(--m-base) var(--m-snap), color var(--m-base) var(--m-snap);
-  }
-  .t-row:hover { padding-left: 18px; padding-right: 18px; }
-  .t-row::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 0;
-    background: linear-gradient(90deg, rgba(201,163,107,0.08), transparent);
-    transition: width var(--m-base) var(--m-snap);
-    pointer-events: none;
-  }
-  .t-row:hover::before { width: 100%; }
-  .t-num {
-    font-family: 'Instrument Serif', serif;
-    font-style: italic;
-    color: var(--fg-mute);
-    font-size: 1.3rem;
-  }
-  .t-name { font-size: clamp(1.1rem, 2.2vw, 1.6rem); font-weight: 400; letter-spacing: -0.01em; }
-  .t-dur { color: var(--fg-mute); font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; }
-  .t-arr { color: var(--fg-mute); font-size: 1.2rem; transition: color var(--m-base) var(--m-snap), transform var(--m-base) var(--m-snap); }
-  .t-row:hover .t-arr { color: var(--accent); transform: translateX(6px); }
-  .t-row:hover .t-name { color: var(--accent); }
-  @media (max-width: 640px) {
-    .t-row { grid-template-columns: 50px 1fr auto; padding: 20px 0; }
-    .t-arr { display: none; }
-    .t-row:hover { padding-left: 8px; padding-right: 8px; }
-  }
-
-  /* ============ MARQUEE ============ */
-  .marquee {
-    position: relative; z-index: 10;
-    padding: 5vh 0;
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    overflow: hidden;
-  }
-  .marquee::before, .marquee::after {
-    content: '';
-    position: absolute; top: 0; bottom: 0; width: 120px;
-    z-index: 2; pointer-events: none;
-  }
-  .marquee::before { left: 0; background: linear-gradient(90deg, var(--bg), transparent); }
-  .marquee::after { right: 0; background: linear-gradient(-90deg, var(--bg), transparent); }
-  .marquee-track {
-    display: flex; gap: 60px; align-items: center;
-    white-space: nowrap;
-    animation: marq 38s linear infinite;
-  }
-  .marquee-track span {
-    font-family: 'Instrument Serif', serif;
-    font-style: italic;
-    font-size: clamp(1.8rem, 4vw, 3rem);
-    color: var(--fg-soft);
-  }
-  .marquee-track .dot { color: var(--accent); font-style: normal; font-size: 0.6em; }
-  @keyframes marq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-  /* ============ SPLIT SPECIALIST ============ */
-  .spec {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: center;
-  }
-  @media (max-width: 900px) { .spec { grid-template-columns: 1fr; gap: 40px; } }
-  .spec-photo {
-    aspect-ratio: 4 / 5;
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
-    border: 1px solid var(--line);
-  }
-  .spec-photo img { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.05); transition: transform 1.4s var(--m-out); }
-  .spec-photo:hover img { transform: scale(1.04); }
-  .spec-photo .tag {
-    position: absolute;
-    bottom: 24px; left: 24px;
-    padding: 10px 16px;
-    background: rgba(10,9,8,0.75);
-    backdrop-filter: blur(14px);
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    font-size: 0.72rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-  .spec-photo .tag b { color: var(--accent); font-weight: 500; }
-  .spec p {
-    color: var(--fg-soft);
-    font-size: 1.02rem;
-    line-height: 1.7;
-    margin-bottom: 22px;
-    max-width: 480px;
-  }
-  .spec p:last-child { margin-bottom: 0; }
-  .spec p .em { color: var(--fg); border-bottom: 1px solid var(--accent); padding-bottom: 1px; }
-
-  /* ============ TESTIMONIAL ============ */
-  .test {
-    text-align: center;
-    padding: 14vh 5vw;
-    max-width: 920px;
-    margin: 0 auto;
-  }
-  .test blockquote {
-    font-family: 'Instrument Serif', serif;
-    font-style: italic;
-    font-size: clamp(1.4rem, 3vw, 2.4rem);
-    line-height: 1.4;
-    color: var(--fg);
-    margin-bottom: 28px;
-    letter-spacing: -0.005em;
-  }
-  .test blockquote::before {
-    content: '"';
-    display: block;
-    color: var(--accent);
-    font-size: 3rem;
-    line-height: 0.3;
-    margin-bottom: 28px;
-  }
-  .test cite {
-    font-size: 0.7rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--fg-mute);
-    font-style: normal;
-  }
-
-  /* ============ CONTACT GRID ============ */
-  .contact {
-    display: grid;
-    grid-template-columns: 1.1fr 1fr;
-    gap: 0;
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    margin-top: 8vh;
-  }
-  @media (max-width: 900px) { .contact { grid-template-columns: 1fr; } }
-  .contact-info {
-    padding: 10vh 5vw;
-    display: flex; flex-direction: column; justify-content: center;
-  }
-  .contact-info h2 { margin-bottom: 36px; }
-  .contact-info dl { display: grid; gap: 0; margin-bottom: 36px; }
-  .contact-info dl > div {
-    display: grid;
-    grid-template-columns: 130px 1fr;
-    gap: 18px;
-    padding: 16px 0;
-    border-bottom: 1px solid var(--line);
-    align-items: start;
-  }
-  .contact-info dt {
-    font-size: 0.7rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--fg-mute);
-    padding-top: 2px;
-  }
-  .contact-info dd { font-size: 0.98rem; color: var(--fg); }
-  .contact-info dd a { color: var(--fg); border-bottom: 1px solid var(--line); transition: border-color var(--m-base) var(--m-snap); }
-  .contact-info dd a:hover { border-color: var(--accent); }
-  .contact-map {
-    position: relative;
-    min-height: 480px;
-    border-left: 1px solid var(--line);
-    background: var(--bg-soft);
-  }
-  @media (max-width: 900px) { .contact-map { border-left: none; border-top: 1px solid var(--line); min-height: 360px; } }
-  .contact-map iframe {
-    width: 100%; height: 100%; min-height: 480px; border: 0;
-    filter: grayscale(1) invert(0.92) contrast(0.95) brightness(0.95);
-  }
-
-  /* ============ FAQ ============ */
-  .faq-section {
-    padding: 14vh 5vw 18vh;
-    max-width: 1180px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1.6fr;
-    gap: 80px;
-  }
-  @media (max-width: 900px) { .faq-section { grid-template-columns: 1fr; gap: 40px; } }
-  details.q { border-bottom: 1px solid var(--line); }
-  details.q:first-of-type { border-top: 1px solid var(--line); }
-  details.q summary {
-    padding: 28px 0;
-    list-style: none;
-    cursor: pointer;
-    font-family: 'Instrument Serif', serif;
-    font-style: italic;
-    font-size: clamp(1.1rem, 1.8vw, 1.4rem);
-    display: flex; justify-content: space-between; gap: 24px; align-items: center;
-    transition: color var(--m-base) var(--m-snap);
-  }
-  details.q summary::-webkit-details-marker { display: none; }
-  details.q summary::after {
-    content: '+';
-    color: var(--accent);
-    font-size: 1.4rem;
-    font-style: normal;
-    font-family: 'Inter';
-    font-weight: 200;
-    transition: transform var(--m-base) var(--m-snap);
-  }
-  details.q[open] summary::after { transform: rotate(45deg); }
-  details.q[open] summary { color: var(--accent); }
-  details.q .a {
-    padding: 0 0 28px;
-    color: var(--fg-soft);
-    line-height: 1.7;
-    font-size: 0.96rem;
-    max-width: 60ch;
-  }
-
-  /* ============ FOOTER ============ */
-  footer {
-    position: relative; z-index: 10;
-    padding: 8vh 5vw 4vh;
-    border-top: 1px solid var(--line);
-  }
-  .foot-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 50px;
-    max-width: 1180px;
-    margin: 0 auto;
-  }
-  @media (max-width: 768px) { .foot-grid { grid-template-columns: 1fr 1fr; gap: 36px; } }
-  .foot-brand { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 1.6rem; }
-  .foot-brand p { font-family: 'Inter'; font-style: normal; margin-top: 14px; color: var(--fg-soft); font-size: 0.88rem; line-height: 1.6; max-width: 320px; }
-  .foot-col h4 {
-    font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--fg-mute); font-weight: 500;
-    margin-bottom: 14px;
-  }
-  .foot-col a, .foot-col p {
-    display: block;
-    font-size: 0.88rem;
-    color: var(--fg-soft);
-    margin-bottom: 6px;
-    transition: color var(--m-base) var(--m-snap);
-  }
-  .foot-col a:hover { color: var(--accent); }
-  .foot-bottom {
-    max-width: 1180px;
-    margin: 60px auto 0;
-    padding-top: 24px;
-    border-top: 1px solid var(--line);
-    display: flex; justify-content: space-between; gap: 16px;
-    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--fg-mute);
-    flex-wrap: wrap;
-  }
-  .foot-bottom .v2 { color: var(--accent); border-bottom: 1px solid var(--accent); padding-bottom: 1px; }
-
-  /* ============ WA FAB ============ */
-  .wa-fab {
-    position: fixed; bottom: 24px; right: 24px;
-    z-index: 80;
-    width: 58px; height: 58px;
-    border-radius: 50%;
-    background: #25D366;
-    display: grid; place-items: center;
-    box-shadow: 0 14px 32px rgba(37,211,102,0.4);
-    transition: transform 200ms var(--m-snap);
-  }
-  .wa-fab:hover { transform: scale(1.08); }
-  .wa-fab svg { width: 28px; height: 28px; fill: #fff; }
-  .wa-fab::before {
-    content: ''; position: absolute; inset: -4px;
-    border-radius: 50%; background: #25D366;
-    opacity: 0;
-    animation: pulseRing 2.5s ease-out infinite;
-    z-index: -1;
-  }
-  @keyframes pulseRing { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(1.7); opacity: 0; } }
 
   /* ============ DEMO BADGE ============ */
   .demo-badge {
     position: fixed;
-    top: 90px; left: 50%; transform: translateX(-50%);
-    background: rgba(10,9,8,0.9);
-    border: 1px solid var(--line);
-    padding: 7px 16px;
-    z-index: 49;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--fg-soft);
-    border-radius: 999px;
-    backdrop-filter: blur(12px);
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%);
+    background: rgba(29,29,31,0.88);
+    color: #f5f5f7;
+    padding: 8px 16px;
+    z-index: 70;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    border-radius: 980px;
+    backdrop-filter: blur(20px);
   }
-  .demo-badge a { color: var(--accent); }
-  @media (max-width: 640px) { .demo-badge { font-size: 0.58rem; padding: 5px 12px; top: 78px; } }
+  .demo-badge a { color: #A48CD8; text-decoration: underline; }
 
-  /* ============ SCROLL PROGRESS (móvil) ============ */
+  /* ============ HERO (full-bleed) ============ */
+  .hero {
+    position: relative;
+    min-height: 92vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center;
+    padding: 11vh 22px 14vh;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .hero-bg img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0.42;
+    filter: grayscale(0.6) contrast(1.05) brightness(1.04);
+    animation: heroSlowZoom 32s ease-in-out infinite alternate;
+  }
+  @keyframes heroSlowZoom {
+    from { transform: scale(1.06); }
+    to { transform: scale(1.18); }
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(245,245,247,0.65) 0%, rgba(245,245,247,0.4) 50%, rgba(245,245,247,0.95) 100%);
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 920px;
+  }
+  .hero-eyebrow {
+    color: var(--accent);
+    font-size: 0.84rem;
+    font-weight: 600;
+    letter-spacing: -0.011em;
+    margin-bottom: 18px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 800ms var(--m-out), transform 800ms var(--m-out);
+  }
+  .hero.in .hero-eyebrow { opacity: 1; transform: none; }
+
+  .hero h1 {
+    font-size: clamp(3.2rem, 8.5vw, 6.5rem);
+    font-weight: 600;
+    letter-spacing: -0.045em;
+    line-height: 1.04;
+    color: var(--fg);
+    margin-bottom: 24px;
+  }
+  .hero h1 .ln {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+  }
+  .hero h1 .ln > span {
+    display: block;
+    transform: translateY(105%);
+    transition: transform 1000ms var(--m-out);
+  }
+  .hero h1.in .ln > span { transform: translateY(0); }
+  .hero h1.in .ln:nth-child(2) > span { transition-delay: 120ms; }
+  .hero-sub {
+    font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+    color: var(--fg-soft);
+    font-weight: 400;
+    line-height: 1.4;
+    max-width: 640px;
+    margin: 0 auto 36px;
+    letter-spacing: -0.02em;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 800ms var(--m-out), transform 800ms var(--m-out);
+    transition-delay: 400ms;
+  }
+  .hero.in .hero-sub { opacity: 1; transform: none; }
+
+  .hero-cta {
+    display: flex; gap: 18px;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 800ms var(--m-out), transform 800ms var(--m-out);
+    transition-delay: 600ms;
+  }
+  .hero.in .hero-cta { opacity: 1; transform: none; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 12px 22px;
+    border-radius: 980px;
+    font-size: 1.02rem;
+    font-weight: 400;
+    letter-spacing: -0.022em;
+    transition: background var(--m-fast), color var(--m-fast), transform var(--m-fast);
+    line-height: 1.2;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #5b4895; }
+  .btn-link {
+    color: var(--accent);
+    padding: 12px 0;
+  }
+  .btn-link::after {
+    content: '›';
+    margin-left: 4px;
+    font-size: 1.2em;
+    transition: transform var(--m-fast);
+    display: inline-block;
+  }
+  .btn-link:hover::after { transform: translateX(4px); }
+
+  .hero-tagline {
+    margin-top: 60px;
+    color: var(--fg-mute);
+    font-size: 0.84rem;
+    letter-spacing: -0.011em;
+    opacity: 0;
+    transition: opacity 800ms var(--m-out);
+    transition-delay: 1000ms;
+  }
+  .hero.in .hero-tagline { opacity: 1; }
+
+  /* ============ SECTION COMMON ============ */
+  section.s {
+    padding: 120px 22px;
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+  @media (max-width: 768px) {
+    section.s { padding: 80px 16px; }
+  }
+  .s-eyebrow {
+    color: var(--accent);
+    font-size: 0.84rem;
+    font-weight: 600;
+    letter-spacing: -0.011em;
+    margin-bottom: 12px;
+  }
+  .s-title {
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 600;
+    letter-spacing: -0.038em;
+    line-height: 1.05;
+    margin-bottom: 24px;
+    max-width: 18ch;
+  }
+  .s-lead {
+    font-size: clamp(1.05rem, 1.6vw, 1.32rem);
+    color: var(--fg-soft);
+    font-weight: 400;
+    line-height: 1.4;
+    max-width: 680px;
+    letter-spacing: -0.022em;
+  }
+
+  /* ============ BENTO 2x3 ============ */
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-auto-rows: minmax(280px, auto);
+    gap: 14px;
+    margin-top: 56px;
+  }
+  @media (max-width: 768px) {
+    .bento {
+      grid-template-columns: 1fr;
+      grid-auto-rows: minmax(240px, auto);
+    }
+  }
+  .b {
+    background: var(--bg-card);
+    border-radius: 22px;
+    padding: 36px 30px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform var(--m-base) var(--m-snap), box-shadow var(--m-base) var(--m-snap);
+  }
+  .b:hover { transform: translateY(-4px); box-shadow: 0 28px 60px rgba(0,0,0,0.08); }
+  .b.b-wide { grid-column: span 4; }
+  .b.b-narrow { grid-column: span 2; }
+  .b.b-half { grid-column: span 3; }
+  @media (max-width: 768px) {
+    .b.b-wide, .b.b-narrow, .b.b-half { grid-column: span 1; }
+  }
+  .b-eyebrow {
+    color: var(--accent);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .b h3 {
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
+    font-weight: 600;
+    letter-spacing: -0.028em;
+    line-height: 1.1;
+    color: var(--fg);
+    margin-bottom: 14px;
+  }
+  .b p {
+    color: var(--fg-soft);
+    font-size: 0.96rem;
+    line-height: 1.5;
+    letter-spacing: -0.018em;
+  }
+  .b-bottom {
+    margin-top: 24px;
+    color: var(--fg-mute);
+    font-size: 0.76rem;
+    letter-spacing: 0.02em;
+  }
+  .b-dark {
+    background: var(--bg-dark);
+    color: #f5f5f7;
+  }
+  .b-dark h3 { color: #f5f5f7; }
+  .b-dark p { color: rgba(245,245,247,0.7); }
+  .b-dark .b-bottom { color: rgba(245,245,247,0.5); }
+  .b-dark .b-eyebrow { color: #A48CD8; }
+  .b-accent {
+    background: var(--accent-bg);
+  }
+  .b-num {
+    font-size: clamp(4rem, 8vw, 7rem);
+    font-weight: 600;
+    letter-spacing: -0.05em;
+    line-height: 0.9;
+    color: var(--accent);
+  }
+  .b-num .small {
+    font-size: 0.36em;
+    font-weight: 500;
+    letter-spacing: -0.022em;
+    color: var(--fg-soft);
+    margin-left: 6px;
+  }
+
+  /* ============ PACKS (iPhone tier) ============ */
+  .packs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 56px;
+  }
+  @media (max-width: 900px) {
+    .packs-grid {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+  }
+  .pack {
+    background: var(--bg-card);
+    border-radius: 22px;
+    padding: 36px 28px;
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--m-base) var(--m-snap), box-shadow var(--m-base) var(--m-snap);
+    position: relative;
+  }
+  .pack:hover { transform: translateY(-6px); box-shadow: 0 28px 60px rgba(0,0,0,0.08); }
+  .pack.featured {
+    background: var(--bg-dark);
+    color: #f5f5f7;
+  }
+  .pack.featured .pack-name { color: #f5f5f7; }
+  .pack.featured .pack-price-small { color: rgba(245,245,247,0.6); }
+  .pack.featured .pack-features li { color: rgba(245,245,247,0.8); }
+  .pack.featured .pack-features li::before { background: #A48CD8; }
+  .pack-badge {
+    position: absolute;
+    top: -10px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 980px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .pack-name {
+    font-size: 1.18rem;
+    font-weight: 600;
+    letter-spacing: -0.022em;
+    color: var(--fg);
+    margin-bottom: 4px;
+  }
+  .pack-price {
+    margin-top: 14px;
+    margin-bottom: 18px;
+  }
+  .pack-price-big {
+    font-size: clamp(2.4rem, 4vw, 3.4rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .pack-price-small {
+    font-size: 0.8rem;
+    color: var(--fg-soft);
+    margin-top: 6px;
+    letter-spacing: -0.022em;
+  }
+  .pack-features {
+    list-style: none;
+    margin: 18px 0 28px;
+    flex: 1;
+  }
+  .pack-features li {
+    color: var(--fg);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    padding: 7px 0 7px 22px;
+    position: relative;
+    letter-spacing: -0.018em;
+  }
+  .pack-features li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 14px;
+    width: 12px; height: 6px;
+    border-left: 1.5px solid var(--accent);
+    border-bottom: 1.5px solid var(--accent);
+    transform: rotate(-45deg);
+  }
+  .pack-cta {
+    display: block;
+    text-align: center;
+    padding: 11px 18px;
+    border-radius: 980px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.92rem;
+    font-weight: 500;
+    transition: background var(--m-fast);
+    letter-spacing: -0.022em;
+  }
+  .pack-cta:hover { background: #5b4895; }
+  .pack.featured .pack-cta {
+    background: #fff;
+    color: var(--bg-dark);
+  }
+  .pack.featured .pack-cta:hover { background: rgba(255,255,255,0.85); }
+
+  /* ============ TREATMENTS LIST ============ */
+  .t-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 56px;
+  }
+  @media (max-width: 768px) {
+    .t-grid { grid-template-columns: 1fr; }
+  }
+  .t-card {
+    background: var(--bg-card);
+    border-radius: 22px;
+    padding: 28px 30px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 20px;
+    align-items: center;
+    transition: transform var(--m-base) var(--m-snap), box-shadow var(--m-base) var(--m-snap);
+  }
+  .t-card:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(0,0,0,0.06); }
+  .t-card-num {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: -0.04em;
+    min-width: 50px;
+  }
+  .t-card-info h4 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.022em;
+    margin-bottom: 3px;
+  }
+  .t-card-info span {
+    font-size: 0.8rem;
+    color: var(--fg-soft);
+    letter-spacing: -0.018em;
+  }
+  .t-card-arr {
+    color: var(--fg-mute);
+    font-size: 1.6rem;
+    transition: color var(--m-fast), transform var(--m-fast);
+    width: 28px; text-align: center;
+  }
+  .t-card:hover .t-card-arr { color: var(--accent); transform: translateX(4px); }
+
+  /* ============ SPECIALIST ============ */
+  .spec {
+    background: var(--bg-card);
+    border-radius: 28px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+    margin-top: 56px;
+  }
+  @media (max-width: 900px) { .spec { grid-template-columns: 1fr; } }
+  .spec-img {
+    min-height: 520px;
+    background: #e8e8ed;
+    overflow: hidden;
+    position: relative;
+  }
+  .spec-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 1.6s var(--m-out);
+  }
+  .spec:hover .spec-img img { transform: scale(1.04); }
+  .spec-img-tag {
+    position: absolute;
+    bottom: 20px; left: 20px;
+    background: rgba(255,255,255,0.92);
+    padding: 8px 14px;
+    border-radius: 980px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: -0.018em;
+    backdrop-filter: blur(20px);
+  }
+  .spec-img-tag b { color: var(--accent); font-weight: 600; }
+  .spec-text {
+    padding: 60px 50px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  @media (max-width: 768px) {
+    .spec-img { min-height: 360px; }
+    .spec-text { padding: 40px 28px; }
+  }
+  .spec-text h3 {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 600;
+    letter-spacing: -0.032em;
+    line-height: 1.1;
+    margin-bottom: 22px;
+  }
+  .spec-text p {
+    color: var(--fg-soft);
+    font-size: 1rem;
+    line-height: 1.55;
+    margin-bottom: 16px;
+    letter-spacing: -0.022em;
+  }
+  .spec-text p strong { color: var(--fg); font-weight: 600; }
+  .spec-text .btn-link { margin-top: 12px; align-self: flex-start; }
+
+  /* ============ COMPARE TABLE ============ */
+  .compare-band {
+    background: var(--bg-dark);
+    color: #f5f5f7;
+    border-radius: 28px;
+    padding: 80px 50px;
+    margin: 80px auto;
+    max-width: 1024px;
+  }
+  @media (max-width: 768px) {
+    .compare-band { padding: 60px 28px; border-radius: 22px; margin: 60px 16px; }
+  }
+  .compare-band h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 600;
+    letter-spacing: -0.038em;
+    line-height: 1.05;
+    margin-bottom: 18px;
+    max-width: 20ch;
+    color: #f5f5f7;
+  }
+  .compare-band p {
+    color: rgba(245,245,247,0.7);
+    font-size: 1.05rem;
+    max-width: 560px;
+    margin-bottom: 36px;
+    letter-spacing: -0.022em;
+  }
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 768px) { .compare-row { grid-template-columns: 1fr; } }
+  .compare-cell {
+    background: rgba(255,255,255,0.06);
+    border-radius: 18px;
+    padding: 26px;
+  }
+  .compare-cell h4 {
+    color: #fff;
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .compare-cell ul { list-style: none; }
+  .compare-cell li {
+    padding: 6px 0 6px 22px;
+    position: relative;
+    color: rgba(245,245,247,0.85);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    letter-spacing: -0.018em;
+  }
+  .compare-cell.good li::before {
+    content: '✓';
+    position: absolute;
+    left: 0; top: 5px;
+    color: #6BCB77;
+    font-weight: 600;
+  }
+  .compare-cell.bad li::before {
+    content: '×';
+    position: absolute;
+    left: 0; top: 4px;
+    color: #FF6B6B;
+    font-weight: 600;
+    font-size: 1.2em;
+  }
+
+  /* ============ FAQ ============ */
+  .faq-grid {
+    margin-top: 40px;
+  }
+  details.faq-q {
+    border-top: 1px solid var(--line);
+    padding: 0;
+  }
+  details.faq-q:last-of-type { border-bottom: 1px solid var(--line); }
+  details.faq-q summary {
+    padding: 28px 0;
+    cursor: pointer;
+    list-style: none;
+    font-size: clamp(1.05rem, 1.6vw, 1.22rem);
+    font-weight: 500;
+    letter-spacing: -0.022em;
+    display: flex; justify-content: space-between; align-items: center; gap: 24px;
+    transition: color var(--m-fast);
+  }
+  details.faq-q summary::-webkit-details-marker { display: none; }
+  details.faq-q summary::after {
+    content: '+';
+    color: var(--accent);
+    font-weight: 300;
+    font-size: 1.6rem;
+    transition: transform var(--m-base) var(--m-snap);
+    line-height: 0.8;
+  }
+  details.faq-q[open] summary { color: var(--accent); }
+  details.faq-q[open] summary::after { transform: rotate(45deg); }
+  details.faq-q .a {
+    padding: 0 0 28px;
+    color: var(--fg-soft);
+    font-size: 0.98rem;
+    line-height: 1.55;
+    max-width: 60ch;
+    letter-spacing: -0.018em;
+  }
+
+  /* ============ CONTACT CARD ============ */
+  .contact-card {
+    background: var(--bg-card);
+    border-radius: 28px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 56px;
+    min-height: 440px;
+  }
+  @media (max-width: 900px) { .contact-card { grid-template-columns: 1fr; } }
+  .contact-info {
+    padding: 50px 44px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  @media (max-width: 768px) { .contact-info { padding: 36px 24px; } }
+  .contact-info h3 {
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-weight: 600;
+    letter-spacing: -0.032em;
+    margin-bottom: 24px;
+  }
+  .contact-info dl {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .contact-info dl > div {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  .contact-info dt {
+    color: var(--fg-mute);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: -0.011em;
+  }
+  .contact-info dd { font-size: 0.94rem; color: var(--fg); letter-spacing: -0.022em; }
+  .contact-info dd a { color: var(--accent); }
+  .contact-info dd a:hover { text-decoration: underline; }
+  .contact-map {
+    background: #e8e8ed;
+    position: relative;
+    min-height: 320px;
+  }
+  .contact-map iframe {
+    width: 100%; height: 100%;
+    border: 0;
+    min-height: 320px;
+    filter: contrast(0.95) saturate(0.85);
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    background: var(--bg);
+    color: var(--fg-soft);
+    padding: 60px 22px 30px;
+    border-top: 1px solid var(--line);
+    font-size: 0.78rem;
+    letter-spacing: -0.011em;
+  }
+  .foot-inner {
+    max-width: 1024px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 32px;
+  }
+  @media (max-width: 768px) { .foot-inner { grid-template-columns: 1fr 1fr; gap: 28px; } }
+  .foot-brand-name {
+    font-size: 1rem;
+    color: var(--fg);
+    font-weight: 600;
+    letter-spacing: -0.022em;
+    margin-bottom: 8px;
+  }
+  .foot-brand-desc {
+    color: var(--fg-mute);
+    line-height: 1.5;
+    max-width: 280px;
+  }
+  .foot-col h4 {
+    color: var(--fg);
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-bottom: 14px;
+    letter-spacing: -0.011em;
+  }
+  .foot-col a, .foot-col p {
+    display: block;
+    color: var(--fg-soft);
+    padding: 4px 0;
+    transition: color var(--m-fast);
+  }
+  .foot-col a:hover { color: var(--accent); }
+  .foot-bottom {
+    max-width: 1024px;
+    margin: 50px auto 0;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; gap: 14px;
+    color: var(--fg-mute);
+    flex-wrap: wrap;
+  }
+  .foot-bottom .v2 { color: var(--accent); }
+
+  /* ============ WA FAB ============ */
+  .wa-fab {
+    position: fixed; bottom: 22px; right: 22px;
+    z-index: 80;
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: #25D366;
+    display: grid; place-items: center;
+    box-shadow: 0 14px 30px rgba(37,211,102,0.4);
+    transition: transform 200ms var(--m-snap);
+  }
+  .wa-fab:hover { transform: scale(1.08); }
+  .wa-fab svg { width: 26px; height: 26px; fill: #fff; }
+
+  /* ============ SCROLL PROGRESS ============ */
   .scroll-prog {
-    position: fixed; top: 0; left: 0;
+    position: fixed; top: 44px; left: 0;
     height: 2px;
     background: var(--accent);
     width: 0%;
-    z-index: 100;
+    z-index: 49;
     transition: width 60ms linear;
     pointer-events: none;
   }
   @media (min-width: 769px) { .scroll-prog { display: none; } }
 
   /* ============ REVEAL ============ */
-  .reveal { opacity: 0; transform: translateY(28px); transition: opacity var(--m-slow) var(--m-out), transform var(--m-slow) var(--m-out); }
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 800ms var(--m-out), transform 800ms var(--m-out); }
   .reveal.in { opacity: 1; transform: none; }
 
-  /* ============ REDUCED MOTION ============ */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
-    .hero h1 .ln > span, h2 .ln > span { transform: none !important; }
+    .hero h1 .ln > span { transform: none !important; }
     .page-mask { display: none; }
     .reveal { opacity: 1; transform: none; }
+    .hero-bg img { animation: none !important; }
   }
 </style>
 </head>
 <body>
 
 <div class="page-mask" id="pageMask"></div>
-<div class="bg-layer"></div>
-<div class="grain"></div>
-<div class="scroll-prog" id="scrollProg"></div>
-
-<div class="demo-badge">Demo · v2 Editorial · por <a href="https://sorabyte.es" target="_blank">Sorabyte</a></div>
 
 <header class="nav" id="nav">
-  <a href="#" class="nav-brand">
-    <span class="dot"></span>
-    <span>Dermativa</span>
-  </a>
-  <nav class="nav-links">
-    <a href="#tratamientos">Tratamientos</a>
-    <a href="#especialista">Especialista</a>
-    <a href="#contacto">Contacto</a>
-    <a href="https://wa.me/34971735833?text=Hola%2C%20vengo%20de%20la%20web.%20Quiero%20reservar%20mi%20valoraci%C3%B3n" target="_blank" class="nav-cta">Reservar</a>
-  </nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">Dermativa</a>
+    <nav class="nav-links">
+      <a href="#beneficios">Beneficios</a>
+      <a href="#planes">Planes</a>
+      <a href="#tratamientos">Tratamientos</a>
+      <a href="#especialista">Especialista</a>
+      <a href="#contacto">Visita</a>
+      <a href="https://wa.me/34971735833?text=Hola%2C%20vengo%20de%20la%20web.%20Quiero%20reservar%20mi%20valoraci%C3%B3n" target="_blank" class="nav-cta">Reservar</a>
+    </nav>
+  </div>
 </header>
+
+<div class="scroll-prog" id="scrollProg"></div>
 
 <!-- HERO -->
 <section class="hero" id="hero">
-  <div class="hero-photo">
+  <div class="hero-bg">
     <img src="https://dermativa.es/wp-content/uploads/2019/04/tratamientos-dermativa-47.jpg" alt="">
   </div>
-  <div class="hero-eyebrow">Palma de Mallorca · Desde 2014</div>
-  <h1 id="heroH1">
-    <span class="ln"><span>Tu piel,</span></span>
-    <span class="ln"><span class="it">en sus manos</span></span>
-  </h1>
-  <p class="hero-sub">Una sola especialista certificada en láser y luz pulsada. Más de 1.300 pacientes y una promesa que no se mueve: si tu caso no es para nosotros, te lo decimos antes de cobrarte.</p>
-  <div class="hero-cta-wrap">
-    <a href="https://wa.me/34971735833?text=Hola%2C%20vengo%20de%20la%20web.%20Quiero%20reservar%20mi%20valoraci%C3%B3n%20gratuita" target="_blank" class="btn btn-primary">Reservar valoración <span class="arr">→</span></a>
-    <a href="#tratamientos" class="btn btn-ghost">Ver tratamientos</a>
-  </div>
-  <div class="scroll-cue">Scroll</div>
-</section>
-
-<!-- STATS -->
-<section class="stat-row reveal">
-  <div class="stat"><div class="num" data-target="1300" data-prefix="+">+1.300</div><div class="lbl">Pacientes</div></div>
-  <div class="stat"><div class="num" data-target="10" data-prefix="+">+10</div><div class="lbl">Años en Palma</div></div>
-  <div class="stat"><div class="num it">Máster</div><div class="lbl">Láser y luz pulsada</div></div>
-  <div class="stat"><div class="num it">Alma</div><div class="lbl">Lasers certificados</div></div>
-</section>
-
-<!-- MARQUEE -->
-<div class="marquee">
-  <div class="marquee-track">
-    <span>Depilación láser</span><span class="dot">●</span>
-    <span class="it">Fotorejuvenecimiento</span><span class="dot">●</span>
-    <span>Radiofrecuencia INDIBA</span><span class="dot">●</span>
-    <span class="it">Cosmelan</span><span class="dot">●</span>
-    <span>Q-Switch tatuajes</span><span class="dot">●</span>
-    <span class="it">Higiene profunda</span><span class="dot">●</span>
-    <span>Depilación láser</span><span class="dot">●</span>
-    <span class="it">Fotorejuvenecimiento</span><span class="dot">●</span>
-    <span>Radiofrecuencia INDIBA</span><span class="dot">●</span>
-    <span class="it">Cosmelan</span><span class="dot">●</span>
-    <span>Q-Switch tatuajes</span><span class="dot">●</span>
-    <span class="it">Higiene profunda</span><span class="dot">●</span>
-  </div>
-</div>
-
-<!-- TRATAMIENTOS -->
-<section class="s" id="tratamientos">
-  <div class="eyebrow">Catálogo</div>
-  <h2>
-    <span class="ln"><span>Ocho tratamientos.</span></span>
-    <span class="ln"><span class="it">Cada uno con su porqué.</span></span>
-  </h2>
-  <div class="tlist">
-    <a href="https://wa.me/34971735833?text=Hola%2C%20me%20interesa%20depilaci%C3%B3n%20l%C3%A1ser" target="_blank" class="t-row">
-      <div class="t-num">01</div>
-      <div class="t-name">Depilación láser</div>
-      <div class="t-dur">45-90 min</div>
-      <div class="t-arr">→</div>
-    </a>
-    <a href="https://wa.me/34971735833?text=Hola%2C%20me%20interesa%20fotorejuvenecimiento" target="_blank" class="t-row">
-      <div class="t-num">02</div>
-      <div class="t-name">Fotorejuvenecimiento IPL</div>
-      <div class="t-dur">30 min</div>
-      <div class="t-arr">→</div>
-    </a>
-    <a href="https://wa.me/34971735833?text=Hola%2C%20me%20interesa%20radiofrecuencia%20INDIBA" target="_blank" class="t-row">
-      <div class="t-num">03</div>
-      <div class="t-name">Radiofrecuencia INDIBA</div>
-      <div class="t-dur">45 min</div>
-      <div class="t-arr">→</div>
-    </a>
-    <a href="https://wa.me/34971735833?text=Hola%2C%20me%20interesa%20Cosmelan" target="_blank" class="t-row">
-      <div class="t-num">04</div>
-      <div class="t-name">Cosmelan Peeling</div>
-      <div class="t-dur">90 min</div>
-      <div class="t-arr">→</div>
-    </a>
-    <a href="https://wa.me/34971735833?text=Hola%2C%20me%20interesa%20Q-Switch%20tatuajes" target="_blank" class="t-row">
-      <div class="t-num">05</div>
-      <div class="t-name">Q-Switch eliminación tatuajes</div>
-      <div class="t-dur">30 min</div>
-      <div class="t-arr">→</div>
-    </a>
-    <a href="https://wa.me/34971735833?text=Hola%2C%20me%20interesa%20rejuvenecimiento" target="_blank" class="t-row">
-      <div class="t-num">06</div>
-      <div class="t-name">Rejuvenecimiento facial</div>
-      <div class="t-dur">60 min</div>
-      <div class="t-arr">→</div>
-    </a>
-    <a href="https://wa.me/34971735833?text=Hola%2C%20me%20interesa%20higiene%20facial" target="_blank" class="t-row">
-      <div class="t-num">07</div>
-      <div class="t-name">Higiene facial profunda</div>
-      <div class="t-dur">60 min</div>
-      <div class="t-arr">→</div>
-    </a>
-    <a href="https://wa.me/34971735833?text=Hola%2C%20me%20interesa%20plan%20combinado" target="_blank" class="t-row">
-      <div class="t-num">08</div>
-      <div class="t-name">Plan combinado a medida</div>
-      <div class="t-dur">A medida</div>
-      <div class="t-arr">→</div>
-    </a>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Dermativa · Palma de Mallorca</div>
+    <h1 id="heroH1">
+      <span class="ln"><span>Láser que cuida.</span></span>
+      <span class="ln"><span>Solo 8 sesiones.</span></span>
+    </h1>
+    <p class="hero-sub">Una sola especialista certificada. +1.300 pacientes que ya no piensan en la cuchilla. Valoración personal antes de cualquier tratamiento.</p>
+    <div class="hero-cta">
+      <a href="https://wa.me/34971735833?text=Hola%2C%20vengo%20de%20la%20web.%20Quiero%20reservar%20mi%20valoraci%C3%B3n%20gratuita" target="_blank" class="btn btn-primary">Reservar valoración</a>
+      <a href="#beneficios" class="btn btn-link">Saber más</a>
+    </div>
+    <div class="hero-tagline">Si tu caso no es para nosotros, te lo decimos antes de cobrarte.</div>
   </div>
 </section>
 
-<!-- ESPECIALISTA SPLIT -->
-<section class="s" id="especialista">
+<!-- BENTO 2x3 BENEFICIOS -->
+<section class="s reveal" id="beneficios">
+  <div class="s-eyebrow">Por qué Dermativa</div>
+  <h2 class="s-title">Pensado para tu piel. No para protocolos.</h2>
+  <p class="s-lead">Cada tratamiento parte de una valoración real. Sin venta cruzada. Sin sesiones de más. Sin promesas que no se sostienen.</p>
+
+  <div class="bento">
+    <div class="b b-wide b-dark">
+      <div>
+        <div class="b-eyebrow">Una sola especialista</div>
+        <h3>Thais González. Máster en láser y luz pulsada. Diez años en Palma.</h3>
+        <p>No es una franquicia. No hay rotación de personal. La cara que ves en la valoración es la que te trata cada sesión.</p>
+      </div>
+      <div class="b-bottom">EQUIPOS ALMA LASERS · CERTIFICACIÓN OFICIAL</div>
+    </div>
+
+    <div class="b b-narrow b-accent">
+      <div>
+        <div class="b-eyebrow">Resultado</div>
+        <div class="b-num" data-target="1300" data-prefix="+">+1.300<span class="small">pacientes</span></div>
+      </div>
+      <div>
+        <p>Han pasado por la consulta desde 2014. La mayoría siguen volviendo.</p>
+      </div>
+    </div>
+
+    <div class="b b-half">
+      <div>
+        <div class="b-eyebrow">Valoración previa</div>
+        <h3>Te decimos qué necesitas. Y qué no.</h3>
+        <p>Si en tu caso el láser no es la respuesta, te lo decimos antes de cobrarte. Sin compromiso de compra.</p>
+      </div>
+      <div class="b-bottom">SIN VENTA AGRESIVA</div>
+    </div>
+
+    <div class="b b-half">
+      <div>
+        <div class="b-eyebrow">Sin baja</div>
+        <h3>Entras, sales, sigues tu día.</h3>
+        <p>Tratamientos no invasivos. Como mucho una rojez de 1 a 2 horas. Vuelves a la oficina, al gimnasio, a la playa.</p>
+      </div>
+      <div class="b-bottom">ZERO DOWNTIME</div>
+    </div>
+
+    <div class="b b-narrow">
+      <div>
+        <div class="b-eyebrow">Honestidad</div>
+        <h3>"Te decimos 7, no 4."</h3>
+        <p>Otro centro le había vendido 4 sesiones. Le hicieron falta 7. A la sexta ya no había vello.</p>
+      </div>
+      <div class="b-bottom">PACIENTE · BONO LÁSER</div>
+    </div>
+
+    <div class="b b-wide b-accent">
+      <div>
+        <div class="b-eyebrow">Financiación incluida</div>
+        <h3>Bonos en 2 o 3 cuotas sin intereses.</h3>
+        <p>Por Bizum o transferencia. Sin financieras de por medio. Sin gestiones extra. Si te apetece pagar de golpe también: tú decides cómo.</p>
+      </div>
+      <div class="b-bottom">BIZUM · TRANSFERENCIA · EFECTIVO</div>
+    </div>
+  </div>
+</section>
+
+<!-- PLANES (iPhone tier) -->
+<section class="s reveal" id="planes">
+  <div class="s-eyebrow">Planes</div>
+  <h2 class="s-title">Elige cómo quieres avanzar.</h2>
+  <p class="s-lead">Tres formas de empezar. La valoración previa es siempre gratuita, vengas o no después.</p>
+
+  <div class="packs-grid">
+    <div class="pack">
+      <div class="pack-name">Sesión suelta</div>
+      <div class="pack-price">
+        <div class="pack-price-big">Desde 45€</div>
+        <div class="pack-price-small">según zona y tratamiento</div>
+      </div>
+      <ul class="pack-features">
+        <li>1 sesión a tu medida</li>
+        <li>Sin compromiso de continuidad</li>
+        <li>Valoración previa incluida</li>
+        <li>Pago a la salida</li>
+      </ul>
+      <a href="https://wa.me/34971735833?text=Hola%2C%20me%20interesa%20una%20sesi%C3%B3n%20suelta" target="_blank" class="pack-cta">Reservar sesión</a>
+    </div>
+
+    <div class="pack featured">
+      <div class="pack-badge">Más elegido</div>
+      <div class="pack-name">Bono 6 sesiones</div>
+      <div class="pack-price">
+        <div class="pack-price-big">Desde 240€</div>
+        <div class="pack-price-small">2 o 3 cuotas sin intereses</div>
+      </div>
+      <ul class="pack-features">
+        <li>6 sesiones espaciadas 4 a 8 semanas</li>
+        <li>Hasta 20% de descuento por bono</li>
+        <li>Valoración + revisión incluidas</li>
+        <li>Bizum o transferencia, sin financiera</li>
+        <li>Garantía: si en 6 sesiones no hay resultado, hablamos</li>
+      </ul>
+      <a href="https://wa.me/34971735833?text=Hola%2C%20me%20interesa%20el%20bono%20de%206%20sesiones" target="_blank" class="pack-cta">Reservar bono</a>
+    </div>
+
+    <div class="pack">
+      <div class="pack-name">Plan combinado</div>
+      <div class="pack-price">
+        <div class="pack-price-big">A medida</div>
+        <div class="pack-price-small">presupuesto en valoración</div>
+      </div>
+      <ul class="pack-features">
+        <li>Combina láser, INDIBA, Cosmelan, IPL</li>
+        <li>Diseño personalizado por Thais</li>
+        <li>Pago fraccionado a tu medida</li>
+        <li>Seguimiento mensual incluido</li>
+      </ul>
+      <a href="https://wa.me/34971735833?text=Hola%2C%20me%20interesa%20un%20plan%20combinado" target="_blank" class="pack-cta">Pedir plan</a>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARE BAND -->
+<section class="compare-band reveal">
+  <h2>La diferencia es honestidad. No marketing.</h2>
+  <p>Lo que en otros centros suele pasar contra lo que pasa aquí.</p>
+  <div class="compare-row">
+    <div class="compare-cell bad">
+      <h4>En otros centros</h4>
+      <ul>
+        <li>Vende-paquetes presionando en sala</li>
+        <li>4 sesiones de oferta, luego "te faltan 6 más"</li>
+        <li>Personal rotando, no ves a la misma persona</li>
+        <li>Equipos genéricos sin certificación</li>
+        <li>Financieras y letras pequeñas</li>
+      </ul>
+    </div>
+    <div class="compare-cell good">
+      <h4>En Dermativa</h4>
+      <ul>
+        <li>Valoración gratuita, sin compromiso</li>
+        <li>Te decimos las sesiones reales desde el día 1</li>
+        <li>Siempre te trata Thais en persona</li>
+        <li>Alma Lasers certificados, máster en láser</li>
+        <li>Bizum y transferencia, sin financiera</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- TRATAMIENTOS GRID -->
+<section class="s reveal" id="tratamientos">
+  <div class="s-eyebrow">Tratamientos</div>
+  <h2 class="s-title">Ocho herramientas. Una valoración previa.</h2>
+  <p class="s-lead">El catálogo completo. Si dudas cuál te toca, lo vemos en la valoración gratuita.</p>
+
+  <div class="t-grid">
+    <a href="https://wa.me/34971735833?text=Hola%2C%20me%20interesa%20depilaci%C3%B3n%20l%C3%A1ser" target="_blank" class="t-card">
+      <div class="t-card-num">01</div>
+      <div class="t-card-info"><h4>Depilación láser</h4><span>45 a 90 min</span></div>
+      <div class="t-card-arr">›</div>
+    </a>
+    <a href="https://wa.me/34971735833?text=Hola%2C%20me%20interesa%20fotorejuvenecimiento" target="_blank" class="t-card">
+      <div class="t-card-num">02</div>
+      <div class="t-card-info"><h4>Fotorejuvenecimiento IPL</h4><span>30 min</span></div>
+      <div class="t-card-arr">›</div>
+    </a>
+    <a href="https://wa.me/34971735833?text=Hola%2C%20me%20interesa%20INDIBA" target="_blank" class="t-card">
+      <div class="t-card-num">03</div>
+      <div class="t-card-info"><h4>Radiofrecuencia INDIBA</h4><span>45 min</span></div>
+      <div class="t-card-arr">›</div>
+    </a>
+    <a href="https://wa.me/34971735833?text=Hola%2C%20me%20interesa%20Cosmelan" target="_blank" class="t-card">
+      <div class="t-card-num">04</div>
+      <div class="t-card-info"><h4>Cosmelan Peeling</h4><span>90 min</span></div>
+      <div class="t-card-arr">›</div>
+    </a>
+    <a href="https://wa.me/34971735833?text=Hola%2C%20me%20interesa%20Q-Switch%20tatuajes" target="_blank" class="t-card">
+      <div class="t-card-num">05</div>
+      <div class="t-card-info"><h4>Q-Switch eliminación tatuajes</h4><span>30 min</span></div>
+      <div class="t-card-arr">›</div>
+    </a>
+    <a href="https://wa.me/34971735833?text=Hola%2C%20me%20interesa%20rejuvenecimiento" target="_blank" class="t-card">
+      <div class="t-card-num">06</div>
+      <div class="t-card-info"><h4>Rejuvenecimiento facial</h4><span>60 min</span></div>
+      <div class="t-card-arr">›</div>
+    </a>
+    <a href="https://wa.me/34971735833?text=Hola%2C%20me%20interesa%20higiene%20facial" target="_blank" class="t-card">
+      <div class="t-card-num">07</div>
+      <div class="t-card-info"><h4>Higiene facial profunda</h4><span>60 min</span></div>
+      <div class="t-card-arr">›</div>
+    </a>
+    <a href="https://wa.me/34971735833?text=Hola%2C%20me%20interesa%20plan%20combinado" target="_blank" class="t-card">
+      <div class="t-card-num">08</div>
+      <div class="t-card-info"><h4>Plan combinado a medida</h4><span>según diagnóstico</span></div>
+      <div class="t-card-arr">›</div>
+    </a>
+  </div>
+</section>
+
+<!-- ESPECIALISTA -->
+<section class="s reveal" id="especialista">
+  <div class="s-eyebrow">La especialista</div>
+  <h2 class="s-title">Thais González.</h2>
+  <p class="s-lead">10 años cuidando la piel de Palma. Máster en láser y luz pulsada. Equipos profesionales Alma Lasers.</p>
+
   <div class="spec">
-    <div class="spec-photo">
+    <div class="spec-img">
       <img src="https://dermativa.es/wp-content/uploads/2019/04/tratamientos-dermativa-44.jpg" alt="Thais González">
-      <div class="tag"><b>Thais González</b> · Máster Láser & Luz Pulsada</div>
+      <div class="spec-img-tag"><b>Thais González</b> · Máster Láser & Luz Pulsada</div>
     </div>
-    <div>
-      <div class="eyebrow">La especialista</div>
-      <h2>
-        <span class="ln"><span>10 años cuidando</span></span>
-        <span class="ln"><span>la piel de <span class="it">Palma.</span></span></span>
-      </h2>
-      <p>Dermativa no es una franquicia. Es la consulta de Thais: <span class="em">una sola especialista certificada</span>, equipos profesionales Alma Lasers y una promesa que no se mueve.</p>
+    <div class="spec-text">
+      <h3>No es una franquicia. Es una consulta.</h3>
+      <p>Dermativa no es una cadena. Es la consulta de Thais: <strong>una sola especialista certificada</strong>, equipos profesionales Alma Lasers y una promesa que no se mueve.</p>
       <p>Cada tratamiento empieza con una valoración personal. Sin protocolos genéricos. Sin venta agresiva. Sin promesas que no se puedan sostener.</p>
-      <p style="margin-top:30px;"><a href="https://wa.me/34971735833?text=Hola%2C%20vengo%20de%20la%20web.%20Quiero%20valoraci%C3%B3n%20gratuita" target="_blank" class="btn btn-ghost">Reservar valoración <span class="arr">→</span></a></p>
+      <a href="https://wa.me/34971735833?text=Hola%2C%20vengo%20de%20la%20web.%20Quiero%20valoraci%C3%B3n%20gratuita" target="_blank" class="btn-link">Reservar valoración gratuita</a>
     </div>
-  </div>
-</section>
-
-<!-- TESTIMONIAL -->
-<section class="test">
-  <blockquote>Thais me dijo desde la primera consulta que en mi caso harían falta 7 sesiones. Otro centro me había vendido 4. Tenía razón. A la 6.ª ya no había vello.</blockquote>
-  <cite>Paciente · Bono Láser</cite>
-</section>
-
-<!-- CONTACTO -->
-<section class="contact" id="contacto">
-  <div class="contact-info">
-    <div class="eyebrow">Visítanos</div>
-    <h2>
-      <span class="ln"><span>Picasso 56,</span></span>
-      <span class="ln"><span class="it">Palma.</span></span>
-    </h2>
-    <dl>
-      <div><dt>Dirección</dt><dd>Avinguda de Picasso, 56<br>07014 Palma · junto Clínica Juaneda</dd></div>
-      <div><dt>Horario</dt><dd>Lunes a Viernes: 9:30 a 21:00<br>Sábado: 10:00 a 15:00</dd></div>
-      <div><dt>Teléfono</dt><dd><a href="tel:+34971735833">971 73 58 33</a></dd></div>
-      <div><dt>Email</dt><dd><a href="mailto:info@dermativa.es">info@dermativa.es</a></dd></div>
-      <div><dt>Instagram</dt><dd><a href="https://www.instagram.com/dermativa.mallorca/" target="_blank">@dermativa.mallorca</a></dd></div>
-    </dl>
-    <a href="https://wa.me/34971735833?text=Hola%2C%20vengo%20de%20la%20web.%20Quiero%20reservar%20mi%20valoraci%C3%B3n" target="_blank" class="btn btn-primary" style="align-self:flex-start;">Reservar valoración gratuita <span class="arr">→</span></a>
-  </div>
-  <div class="contact-map">
-    <iframe src="https://maps.google.com/maps?q=Avinguda%20de%20Picasso%2056%20Palma&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
   </div>
 </section>
 
 <!-- FAQ -->
-<section class="faq-section">
-  <div>
-    <div class="eyebrow">Dudas frecuentes</div>
-    <h2>
-      <span class="ln"><span>Lo que <span class="it">todas</span></span></span>
-      <span class="ln"><span>preguntan.</span></span>
-    </h2>
-  </div>
-  <div>
-    <details class="q">
+<section class="s reveal">
+  <div class="s-eyebrow">Preguntas frecuentes</div>
+  <h2 class="s-title">Lo que todas preguntan.</h2>
+
+  <div class="faq-grid">
+    <details class="faq-q">
       <summary>¿Cuántas sesiones necesito para depilación láser?</summary>
-      <div class="a">Depende de fototipo y zona, pero la media es 6 a 8 sesiones. En la valoración te decimos el número exacto. Sesiones espaciadas 4 a 8 semanas según ciclo del vello.</div>
+      <div class="a">Depende de fototipo y zona. La media son 6 a 8 sesiones. En la valoración te decimos el número exacto. Sesiones espaciadas 4 a 8 semanas según ciclo del vello.</div>
     </details>
-    <details class="q">
+    <details class="faq-q">
       <summary>¿Duele? ¿Hay efectos secundarios?</summary>
-      <div class="a">Calor o pinchazo leve, no dolor agudo. Algunas pacientes notan rojez 1 a 2 horas. Sin baja: vuelves a tu actividad al salir.</div>
+      <div class="a">Calor o pinchazo leve, no dolor agudo. Algunas pacientes notan rojez de 1 a 2 horas. Sin baja: vuelves a tu actividad al salir.</div>
     </details>
-    <details class="q">
+    <details class="faq-q">
       <summary>¿Funciona con vello rubio o canoso?</summary>
       <div class="a">El láser actúa sobre la melanina, por lo que en vello muy claro o canoso la eficacia es menor. En la valoración te lo decimos honestamente antes de cobrarte.</div>
     </details>
-    <details class="q">
+    <details class="faq-q">
       <summary>¿Tenéis financiación?</summary>
-      <div class="a">Sí. Los bonos de 6+ sesiones se pagan en 2 o 3 cuotas sin intereses por Bizum o transferencia.</div>
+      <div class="a">Sí. Los bonos de 6 sesiones o más se pagan en 2 o 3 cuotas sin intereses por Bizum o transferencia. Sin financiera intermedia.</div>
     </details>
-    <details class="q">
+    <details class="faq-q">
+      <summary>¿Y la valoración? ¿Hay compromiso?</summary>
+      <div class="a">La valoración es siempre gratuita. Si tu caso no es para nosotros, te lo decimos antes de cobrarte. Si lo es, te damos plan, precio y plazo en el mismo día.</div>
+    </details>
+    <details class="faq-q">
       <summary>¿Cómo reservo?</summary>
       <div class="a">Por WhatsApp al 971 73 58 33 en 2 minutos. También por llamada en horario L a V de 9:30 a 21h o sábado de 10 a 15h.</div>
     </details>
   </div>
 </section>
 
+<!-- CONTACTO -->
+<section class="s reveal" id="contacto">
+  <div class="s-eyebrow">Visítanos</div>
+  <h2 class="s-title">Picasso 56, Palma.</h2>
+  <p class="s-lead">Junto a Clínica Juaneda. Parking en calle. Reserva por WhatsApp, llamada o pásate sin cita.</p>
+
+  <div class="contact-card">
+    <div class="contact-info">
+      <h3>La consulta.</h3>
+      <dl>
+        <div><dt>Dirección</dt><dd>Avinguda de Picasso, 56<br>07014 Palma</dd></div>
+        <div><dt>Horario</dt><dd>L a V de 9:30 a 21:00<br>Sábado de 10:00 a 15:00</dd></div>
+        <div><dt>Teléfono</dt><dd><a href="tel:+34971735833">971 73 58 33</a></dd></div>
+        <div><dt>Email</dt><dd><a href="mailto:info@dermativa.es">info@dermativa.es</a></dd></div>
+        <div><dt>Instagram</dt><dd><a href="https://www.instagram.com/dermativa.mallorca/" target="_blank">@dermativa.mallorca</a></dd></div>
+      </dl>
+      <a href="https://wa.me/34971735833?text=Hola%2C%20vengo%20de%20la%20web.%20Quiero%20reservar%20mi%20valoraci%C3%B3n%20gratuita" target="_blank" class="btn btn-primary" style="align-self:flex-start; margin-top:8px;">Reservar valoración</a>
+    </div>
+    <div class="contact-map">
+      <iframe src="https://maps.google.com/maps?q=Avinguda%20de%20Picasso%2056%20Palma&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
+    </div>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
-  <div class="foot-grid">
+  <div class="foot-inner">
     <div>
-      <div class="foot-brand">Dermativa<p>Centro de estética avanzada en Palma de Mallorca. Especialista certificada en láser y luz pulsada.</p></div>
+      <div class="foot-brand-name">Dermativa</div>
+      <p class="foot-brand-desc">Centro de estética avanzada en Palma de Mallorca. Especialista certificada en láser y luz pulsada.</p>
     </div>
     <div class="foot-col">
       <h4>Visítanos</h4>
-      <p>Avd. Picasso 56<br>07014 Palma</p>
+      <p>Avd. Picasso 56</p>
+      <p>07014 Palma</p>
       <p style="color:var(--fg-mute); margin-top:6px;">L a V 9:30 a 21h<br>Sáb 10 a 15h</p>
     </div>
     <div class="foot-col">
@@ -819,8 +1168,8 @@
     </div>
     <div class="foot-col">
       <h4>Versiones</h4>
-      <a href="./index.html">v1 · Clásica</a>
-      <a href="./index2.html" style="color:var(--accent);">v2 · Editorial</a>
+      <a href="./index.html">v1 · Editorial</a>
+      <a href="./index2.html" class="v2">v2 · Product page</a>
     </div>
   </div>
   <div class="foot-bottom">
@@ -833,6 +1182,8 @@
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
+<div class="demo-badge">Demo v2 · por <a href="https://sorabyte.es" target="_blank">Sorabyte</a></div>
+
 <script>
 (function(){
   'use strict';
@@ -841,29 +1192,26 @@
   const pm = document.getElementById('pageMask');
   if (pm) {
     requestAnimationFrame(() => requestAnimationFrame(() => pm.classList.add('out')));
-    setTimeout(() => pm && pm.parentNode && pm.parentNode.removeChild(pm), 1500);
+    setTimeout(() => pm && pm.parentNode && pm.parentNode.removeChild(pm), 1400);
   }
 
-  // Hero mask reveal
+  // Hero in
   requestAnimationFrame(() => {
     setTimeout(() => {
       const hero = document.getElementById('hero');
       const h1 = document.getElementById('heroH1');
       if (hero) hero.classList.add('in');
       if (h1) h1.classList.add('in');
-    }, 200);
+    }, 180);
   });
 
-  // h2 mask reveal + reveals
+  // Reveal sections
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('in');
-        io.unobserve(e.target);
-      }
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
     });
-  }, { threshold: 0.2, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('h2, .reveal').forEach(el => io.observe(el));
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
   // Counter scroll-driven
   const ioCount = new IntersectionObserver(entries => {
@@ -874,6 +1222,8 @@
       if (!target) { ioCount.unobserve(el); return; }
       const prefix = el.dataset.prefix || '';
       const suffix = el.dataset.suffix || '';
+      const small = el.querySelector('.small');
+      const smallHTML = small ? small.outerHTML : '';
       if (matchMedia('(prefers-reduced-motion: reduce)').matches) { ioCount.unobserve(el); return; }
       const dur = 1400;
       const start = performance.now();
@@ -882,7 +1232,7 @@
         const eased = 1 - Math.pow(1 - t, 3);
         const v = Math.floor(target * eased);
         const fmt = v >= 1000 ? v.toLocaleString('es-ES') : v;
-        el.textContent = prefix + fmt + suffix;
+        el.innerHTML = prefix + fmt + suffix + smallHTML;
         if (t < 1) requestAnimationFrame(step);
       }
       requestAnimationFrame(step);
@@ -891,14 +1241,13 @@
   }, { threshold: 0.5 });
   document.querySelectorAll('[data-target]').forEach(el => ioCount.observe(el));
 
-  // Scroll loop: nav scrolled + progress
+  // Scroll loop
   const nav = document.getElementById('nav');
   const prog = document.getElementById('scrollProg');
   let raf = null;
   function tick() {
     const sy = window.scrollY;
     const docH = document.documentElement.scrollHeight - window.innerHeight;
-    if (sy > 30) nav.classList.add('scrolled'); else nav.classList.remove('scrolled');
     if (prog && docH > 0) prog.style.width = Math.min(100, (sy / docH) * 100) + '%';
     raf = null;
   }
